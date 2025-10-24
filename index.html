@@ -556,16 +556,19 @@
     </div>
     <p class="muted" id="modalSub">Fill basic details — we'll follow up for document verification and employer confirmations.</p>
 
-    <form id="modalForm" class="contact-form" action="mailto:hello@ecs-score.in" method="post" enctype="text/plain" style="margin-top:10px">
-      <input name="name" placeholder="Full name" required />
-      <input name="email" placeholder="Email" required />
-      <input name="phone" placeholder="Phone (optional)" />
-      <input name="current_company" placeholder="Current company (optional)" />
-      <textarea name="about" placeholder="Short note (position, experience)" rows="4"></textarea>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn btn-primary" type="submit">Submit & Request Verification</button>
-        <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-      </div>
+    <form id="ecsForm" class="contact-form" style="margin-top:10px">
+      <h3>Generate Your ECS Score</h3>
+
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email Address" required />
+      <input type="text" name="phone" placeholder="Phone Number" />
+      <input type="text" name="company" placeholder="Current Company" />
+      <textarea name="about" placeholder="Short Bio / Experience" rows="3"></textarea>
+
+      <label>Upload Resume (PDF/DOC):</label>
+      <input type="file" id="resume" accept=".pdf,.doc,.docx" required />
+
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>
