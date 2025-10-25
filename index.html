@@ -634,33 +634,53 @@
 <!-- Supabase Auth Script -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // 🧠 Replace with your Supabase project details
+  // 🔹 Replace with your own project details
   const SUPABASE_URL = "https://sdankxvcgqwfegjneyth.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
 
-  const supabaseClient = supabase.createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
+  // 🧠 Yeh line old version se alag hai (v2 syntax)
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  document.getElementById("signup").addEventListener("click", async () => {
+  const signupBtn = document.getElementById("signup");
+  const loginBtn = document.getElementById("loginBtn");
+  const msg = document.getElementById("message");
+
+  // 🔹 SIGNUP
+  signupBtn.addEventListener("click", async () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const { error } = await supabaseClient.auth.signUp({ email, password });
-    document.getElementById("message").textContent = error ? error.message : "✅ Signup successful! Check your email for confirmation.";
+    msg.textContent = "⏳ Creating your account...";
+    const { data, error } = await client.auth.signUp({ email, password });
+
+    if (error) {
+      msg.textContent = "❌ " + error.message;
+    } else {
+      msg.textContent = "✅ Signup successful! Check your inbox to confirm.";
+      console.log("User signed up:", data);
+    }
   });
 
-  document.getElementById("loginBtn").addEventListener("click", async () => {
+  // 🔹 LOGIN
+  loginBtn.addEventListener("click", async () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    msg.textContent = "⏳ Logging in...";
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+
     if (error) {
-      document.getElementById("message").textContent = error.message;
+      msg.textContent = "❌ " + error.message;
     } else {
-      document.getElementById("message").textContent = "✅ Login successful!";
-      setTimeout(() => { window.location.href = "dashboard.html"; }, 1200);
+      msg.textContent = "✅ Login successful!";
+      console.log("User logged in:", data);
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1000);
     }
   });
 </script>
+
 
 </body>
 </html>
