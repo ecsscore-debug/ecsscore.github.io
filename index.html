@@ -681,6 +681,23 @@
   });
 </script>
 
+<script>
+  // Check if Supabase redirected user with access_token
+  const hash = window.location.hash;
+
+  if (hash.includes("access_token")) {
+    const params = new URLSearchParams(hash.replace("#", ""));
+    const accessToken = params.get("access_token");
+
+    // ✅ Optionally store token (for future dashboard login)
+    localStorage.setItem("ecs_token", accessToken);
+
+    // ✅ Auto redirect after 2 seconds
+    setTimeout(() => {
+      window.location.href = "/verified.html";
+    }, 2000);
+  }
+</script>
 
 </body>
 </html>
