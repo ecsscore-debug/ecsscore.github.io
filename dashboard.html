@@ -9,25 +9,27 @@
   <button onclick="logout()" style="padding:8px 16px;">Logout</button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://sdankxvcgqwfegjneyth.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
-    const supabaseClient = supabase.createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
+<script>
+  const SUPABASE_URL = "https://sdankxvcgqwfegjneyth.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
+  const client = window.supabase.createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
 
-    async function loadUser() {
-      const { data } = await supabaseClient.auth.getUser();
-      if (data.user) {
-        document.getElementById('userInfo').textContent = `Logged in as: ${data.user.email}`;
-      } else {
-        window.location.href = "index.html";
-      }
-    }
-    loadUser();
-
-    async function logout() {
-      await supabaseClient.auth.signOut();
+  async function loadUser() {
+    const { data } = await client.auth.getUser();
+    if (data.user) {
+      document.getElementById("userInfo").textContent = `Logged in as: ${data.user.email}`;
+    } else {
       window.location.href = "index.html";
     }
-  </script>
+  }
+
+  loadUser();
+
+  async function logout() {
+    await client.auth.signOut();
+    window.location.href = "index.html";
+  }
+</script>
+
 </body>
 </html>
