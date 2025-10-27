@@ -121,23 +121,62 @@
 
   document.getElementById("profileForm").addEventListener("submit", e => {
     e.preventDefault();
-    const profile = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      about: document.getElementById("about").value,
-      resume: document.getElementById("resume").files[0]?.name || "No File",
-      orgs: [1,2,3].map(i => ({
-        name: document.getElementById(`org${i}_name`).value,
-        role: document.getElementById(`org${i}_role`).value,
-        duration: document.getElementById(`org${i}_duration`).value,
-        peer: document.getElementById(`org${i}_peer`).value
-      }))
-    };
-    localStorage.setItem("ecs_profile", JSON.stringify(profile));
-    showDashboard(profile);
-  });
+    const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const about = document.getElementById("about").value;
 
+  const orgs = [1,2,3].map(i => ({
+    name: document.getElementById(`org${i}_name`).value,
+    role: document.getElementById(`org${i}_role`).value,
+    duration: document.getElementById(`org${i}_duration`).value,
+    peer: document.getElementById(`org${i}_peer`).value
+  }));
+
+  // 🔹 Upload resume to Supabase Storage
+  let resumeUrl = "";
+  const file = document.getElementById("resume").files[0];
+  if (file) {
+    const fileName = `${Date.now()}_${file.name}`;
+    const { data: uploadData, error: uploadError } = await supabase
+      .storage.from("resumes")
+      .upload(fileName, file);
+    if (uploadError) {
+      alert("Upload failed: " + uploadError.message);
+      return;
+    }
+
+    const { data: publicData } = supabase.storage
+      .from("resumes")
+      .getPublicUrl(uploadData.path);
+
+    resumeUrl = publicData.publicUrl;
+  }
+
+  // 🔹 Save data to Supabase table
+  const { error: insertError } = await supabase
+    .from("profiles")
+    .insert([
+      {
+        name,
+        email,
+        phone,
+        about,
+        resume_url: resumeUrl,
+        orgs
+      }
+    ]);
+
+  if (insertError) {
+    alert("Database error: " + insertError.message);
+    return;
+  }
+
+  const profile = { name, email, phone, about, resume: resumeUrl, orgs };
+  localStorage.setItem("ecs_profile", JSON.stringify(profile));
+  showDashboard(profile);
+});
+</script>
   function showDashboard(data){
     formView.classList.add("hidden");
     dashView.classList.remove("hidden");
@@ -183,5 +222,13 @@
     window.location.href="/";
   }
 </script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // 🔹 Replace these with your own Supabase values
+  const supabaseUrl = "https://sdankxvcgqwfegjneyth.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
+  const supabase = window.supabase.createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
+</script>
+  
 </body>
 </html>
