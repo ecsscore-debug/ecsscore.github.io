@@ -1,200 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECS Dashboard | Verified Profile</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f5f8ff;
-      margin: 0;
-      color: #111;
-    }
-    header {
-      background: #007aff;
-      color: white;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-    header button {
-      background: white;
-      color: #007aff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
-    }
-    .flex {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .stat {
-      flex: 1;
-      min-width: 200px;
-      text-align: center;
-      background: linear-gradient(135deg,#f0f7ff,#ffffff);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05);
-    }
-    .stat h2 {
-      margin: 0;
-      color: #007aff;
-      font-size: 28px;
-    }
-    .muted {
-      color: #666;
-      font-size: 14px;
-      margin-top: 6px;
-    }
-    .section-title {
-      margin-top: 30px;
-      font-weight: 700;
-      color: #222;
-      border-left: 5px solid #007aff;
-      padding-left: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    table th, table td {
-      border-bottom: 1px solid #eee;
-      text-align: left;
-      padding: 10px;
-    }
-    table th {
-      background: #f1f5ff;
-      color: #333;
-    }
-    .score-circle {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: conic-gradient(#007aff 0deg, #e6f0ff 0deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      font-weight: 800;
-      color: #007aff;
-      margin: 20px auto;
-      position: relative;
-      transition: background 2s linear;
-    }
-    .verified-badge {
-      display: inline-block;
-      background: #00c853;
-      color: white;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-left: 6px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ECS Dashboard | Verified Profile</title>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:'Poppins',sans-serif;background:#f5f8ff;margin:0;color:#111;}
+header{background:#007aff;color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+header h1{margin:0;font-size:20px;}
+header button{background:white;color:#007aff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;}
+.container{max-width:1200px;margin:30px auto;padding:0 20px;}
+.card{background:white;padding:24px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,0.06);margin-bottom:24px;}
+.hidden{display:none;}
+input,textarea{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd;font-family:inherit;font-size:15px;}
+button.btn{background:#007aff;color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:12px;}
+.score-circle{width:120px;height:120px;border-radius:50%;background:conic-gradient(#007aff 0deg,#e6f0ff 0deg);
+display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#007aff;margin:20px auto;}
+</style>
 </head>
 <body>
-
 <header>
   <h1>ECS Dashboard</h1>
   <button onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
-  
-  <div class="card">
-    <h2>Welcome, <span id="userName">User</span> <span class="verified-badge">Verified</span></h2>
-    <p>Your verified Employment Credibility Score and professional record overview.</p>
+  <div id="formView" class="card">
+    <h2>Complete Your Professional Profile</h2>
+    <form id="profileForm">
+      <label>Full Name</label><input id="name" required>
+      <label>Phone</label><input id="phone">
+      <label>About</label><textarea id="about"></textarea>
+      <label>Upload Resume</label><input id="resume" type="file" accept=".pdf,.doc,.docx">
+      <hr>
+      <h3>Employment History (3 Orgs)</h3>
+      <label>Organisation 1</label><input id="org1">
+      <label>Organisation 2</label><input id="org2">
+      <label>Organisation 3</label><input id="org3">
+      <button class="btn" type="submit">Save & Generate Dashboard</button>
+    </form>
   </div>
 
-  <div class="card">
-    <h3 class="section-title">Your ECS Score</h3>
+  <div id="dashView" class="card hidden">
+    <h2>Welcome, <span id="userName"></span></h2>
+    <p id="userEmail" style="color:#555"></p>
     <div class="score-circle" id="scoreCircle">0</div>
-    <p style="text-align:center;color:#666">Building your credibility profile...</p>
-  </div>
-
-  <div class="flex">
-    <div class="stat"><h2>5+</h2><div class="muted">Verified Employers</div></div>
-    <div class="stat"><h2>12</h2><div class="muted">Peer Endorsements</div></div>
-    <div class="stat"><h2>3</h2><div class="muted">Documents Authenticated</div></div>
-    <div class="stat"><h2>98%</h2><div class="muted">Profile Strength</div></div>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">Employment History</h3>
-    <table id="empTable">
-      <tr><th>Company</th><th>Designation</th><th>Duration</th><th>Status</th></tr>
-      <tr><td>Findoc Group</td><td>Executive Assistant</td><td>2023 - Present</td><td>Verified ✅</td></tr>
-      <tr><td>Religare Broking</td><td>Operations Analyst</td><td>2021 - 2023</td><td>Verified ✅</td></tr>
-    </table>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">Peer Endorsements</h3>
-    <ul id="endorseList">
-      <li>“Highly professional and detail-oriented.” – <b>HR, Finvest Mart</b></li>
-      <li>“Excellent communication and follow-up skills.” – <b>Manager, CYL</b></li>
-      <li>“Trusted for confidential coordination.” – <b>CEO’s Office, NSDC</b></li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h3 class="section-title">Offer Ledger (Immutable Record)</h3>
-    <table id="offerTable">
-      <tr><th>Company</th><th>CTC Offered</th><th>Status</th></tr>
-      <tr><td>Findoc Group</td><td>₹35 LPA</td><td>Accepted ✅</td></tr>
-      <tr><td>Religare Broking</td><td>₹24 LPA</td><td>Completed</td></tr>
-    </table>
+    <h3>Employment History</h3>
+    <ul id="empList"></ul>
+    <p id="resumeStatus"></p>
   </div>
 </div>
 
 <script>
-  // Sample user name (future backend integration)
-  const userName = localStorage.getItem("ecs_name") || "Professional";
-  document.getElementById("userName").innerText = userName;
+const { createClient } = supabase;
+const supabaseUrl = "https://sdankxvcgqwfegjneyth.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
+const db = createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
 
-  // ECS Score animation
-  let val = 0;
-  const target = 82; // Example score
-  const circle = document.getElementById("scoreCircle");
-  const timer = setInterval(() => {
-    if (val >= target) { clearInterval(timer); return; }
-    val++;
-    circle.innerText = val;
-    const deg = (val / 100) * 360;
-    circle.style.background = `conic-gradient(#007aff ${deg}deg, #e6f0ff 0deg)`;
-  }, 25);
+async function init() {
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return (window.location.href = "auth.html");
+  const { data } = await db.from("profiles").select("*").eq("id", user.id).single();
+  if (data) showDashboard(data, user); else showForm(user);
+}
 
-  // Logout
-  function logout() {
-    localStorage.clear();
-    alert("You have been logged out.");
-    window.location.href = "/";
-  }
+function showForm(user){
+  document.getElementById("formView").classList.remove("hidden");
+  document.getElementById("dashView").classList.add("hidden");
+  document.getElementById("profileForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const file=document.getElementById("resume").files[0];
+    let resume_url=file?file.name:"";
+    const payload={
+      id:user.id,name:val("name"),email:user.email,phone:val("phone"),
+      about:val("about"),resume_url,org1:val("org1"),org2:val("org2"),org3:val("org3")
+    };
+    await db.from("profiles").upsert(payload);
+    showDashboard(payload,user);
+  });
+}
+function val(id){return document.getElementById(id).value;}
+function showDashboard(d,u){
+  document.getElementById("formView").classList.add("hidden");
+  document.getElementById("dashView").classList.remove("hidden");
+  ge("userName").innerText=d.name||"User";
+  ge("userEmail").innerText=u.email;
+  ge("empList").innerHTML=[d.org1,d.org2,d.org3].filter(Boolean).map(x=>`<li>${x}</li>`).join("");
+  ge("resumeStatus").innerText="Resume: "+(d.resume_url||"Not Uploaded");
+  animateScore();
+}
+function ge(id){return document.getElementById(id);}
+function animateScore(){
+  let v=0,t=82,c=ge("scoreCircle");
+  const x=setInterval(()=>{if(v>=t){clearInterval(x);return;}
+  v++;c.innerText=v;const deg=(v/100)*360;c.style.background=`conic-gradient(#007aff ${deg}deg,#e6f0ff 0deg)`;},25);
+}
+async function logout(){await db.auth.signOut();localStorage.clear();window.location.href="auth.html";}
+init();
 </script>
-
 </body>
 </html>
