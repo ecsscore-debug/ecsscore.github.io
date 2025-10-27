@@ -1,103 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ECS Dashboard | Verified Profile</title>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<style>
-body{font-family:'Poppins',sans-serif;background:#f5f8ff;margin:0;color:#111;}
-header{background:#007aff;color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-header h1{margin:0;font-size:20px;}
-header button{background:white;color:#007aff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;}
-.container{max-width:1200px;margin:30px auto;padding:0 20px;}
-.card{background:white;padding:24px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,0.06);margin-bottom:24px;}
-.hidden{display:none;}
-input,textarea{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd;font-family:inherit;font-size:15px;}
-button.btn{background:#007aff;color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:12px;}
-.score-circle{width:120px;height:120px;border-radius:50%;background:conic-gradient(#007aff 0deg,#e6f0ff 0deg);
-display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#007aff;margin:20px auto;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECS Dashboard | Verified Profile</title>
+  <style>
+    body {font-family:'Poppins',sans-serif;background:#f5f8ff;margin:0;color:#111;}
+    header {background:#007aff;color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+    header h1 {margin:0;font-size:20px;}
+    header button {background:white;color:#007aff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;}
+    .container {max-width:1100px;margin:30px auto;padding:0 20px;}
+    .card {background:white;padding:24px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,0.06);margin-bottom:24px;}
+    .score-circle {width:120px;height:120px;border-radius:50%;background:conic-gradient(#007aff 0deg,#e6f0ff 0deg);
+      display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#007aff;
+      margin:20px auto;transition:background 2s linear;}
+    .verified-badge {display:inline-block;background:#00c853;color:white;font-weight:600;padding:6px 10px;border-radius:6px;font-size:13px;margin-left:6px;}
+    label {font-weight:600;margin-top:10px;display:block;}
+    input,textarea {width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd;font-family:inherit;font-size:15px;}
+    button.btn {background:#007aff;color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:12px;}
+    h3 {margin-top:0;color:#007aff;}
+    hr {border:none;border-top:1px solid #eee;margin:20px 0;}
+    .section-title {font-size:18px;font-weight:700;color:#222;border-left:5px solid #007aff;padding-left:10px;margin-bottom:10px;}
+    .sub-card {background:#f9fbff;padding:16px;border-radius:10px;margin-bottom:10px;border:1px solid #e2e8f0;}
+    .hidden {display:none;}
+    table {width:100%;border-collapse:collapse;margin-top:10px;}
+    table th,table td {border-bottom:1px solid #eee;padding:10px;text-align:left;}
+    table th {background:#f1f5ff;}
+  </style>
 </head>
 <body>
+
 <header>
   <h1>ECS Dashboard</h1>
   <button onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
+
+  <!-- PHASE 1: Form -->
   <div id="formView" class="card">
     <h2>Complete Your Professional Profile</h2>
+    <p>Fill your verified details to generate your ECS Dashboard.</p>
+
     <form id="profileForm">
-      <label>Full Name</label><input id="name" required>
-      <label>Phone</label><input id="phone">
-      <label>About</label><textarea id="about"></textarea>
-      <label>Upload Resume</label><input id="resume" type="file" accept=".pdf,.doc,.docx">
+      <label>Full Name</label>
+      <input type="text" id="name" required />
+      <label>Email</label>
+      <input type="email" id="email" required />
+      <label>Phone</label>
+      <input type="text" id="phone" placeholder="+91-XXXXXXXXXX" />
+
+      <label>About / Summary</label>
+      <textarea id="about" rows="3" placeholder="Brief summary of your work experience..."></textarea>
+
       <hr>
-      <h3>Employment History (3 Orgs)</h3>
-      <label>Organisation 1</label><input id="org1">
-      <label>Organisation 2</label><input id="org2">
-      <label>Organisation 3</label><input id="org3">
-      <button class="btn" type="submit">Save & Generate Dashboard</button>
+      <h3>Employment History (Last 3)</h3>
+      <div class="sub-card">
+        <h4>Organisation 1</h4>
+        <label>Company</label><input id="org1_name">
+        <label>Designation</label><input id="org1_role">
+        <label>Duration</label><input id="org1_duration">
+        <label>Peer Contact (Name & Email)</label><input id="org1_peer">
+      </div>
+      <div class="sub-card">
+        <h4>Organisation 2</h4>
+        <label>Company</label><input id="org2_name">
+        <label>Designation</label><input id="org2_role">
+        <label>Duration</label><input id="org2_duration">
+        <label>Peer Contact</label><input id="org2_peer">
+      </div>
+      <div class="sub-card">
+        <h4>Organisation 3</h4>
+        <label>Company</label><input id="org3_name">
+        <label>Designation</label><input id="org3_role">
+        <label>Duration</label><input id="org3_duration">
+        <label>Peer Contact</label><input id="org3_peer">
+      </div>
+
+      <hr>
+      <label>Upload Resume</label>
+      <input type="file" id="resume" accept=".pdf,.doc,.docx" />
+      <button type="submit" class="btn">Submit & Generate Dashboard</button>
     </form>
   </div>
 
-  <div id="dashView" class="card hidden">
-    <h2>Welcome, <span id="userName"></span></h2>
-    <p id="userEmail" style="color:#555"></p>
-    <div class="score-circle" id="scoreCircle">0</div>
-    <h3>Employment History</h3>
-    <ul id="empList"></ul>
-    <p id="resumeStatus"></p>
+  <!-- PHASE 2: Dashboard -->
+  <div id="dashView" class="hidden">
+    <div class="card">
+      <h2>Welcome, <span id="userName"></span> <span class="verified-badge">Verified</span></h2>
+      <p id="userEmail" style="color:#666"></p>
+      <button class="btn" onclick="editProfile()">Edit Profile</button>
+    </div>
+
+    <div class="card">
+      <h3>Your ECS Score</h3>
+      <div class="score-circle" id="scoreCircle">0</div>
+      <p style="text-align:center;color:#666">Your verified credibility profile.</p>
+    </div>
+
+    <div class="card">
+      <h3>Employment History</h3>
+      <table id="empTable">
+        <tr><th>Company</th><th>Designation</th><th>Duration</th><th>Peer Contact</th></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Resume</h3>
+      <p id="resumeStatus">No resume uploaded.</p>
+    </div>
   </div>
 </div>
 
 <script>
-const { createClient } = supabase;
-const supabaseUrl = "https://sdankxvcgqwfegjneyth.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A";
-const db = createClient(https://sdankxvcgqwfegjneyth.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYW5reHZjZ3F3ZmVnam5leXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODQzMTksImV4cCI6MjA3Njk2MDMxOX0.H2C9IyzzANaGuwGCKLeNd8yGFxfwSuZL9CM1btFbV8A);
+  const formView = document.getElementById("formView");
+  const dashView = document.getElementById("dashView");
 
-async function init() {
-  const { data: { user } } = await db.auth.getUser();
-  if (!user) return (window.location.href = "auth.html");
-  const { data } = await db.from("profiles").select("*").eq("id", user.id).single();
-  if (data) showDashboard(data, user); else showForm(user);
-}
+  const existing = JSON.parse(localStorage.getItem("ecs_profile") || "{}");
+  if (existing.name) showDashboard(existing);
 
-function showForm(user){
-  document.getElementById("formView").classList.remove("hidden");
-  document.getElementById("dashView").classList.add("hidden");
-  document.getElementById("profileForm").addEventListener("submit", async e=>{
+  document.getElementById("profileForm").addEventListener("submit", e => {
     e.preventDefault();
-    const file=document.getElementById("resume").files[0];
-    let resume_url=file?file.name:"";
-    const payload={
-      id:user.id,name:val("name"),email:user.email,phone:val("phone"),
-      about:val("about"),resume_url,org1:val("org1"),org2:val("org2"),org3:val("org3")
+    const profile = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      about: document.getElementById("about").value,
+      resume: document.getElementById("resume").files[0]?.name || "No File",
+      orgs: [1,2,3].map(i => ({
+        name: document.getElementById(`org${i}_name`).value,
+        role: document.getElementById(`org${i}_role`).value,
+        duration: document.getElementById(`org${i}_duration`).value,
+        peer: document.getElementById(`org${i}_peer`).value
+      }))
     };
-    await db.from("profiles").upsert(payload);
-    showDashboard(payload,user);
+    localStorage.setItem("ecs_profile", JSON.stringify(profile));
+    showDashboard(profile);
   });
-}
-function val(id){return document.getElementById(id).value;}
-function showDashboard(d,u){
-  document.getElementById("formView").classList.add("hidden");
-  document.getElementById("dashView").classList.remove("hidden");
-  ge("userName").innerText=d.name||"User";
-  ge("userEmail").innerText=u.email;
-  ge("empList").innerHTML=[d.org1,d.org2,d.org3].filter(Boolean).map(x=>`<li>${x}</li>`).join("");
-  ge("resumeStatus").innerText="Resume: "+(d.resume_url||"Not Uploaded");
-  animateScore();
-}
-function ge(id){return document.getElementById(id);}
-function animateScore(){
-  let v=0,t=82,c=ge("scoreCircle");
-  const x=setInterval(()=>{if(v>=t){clearInterval(x);return;}
-  v++;c.innerText=v;const deg=(v/100)*360;c.style.background=`conic-gradient(#007aff ${deg}deg,#e6f0ff 0deg)`;},25);
-}
-async function logout(){await db.auth.signOut();localStorage.clear();window.location.href="auth.html";}
-init();
+
+  function showDashboard(data){
+    formView.classList.add("hidden");
+    dashView.classList.remove("hidden");
+    document.getElementById("userName").innerText = data.name;
+    document.getElementById("userEmail").innerText = data.email;
+    document.getElementById("resumeStatus").innerText = "Uploaded: " + data.resume;
+
+    const table = document.getElementById("empTable");
+    table.innerHTML = `<tr><th>Company</th><th>Designation</th><th>Duration</th><th>Peer Contact</th></tr>`;
+    data.orgs.forEach(o=>{
+      if(o.name) table.innerHTML += `<tr><td>${o.name}</td><td>${o.role}</td><td>${o.duration}</td><td>${o.peer}</td></tr>`;
+    });
+
+    animateScore();
+  }
+
+  function editProfile(){
+    dashView.classList.add("hidden");
+    formView.classList.remove("hidden");
+    const data = JSON.parse(localStorage.getItem("ecs_profile")||"{}");
+    ["name","email","phone","about"].forEach(id=>{ if(document.getElementById(id)) document.getElementById(id).value=data[id]||""; });
+    data.orgs?.forEach((o,i)=>{
+      const n=i+1; ["name","role","duration","peer"].forEach(k=>{
+        const el=document.getElementById(`org${n}_${k}`); if(el) el.value=o[k]||"";
+      });
+    });
+  }
+
+  function animateScore(){
+    let val=0; const target=82;
+    const circle=document.getElementById("scoreCircle");
+    const timer=setInterval(()=>{
+      if(val>=target){clearInterval(timer);return;}
+      val++; circle.innerText=val;
+      const deg=(val/100)*360;
+      circle.style.background=`conic-gradient(#007aff ${deg}deg,#e6f0ff 0deg)`;
+    },25);
+  }
+
+  function logout(){
+    localStorage.clear();
+    alert("You have been logged out.");
+    window.location.href="/";
+  }
 </script>
 </body>
 </html>
