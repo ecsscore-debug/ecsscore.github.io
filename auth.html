@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login | ECS Score</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family: Arial; text-align: center; margin-top: 80px;">
+  <h2>Sign In / Sign Up to Continue</h2>
+  <input id="email" type="email" placeholder="Enter your email" required><br><br>
+  <input id="password" type="password" placeholder="Enter password" required><br><br>
+  <button onclick="signUp()">Sign Up</button>
+  <button onclick="signIn()">Sign In</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+    const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const { error } = await client.auth.signUp({ email, password });
+      if (error) alert(error.message);
+      else alert("✅ Check your email to verify your account!");
+    }
+
+    async function signIn() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) alert(error.message);
+      else window.location.href = "dashboard.html";
+    }
+  </script>
+</body>
+</html>
