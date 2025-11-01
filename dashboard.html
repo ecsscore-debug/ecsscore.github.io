@@ -107,7 +107,8 @@ th {background:#f1f5ff;}
 
 <script>
 // GOOGLE FORM URL
-const GOOGLE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLScCic3H4IhyCzbobJBnMUC5ipVTYjDM_rJ815CDQk1jgxbHjg/viewform?embedded=true";
+const GOOGLE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLScCic3H4IhyCzbobJBnMUC5ipVTYjDM_rJ815CDQk1jgxbHjg/formResponse
+";
 
 // ENTRY IDs (already extracted)
 const F = {
@@ -131,7 +132,14 @@ fd.append(F.o2, o2.value); fd.append(F.o2r, o2r.value); fd.append(F.o2d, o2d.val
 fd.append(F.o3, o3.value); fd.append(F.o3r, o3r.value); fd.append(F.o3d, o3d.value); fd.append(F.o3p, o3p.value);
 fd.append(F.resume, resume.files[0]);
 
-fetch(GOOGLE_FORM, {method:"POST", body:fd});
+await fetch(
+  "https://docs.google.com/forms/d/e/1FAIpQLScCic3H4IhyCzbobJBnMUC5ipVTYjDM_rJ815CDQk1jgxbHjg/formResponse",
+  {
+    method: "POST",
+    mode: "no-cors",
+    body: fd
+  }
+);
 localStorage.setItem("ecs_user", JSON.stringify({
 name:name.value, email:email.value,
 orgs:[
