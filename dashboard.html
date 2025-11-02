@@ -132,5 +132,23 @@ function logout() {
 }
 </script>
 
+async function loadProfile() {
+  const email = localStorage.getItem("ecs_email");
+  if (!email) return;
+
+  const api = "YOUR_WEB_APP_URL";
+  const res = await fetch(api + "?email=" + email);
+  const data = await res.json();
+
+  if(data.error) return;
+
+  document.getElementById("dName").innerText = data["Full Name"];
+  document.getElementById("dEmail").innerText = data["Email Address"];
+
+  // Score Logic Placeholder
+  document.getElementById("score").innerText = 82;
+}
+
+  
 </body>
 </html>
