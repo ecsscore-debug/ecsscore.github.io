@@ -75,7 +75,6 @@ button.btn {
 }
 
 .hidden { display: none; }
-
 p { color: #bfc6da; }
 </style>
 </head>
@@ -89,46 +88,30 @@ p { color: #bfc6da; }
 
 <div class="container">
 
-<!-- DASHBOARD SECTION -->
-<div id="dashView" class="card">
-  <h2>Welcome, <span id="dName">User</span> 
+<!-- USER INFO CARD -->
+<div class="card">
+  <h2>Welcome, <span id="dName">User</span>
     <span class="verified-badge">Verified</span>
   </h2>
   <p id="dEmail">your@email.com</p>
 </div>
 
-<div class="container">
-
+<!-- PROFILE COMPLETION CARD -->
 <div class="card">
   <h3>Complete Your Verified Profile</h3>
   <p>Your employment authenticity will shape your ECS score.</p>
   <button class="btn" onclick="openForm()">Complete Profile</button>
 </div>
 
+<!-- SCORE CARD -->
 <div class="card">
   <h3>Your ECS Score</h3>
-  <div class="score-circle" id="score">Pending</div>
-  <p style="text-align:center;">Will appear after verification.</p>
+  <div class="score-circle" id="score">...</div>
+  <p style="text-align:center;">Auto-updated after verification.</p>
 </div>
 
 </div>
-</div>
-async function loadProfile() {
-  const email = localStorage.getItem("ecs_email");
-  if (!email) return;
 
-  const api = "YOUR_WEB_APP_URL";
-  const res = await fetch(api + "?email=" + email);
-  const data = await res.json();
-
-  if(data.error) return;
-
-  document.getElementById("dName").innerText = data["Full Name"];
-  document.getElementById("dEmail").innerText = data["Email Address"];
-
-  // Score Logic Placeholder
-  document.getElementById("score").innerText = 82;
-}
 <script>
 function openForm() {
   window.open(
@@ -137,15 +120,61 @@ function openForm() {
   );
 }
 
-// Dummy logged user (replace with login later)
+// Store login user (temporary)
 document.getElementById("dName").innerText = localStorage.getItem("ecs_name") || "Candidate";
 document.getElementById("dEmail").innerText = localStorage.getItem("ecs_email") || "Not Provided";
 
-function logout() {
+// ✅ Fetch data from Google Sheet via Apps Script Web App
+async function loadProfile() {
+  const email = localStorage.getItem("ecs_email");
+  if (!email) {
+    document.getElementById("score").innerText = "Login Needed";
+    return;
+  }
+
+  const api = "https://script.google.com/macros/s/AKfycbwbjVch9tXvan9LlFbKLb5O6QwC312ejQC58kO1Kled08IEwliHTHCJKo2SONjbpydp/exec"; // <<< replace this only once
+  try {
+    const res = await fetch(api + "?email=" + email);
+    const data = await res.json();
+
+    if(data.error){
+      document.getElementById("score").innerText = "Awaiting Data";
+      return;
+    }
+
+    // Show name & email from sheet
+    document.getElementById("dName").innerText = data["Full Name"];
+    document.getElementById("dEmail").innerText = data["Email Address"];
+
+    // Simple demo scoring logic
+    let score = Math.min(95, 60 + Math.floor(Math.random()*40));
+    animateScore(score);
+
+  } catch(e){
+    document.getElementById("score").innerText = "Error";
+  }
+}
+
+// ✅ Score animation
+function animateScore(finalScore){
+  let v = 0;
+  let circle = document.getElementById("score");
+  let x = setInterval(()=>{
+    if(v >= finalScore) clearInterval(x);
+    circle.innerText = v;
+    circle.style.background = `conic-gradient(#00D4FF ${(v/100)*360}deg,#1B253A 0deg)`;
+    v++;
+  },15);
+}
+
+function logout(){
   localStorage.clear();
   location.href = "/";
 }
+
+// Call fetch function
+loadProfile();
 </script>
-  
+
 </body>
 </html>
