@@ -1,172 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ECS Dashboard | Verified Workplace Profile</title>
-
-<style>
-body {font-family:'Poppins',sans-serif;background:#f5f8ff;margin:0;color:#111;}
-header {background:#007aff;color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-header h1 {margin:0;font-size:20px;}
-header button {background:white;color:#007aff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;}
-.container {max-width:1100px;margin:30px auto;padding:0 20px;}
-.card {background:white;padding:24px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,0.06);margin-bottom:24px;}
-.score-circle {width:120px;height:120px;border-radius:50%;background:conic-gradient(#007aff 0deg,#e6f0ff 0deg);
-display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#007aff;margin:20px auto;transition:background 2s linear;}
-.verified-badge {display:inline-block;background:#00c853;color:white;font-weight:600;padding:6px 10px;border-radius:6px;font-size:13px;margin-left:6px;}
-label {font-weight:600;margin-top:10px;display:block;}
-input,textarea {width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd;font-family:inherit;font-size:15px;}
-button.btn {background:#007aff;color:white;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:12px;}
-.sub-card {background:#f9fbff;padding:16px;border-radius:10px;margin-bottom:10px;border:1px solid #e2e8f0;}
-.hidden {display:none;}
-table {width:100%;border-collapse:collapse;margin-top:10px;}
-td,th {border-bottom:1px solid #eee;padding:10px;text-align:left;}
-th {background:#f1f5ff;}
-</style>
-</head>
-
-<body>
-<header>
-<h1>ECS Dashboard</h1>
-<button onclick="logout()">Logout</button>
-</header>
-
-<div class="container">
-
-<div id="formView" class="card">
-<h2>Build Your Verified Professional Profile</h2>
-<p>Your work reputation will become your career passport.</p>
-
-<form id="ecsForm">
-<label>Full Name</label><input id="name" required />
-<label>Email</label><input id="email" required />
-<label>Phone</label><input id="phone" />
-
-<label>About</label>
-<textarea id="about" rows="3"></textarea>
-
-<hr><h3>Employment History (Last 3)</h3>
-
-<div class="sub-card">
-<h4>Organization 1</h4>
-<input id="o1" placeholder="Company">
-<input id="o1r" placeholder="Role">
-<input id="o1d" placeholder="Duration">
-<input id="o1p" placeholder="Peer Contact">
-</div>
-
-<div class="sub-card">
-<h4>Organization 2</h4>
-<input id="o2" placeholder="Company">
-<input id="o2r" placeholder="Role">
-<input id="o2d" placeholder="Duration">
-<input id="o2p" placeholder="Peer Contact">
-</div>
-
-<div class="sub-card">
-<h4>Organization 3</h4>
-<input id="o3" placeholder="Company">
-<input id="o3r" placeholder="Role">
-<input id="o3d" placeholder="Duration">
-<input id="o3p" placeholder="Peer Contact">
-</div>
-
-<hr>
-<label>Upload Resume</label>
-<input type="file" id="resume" required />
-
-<button type="submit" class="btn">Submit & Generate Score</button>
-</form>
-</div>
-
-<!-- DASHBOARD -->
 <div id="dashView" class="hidden">
-<div class="card">
-<h2>Welcome, <span id="dName"></span> <span class="verified-badge">Verified</span></h2>
-<p id="dEmail"></p>
+  <div class="card">
+    <h2>Welcome, <span id="dName"></span> <span class="verified-badge">Verified</span></h2>
+    <p id="dEmail"></p>
+  </div>
+
+  <div class="card">
+    <h3>Complete Your Profile For ECS Score</h3>
+    <p style="color:#555">Provide your employment history & resume to get your verified ECS Score.</p>
+    <button class="btn" onclick="openForm()">Complete Profile</button>
+  </div>
+
+  <div class="card">
+    <h3>Your ECS Score</h3>
+    <div class="score-circle" id="score">0</div>
+    <p style="text-align:center;color:#666">Score will appear after profile submission.</p>
+  </div>
 </div>
-
-<div class="card">
-<h3>Your ECS Score</h3>
-<div class="score-circle" id="score">0</div>
-<p style="text-align:center;color:#666">Derived from employment credibility</p>
-</div>
-
-<div class="card">
-<h3>Employment History</h3>
-<table id="jobs"><tr><th>Company</th><th>Role</th><th>Duration</th><th>Peer</th></tr></table>
-</div>
-
-<div class="card">
-<h3>Resume</h3>
-<p id="resumeText"></p>
-</div>
-</div>
-</div>
-
-<script>
-// GOOGLE FORM URL
-const GOOGLE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLScCic3H4IhyCzbobJBnMUC5ipVTYjDM_rJ815CDQk1jgxbHjg/formResponse
-";
-
-// ENTRY IDs (already extracted)
-const F = {
-name:"entry.1195921950", email:"entry.1085587737", phone:"entry.1286402832", about:"entry.424983680",
-o1:"entry.529740984", o1r:"entry.996414449", o1d:"entry.1417431347", o1p:"entry.802834273",
-o2:"entry.1472815904", o2r:"entry.1333087770", o2d:"entry.179671734", o2p:"entry.1272511855",
-o3:"entry.1976721970", o3r:"entry.1360014259", o3d:"entry.1021371535", o3p:"entry.160025419",
-resume:"entry.1921041633"
-};
-
-document.getElementById("ecsForm").addEventListener("submit", async(e)=>{
-e.preventDefault();
-
-let fd = new FormData();
-fd.append(F.name, name.value);
-fd.append(F.email, email.value);
-fd.append(F.phone, phone.value);
-fd.append(F.about, about.value);
-fd.append(F.o1, o1.value); fd.append(F.o1r, o1r.value); fd.append(F.o1d, o1d.value); fd.append(F.o1p, o1p.value);
-fd.append(F.o2, o2.value); fd.append(F.o2r, o2r.value); fd.append(F.o2d, o2d.value); fd.append(F.o2p, o2p.value);
-fd.append(F.o3, o3.value); fd.append(F.o3r, o3r.value); fd.append(F.o3d, o3d.value); fd.append(F.o3p, o3p.value);
-fd.append(F.resume, resume.files[0]);
-
-await fetch(
-  "https://docs.google.com/forms/d/e/1FAIpQLScCic3H4IhyCzbobJBnMUC5ipVTYjDM_rJ815CDQk1jgxbHjg/formResponse",
-  {
-    method: "POST",
-    mode: "no-cors",
-    body: fd
-  }
-);
-localStorage.setItem("ecs_user", JSON.stringify({
-name:name.value, email:email.value,
-orgs:[
-[o1.value,o1r.value,o1d.value,o1p.value],
-[o2.value,o2r.value,o2d.value,o2p.value],
-[o3.value,o3r.value,o3d.value,o3p.value]
-],
-resume:resume.files[0].name
-}));
-showDash();
-});
-
-function showDash(){
-const d = JSON.parse(localStorage.getItem("ecs_user"));
-formView.classList.add("hidden"); dashView.classList.remove("hidden");
-dName.textContent = d.name; dEmail.textContent = d.email;
-resumeText.textContent = d.resume;
-d.orgs.forEach(r=>{if(r[0])jobs.innerHTML+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`});
-animate();
-}
-
-function animate(){
-let s=document.getElementById("score"),v=0;let t=82;
-let x=setInterval(()=>{if(v>=t)clearInterval(x);s.innerText=v;v++;s.style.background=`conic-gradient(#007aff ${(v/100)*360}deg,#e6f0ff 0deg)`},20);
-}
-
-function logout(){localStorage.clear();location.href="/";}
-</script>
-</body>
-</html>
