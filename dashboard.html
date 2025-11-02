@@ -132,7 +132,7 @@ async function loadProfile() {
     return;
   }
 
-  const api = "https://script.google.com/macros/s/AKfycbwbjVch9tXvan9LlFbKLb5O6QwC312ejQC58kO1Kled08IEwliHTHCJKo2SONjbpydp/exec"; // <<< replace this only once
+  const api = "https://script.google.com/macros/s/AKfycbzQXhZgi0Mg-rvxsAPS8DmWNA5KJPch9_pLfs7fU2eX4eY891IRV7kYNQRf7mbvXLM/exec"; // <<< replace this only once
   try {
     const res = await fetch(api + "?email=" + email);
     const data = await res.json();
