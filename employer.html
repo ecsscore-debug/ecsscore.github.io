@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ECS — Employer Dashboard (Mock)</title>
+<style>
+body{background:linear-gradient(180deg,#041027,#071825);color:#E6EEF8;font-family:Inter, Poppins;padding:18px}
+.wrap{max-width:1100px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px;margin-top:12px;border:1px solid rgba(255,255,255,0.02)}
+.kpi{display:flex;gap:12px;margin-top:12px}
+.kpi .box{flex:1;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);text-align:center;font-weight:800}
+.table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left}
+.btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn-primary{background:linear-gradient(90deg,#0066FF,#00D4FF);color:#031024}
+.small{color:#9aa4b2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div style="font-weight:900;font-size:20px">Employer Dashboard</div>
+    <div><a href="/" style="color:#00D4FF;font-weight:700">Site home</a></div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:900">Overview</div>
+    <div class="kpi">
+      <div class="box">Open Profiles<br><div style="font-size:20px">142</div></div>
+      <div class="box">Avg verification time<br><div style="font-size:20px">12m</div></div>
+      <div class="box">Verified hires (30d)<br><div style="font-size:20px">28</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:900">Recent Profiles</div>
+      <div class="small">Mock data — connect real API for production</div>
+    </div>
+    <table class="table">
+      <thead><tr><th>Candidate</th><th>Score</th><th>Stage</th><th>Action</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:900">Integration (how to)</div>
+    <ol class="small" style="margin-left:18px">
+      <li>Use API /v1/verify with candidate id to fetch score & proofs.</li>
+      <li>Enable webhook to receive verification updates.</li>
+      <li>Use batch endpoints for bulk screening.</li>
+    </ol>
+    <div style="margin-top:8px"><button class="btn btn-primary" onclick="alert('Request pilot — we will contact you')">Request Pilot</button></div>
+  </div>
+</div>
+
+<script>
+const rows = [
+  {name:"Priya S", score:88, stage:"Verified"},
+  {name:"Rahul K", score:79, stage:"Verification pending"},
+  {name:"Ananya D", score:91, stage:"Verified"},
+  {name:"Karan M", score:85, stage:"Reference check"}
+];
+function render(){
+  const t = document.getElementById("tbody");
+  t.innerHTML = "";
+  rows.forEach(r=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.name}</td><td style="font-weight:900;color:#00D4FF">${r.score}</td><td>${r.stage}</td><td><button class="btn" onclick="view('${r.name}')">View</button></td>`;
+    t.appendChild(tr);
+  });
+}
+function view(n){ alert("Open profile: " + n + " (demo)"); }
+render();
+</script>
+</body>
+</html>
