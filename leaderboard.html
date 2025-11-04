@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ECS — Leaderboard (90+ Recognitions)</title>
+<style>
+body{background:linear-gradient(180deg,#041027,#071825);color:#E6EEF8;font-family:Inter, Poppins;padding:18px}
+.wrap{max-width:980px;margin:0 auto}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px;margin-top:12px;border:1px solid rgba(255,255,255,0.02)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);text-align:center}
+.small{color:#9aa4b2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div style="font-weight:900;font-size:20px">ECS Recognitions — Top scorers (90+)</div>
+    <a href="/" style="color:#00D4FF;font-weight:700">← Back</a>
+  </div>
+
+  <div class="card">
+    <div class="small">Recognitions are awarded to verified profiles with ECS ≥ 90. This is a demo list — real leaderboard will be driven by verified backend data and candidate consent.</div>
+    <div id="grid" class="grid" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<script>
+/* sample static roster — in real life fetch from API */
+const sample = [
+  {name:"Aisha Khan", score:96, role:"Product Manager", company:"BlueFin"},
+  {name:"Rohan Gupta", score:94, role:"Engineering Lead", company:"CodeLab"},
+  {name:"Nisha Verma", score:93, role:"Data Scientist", company:"InsightAI"},
+  {name:"Arjun Patel", score:92, role:"Sales Head", company:"DealFlow"},
+  {name:"Sana Mir", score:91, role:"HRBP", company:"PeopleFirst"},
+  {name:"Vikram Rao", score:90, role:"CTO", company:"ScaleOps"}
+];
+
+function render(){
+  const g = document.getElementById("grid");
+  g.innerHTML = "";
+  sample.forEach(p=>{
+    const el = document.createElement("div"); el.className="tile";
+    el.innerHTML = `<div style="font-weight:900;font-size:18px">${p.name}</div>
+      <div class="small">${p.role} • ${p.company}</div>
+      <div style="margin-top:10px;font-weight:900;color:#00D4FF">${p.score}</div>
+      <div class="small" style="margin-top:6px">ECS Score</div>`;
+    g.appendChild(el);
+  });
+}
+render();
+</script>
+</body>
+</html>
