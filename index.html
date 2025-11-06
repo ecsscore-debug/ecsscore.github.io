@@ -104,7 +104,8 @@ footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-betw
       </div>
 
       <div style="margin-top:12px" class="ctas">
-        <button class="btn btn-primary" onclick="openForm()">Generate My ECS Score</button>
+        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
+>Generate My ECS Score</button>
         <a class="btn btn-ghost" href="/dashboard.html">View Dashboard (demo)</a>
       </div>
 
@@ -122,7 +123,8 @@ footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-betw
       <div class="meter" id="meter">82</div>
       <div style="text-align:center" class="small">Sample: Priya S — Score 82 • TrustSeal</div>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
-        <button class="btn btn-primary" onclick="openForm()">Get Verified</button>
+        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
+>Get Verified</button>
         <a class="btn btn-ghost" href="#features">How it helps</a>
       </div>
     </div>
@@ -203,7 +205,8 @@ footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-betw
           <div class="small" style="margin-bottom:8px">Integrate ECS into your ATS/HRMS. Reduce verification time and hiring risk.</div>
           <div style="display:flex;gap:8px">
             <a class="btn btn-primary" href="/employer.html">Employer Dashboard (demo)</a>
-            <button class="btn btn-ghost" onclick="openForm()">Submit Candidate</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
+>Submit Candidate</button>
           </div>
         </div>
         <div style="width:240px">
@@ -222,22 +225,34 @@ footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-betw
         <div class="small" style="margin-top:6px">We build the credibility layer that employers and professionals can rely on.</div>
       </div>
       <div>
-        <button class="btn btn-primary" onclick="openForm()">Get Verified</button>
+        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
+>Get Verified</button>
       </div>
     </div>
   </section>
+  <!-- Embedded Form Section -->
 <section id="form">
-  <iframe data-tally-src="https://tally.so/r/rjyj2p" 
-          loading="lazy" 
-          width="100%" 
-          height="800" 
-          frameborder="0" 
-          marginheight="0" 
-          marginwidth="0" 
-          title="ECS Form">
+  <h2 style="text-align:center;margin-bottom:16px;font-weight:800;">Generate Your ECS Score 🚀</h2>
+  <p style="text-align:center;color:var(--muted);margin-bottom:20px;">
+    Fill the verification form below — we’ll review and send your ECS Score within 7 working days.
+  </p>
+  
+  <iframe 
+    data-tally-src="https://tally.so/r/rjyj2p"
+    loading="lazy"
+    width="100%"
+    height="850"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    title="ECS Score Form"
+    style="border-radius:12px; background:rgba(255,255,255,0.02);">
   </iframe>
-  <script async src="https://tally.so/widgets/embed.js"></script>
 </section>
+
+<!-- Tally Script -->
+<script async src="https://tally.so/widgets/embed.js"></script>
+
   <!-- Footer -->
   <footer>
     <div class="small">ECS-Score — Trust Infrastructure for Work © 2025</div>
@@ -246,7 +261,8 @@ footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-betw
   </footer>
 </div>
 
-<div class="float-cta" onclick="openForm()">Get Verified →</div>
+<div class="float-cta" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
+>Get Verified →</div>
 <div class="toast" id="toast">Form opened. We'll verify and mail you in ~7 working days.</div>
 
 <script>
