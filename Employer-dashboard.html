@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ECS Score — Employer Dashboard (Full Version)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a1224;
+    --card:#111a33;
+    --border:#263455;
+    --blue:#4d92ff;
+    --light:#c7d3ec;
+  }
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;transition:0.3s;}
+  a{text-decoration:none;color:white;}
+
+  /* TOP NAVBAR */
+  .topnav{
+    width:100%;
+    background:#0d162c;
+    border-bottom:1px solid var(--border);
+    padding:20px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:200;
+  }
+  .topnav .brand{
+    font-size:28px;
+    font-weight:800;
+    color:var(--blue);
+  }
+  .topnav .links a{
+    margin-left:35px;
+    font-size:17px;
+    font-weight:600;
+    color:var(--light);
+  }
+  .topnav .links a:hover{
+    color:var(--blue);
+  }
+
+  /* LAYOUT */
+  .layout{display:flex;min-height:100vh; margin-top:0;}
+
+  /* SIDEBAR */
+  .sidebar{
+    width:260px;background:#0d162c;border-right:1px solid var(--border);
+    padding:30px 20px;display:flex;flex-direction:column;gap:25px;
+  }
+  .sidebar h2{font-size:24px;margin:0;font-weight:800;color:var(--blue);}  
+  .nav-item{padding:12px 14px;border-radius:8px;font-size:16px;font-weight:600;color:var(--light);display:flex;align-items:center;gap:10px;transition:0.3s;}
+  .nav-item:hover{background:#1a2642;color:white;}  
+  .active{background:#1f3261;color:white;}
+
+  .icon{width:18px;opacity:0.7;}
+
+  /* MAIN */
+  .main{flex:1;padding:40px;}
+  .heading{font-size:32px;font-weight:800;margin-bottom:20px;color:var(--blue);} 
+
+  .top-controls{display:flex;gap:20px;margin-bottom:25px;flex-wrap:wrap;}
+  select,input[type="date"],input[type="text"]{
+    background:var(--card);border:1px solid var(--border);padding:10px 14px;border-radius:8px;color:white;font-size:14px;
+  }
+
+  /* STATS */
+  .stats{display:flex;gap:25px;flex-wrap:wrap;}
+  .stat-box{flex:1;min-width:240px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:25px;box-shadow:0 0 10px rgba(0,59,255,0.15);}  
+  .stat-title{font-size:15px;color:var(--light);margin-bottom:6px;}
+  .stat-value{font-size:32px;font-weight:800;}
+
+  /* CHARTS */
+  .charts{display:flex;gap:25px;margin-top:40px;flex-wrap:wrap;}
+  .chart-box{flex:1;min-width:300px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:25px;}
+
+  /* TABLE */
+  table{width:100%;margin-top:40px;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;}
+  th,td{padding:18px;border-bottom:1px solid var(--border);text-align:left;color:var(--light);} 
+  th{background:#192443;color:var(--light);font-size:14px;text-transform:uppercase;} 
+  tr:hover{background:#1a2642;} 
+  .view-btn{background:var(--blue);color:white;padding:8px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer;}
+
+  .pagination{margin-top:20px;display:flex;gap:15px;}
+  .page-btn{padding:10px 16px;background:#1a2642;border-radius:8px;color:white;cursor:pointer;border:1px solid var(--border);}  
+
+  /* MODAL */
+  #profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:200;justify-content:center;align-items:center;}
+  .modal-box{width:650px;background:#0d162c;padding:30px;border-radius:16px;border:1px solid var(--border);}
+
+  .light-mode{--bg:#f0f2f8;--card:white;--border:#d2d7e3;--blue:#003bff;--light:#333;color:black;}
+</style>
+</head>
+<body>
+
+<!-- 🔥 TOP NAVBAR ADDED HERE -->
+<nav class="topnav">
+  <div class="brand">ECS Score</div>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="candidates.html">Candidates</a>
+    <a href="employer-dashboard.html" style="color:var(--blue);">Employers</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html">Vision</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <h2>ECS Employer</h2>
+
+    <a class="nav-item active"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828774.png">Dashboard</a>
+    <a class="nav-item"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">Profiles</a>
+    <a class="nav-item"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/settings.png">Integrations</a>
+    <a class="nav-item"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/942/942748.png">API Keys</a>
+    <a class="nav-item"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png">Settings</a>
+    <a class="nav-item"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png">Billing</a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="heading">Employer Dashboard</div>
+
+    <!-- TOP SEARCH + FILTERS -->
+    <div class="top-controls">
+      <input type="text" id="search" placeholder="Search candidate...">
+      <select id="scoreFilter">
+        <option value="all">Score: All</option>
+        <option value="high">High → Low</option>
+        <option value="low">Low → High</option>
+      </select>
+      <select id="stageFilter">
+        <option value="all">Stage: All</option>
+        <option value="docs">Documents</option>
+        <option value="peer">Peer Trust</option>
+        <option value="employer">Employer Check</option>
+      </select>
+      <input type="date" id="dateFrom">
+      <input type="date" id="dateTo">
+      <button class="page-btn" onclick="toggleMode()">🌙/☀️</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-box"><div class="stat-title">Open Profiles</div><div class="stat-value">37</div></div>
+      <div class="stat-box"><div class="stat-title">Avg Verification Time</div><div class="stat-value">14 hrs</div></div>
+      <div class="stat-box"><div class="stat-title">Verified Hires (30 Days)</div><div class="stat-value">22</div></div>
+      <div class="stat-box"><div class="stat-title">Employer Trust Index</div><div class="stat-value">92%</div></div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts">
+      <div class="chart-box">Score Distribution Chart</div>
+      <div class="chart-box">Verification Funnel</div>
+      <div class="chart-box">Risk Donut</div>
+    </div>
+
+    <!-- TABLE -->
+    <table id="profileTable">
+      <tr>
+        <th>Candidate</th>
+        <th>Score</th>
+        <th>Stage</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </table>
+
+    <div class="pagination">
+      <div class="page-btn" onclick="prevPage()">Prev</div>
+      <div class="page-btn" onclick="nextPage()">Next</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="profileModal">
+  <div class="modal-box">
+    <h2>Candidate Details</h2>
+    <p style="color:var(--light);">Full profile page will load here soon.</p>
+    <button class="page-btn" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+let data=[
+ {name:"Priya Sharma",score:82,stage:"Employer Check",date:"2025-01-18"},
+ {name:"Rohit Verma",score:74,stage:"Documents",date:"2025-01-21"},
+ {name:"Anjali Rao",score:90,stage:"Peer Trust",date:"2025-01-08"},
+ {name:"Neha Singh",score:67,stage:"Documents",date:"2025-01-11"},
+];
+let page=0,perPage=3;
+
+function render(){
+ let table=document.getElementById("profileTable");
+ table.innerHTML=`<tr><th>Candidate</th><th>Score</th><th>Stage</th><th>Date</th><th>Action</th></tr>`;
+ let slice=data.slice(page*perPage,page*perPage+perPage);
+ slice.forEach(row=>{
+   table.innerHTML+=`
+     <tr>
+       <td>${row.name}</td>
+       <td>${row.score}</td>
+       <td>${row.stage}</td>
+       <td>${row.date}</td>
+       <td><button class='view-btn' onclick='openModal()'>View</button></td>
+     </tr>`;
+ })
+}
+render();
+
+function nextPage(){page++;render();}
+function prevPage(){if(page>0)page--;render();}
+function openModal(){document.getElementById('profileModal').style.display='flex';}
+function closeModal(){document.getElementById('profileModal').style.display='none';}
+function toggleMode(){document.body.classList.toggle('light-mode');}
+</script>
+
+
+
+</body>
+</html>
