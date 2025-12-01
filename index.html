@@ -93,6 +93,7 @@
     </p>
     <a href="https://tally.so/r/rjyj2p" target="_blank">
     <button class="cta-btn">Get Your Score →</button>
+      </a>
   </div>
 
   <!-- Animated score meter -->
@@ -407,6 +408,32 @@ document.getElementById("superFooter").addEventListener("mousemove", (e) => {
 </script>
 <!-- ===================== FOOTER END ===================== -->
 
+<script>
+// Animated score meter: 0 → 90 + tick
+document.addEventListener('DOMContentLoaded', () => {
+  const target = 90;
+  let current = 0;
+  const numEl = document.getElementById('scoreNumber');
+  const arc = document.getElementById('scoreArc');
+  const tick = document.getElementById('verifiedTick');
+  const circumference = 628;
+
+  if(!numEl || !arc || !tick) return;
+
+  const interval = setInterval(() => {
+    if (current >= target) {
+      clearInterval(interval);
+      tick.style.opacity = 1;
+      return;
+    }
+    current++;
+    numEl.textContent = current;
+
+    const offset = circumference - (circumference * (current / 100));
+    arc.style.strokeDashoffset = offset;
+  }, 20);
+});
+</script>
 
 </body>
 </html>
