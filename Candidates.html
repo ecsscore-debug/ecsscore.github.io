@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ECS Score — Candidates</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1224;
+    --card:#111a33;
+    --border:#263455;
+    --blue:#4d92ff;
+    --light:#c7d3ec;
+    --green:#4dff88;
+  }
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;overflow-x:hidden;}
+  a{text-decoration:none;color:white;}
+
+  /* NAV */
+  nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 50px;background:#0d162c;border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:20;
+  }
+  .nav-links a{margin-left:35px;font-size:17px;font-weight:600;color:var(--light);} 
+  .nav-links a:hover{color:var(--blue);}  
+
+  /* ANIMATIONS */
+  @keyframes fadeUp{0%{opacity:0;transform:translateY(30px);}100%{opacity:1;transform:translateY(0);} }
+
+  /* HERO */
+  .hero{
+    padding:130px 50px;
+    display:flex;justify-content:space-between;align-items:center;gap:60px;
+    position:relative;overflow:hidden;
+  }
+  .hero h1{
+    font-size:64px;font-weight:900;line-height:1.15;margin:0;
+    background:linear-gradient(90deg,#4d92ff,#b4ccff);
+    -webkit-background-clip:text;color:transparent;
+  }
+  .hero p{font-size:22px;margin-top:14px;color:var(--light);}
+  .cta-btn{
+    margin-top:30px;padding:16px 38px;background:var(--blue);
+    border:none;border-radius:12px;font-size:20px;font-weight:700;color:white;
+    cursor:pointer;box-shadow:0 0 18px rgba(77,146,255,0.45);
+  }
+
+  /* SCORE METER */
+  .meter-box{
+    width:260px;height:260px;border-radius:50%;
+    position:relative;animation:fadeUp 1.2s ease;
+  }
+
+  /* SECTION */
+  .section{padding:70px 50px;max-width:1200px;margin:auto;animation:fadeUp 1.2s ease;}
+  .section h2{font-size:40px;font-weight:800;margin-bottom:20px;}
+  .section p{font-size:20px;color:var(--light);}  
+
+  /* DASHBOARD */
+  .dash{
+    background:rgba(17,26,51,0.6);
+    padding:40px;border:1px solid var(--border);
+    border-radius:20px;backdrop-filter:blur(25px);
+    box-shadow:0 0 25px rgba(77,146,255,0.25);
+  }
+  .dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;margin-top:25px;}
+  .dash-card{
+    background:#0f1c3d;border:1px solid #233256;padding:25px;border-radius:16px;
+    transition:0.3s;min-height:120px;
+  }
+  .dash-card:hover{transform:translateY(-6px);border-color:var(--blue);}  
+
+  /* TIMELINE */
+  .timeline{position:relative;margin-top:40px;padding-left:40px;}
+  .timeline::before{
+    content:"";position:absolute;left:14px;top:0;width:3px;height:100%;background:var(--blue);
+  }
+  .step{margin-bottom:35px;position:relative;}
+  .step::before{
+    content:"";position:absolute;left:-28px;top:4px;width:18px;height:18px;background:var(--blue);
+    border-radius:50%;box-shadow:0 0 10px var(--blue);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="font-size:28px;font-weight:800;color:var(--blue);">ECS Score</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="candidates.html" style="color:var(--blue);">For Candidates</a>
+    <a href="employer-dashboard.html">For Employers</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html">Vision</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>Your Career. Verified.</h1>
+    <p>Track your verification progress, score, documents & peer trust — everything in one premium dashboard.</p>
+    <button class="cta-btn">Generate My ECS Score →</button>
+  </div>
+
+  <!-- WORKING ANIMATED SCORE METER -->
+  <div class="meter-box">
+    <svg width="260" height="260" viewBox="0 0 240 240" style="transform:rotate(-90deg);">
+      <circle cx="120" cy="120" r="100" stroke="#1a2642" stroke-width="20" fill="none" />
+      <circle id="scoreArc" cx="120" cy="120" r="100" stroke="#4d91ff" stroke-width="20"
+        fill="none" stroke-linecap="round"
+        stroke-dasharray="628" stroke-dashoffset="628" />
+    </svg>
+
+    <div id="scoreNumber"
+      style="position:absolute; inset:0; display:flex; justify-content:center; align-items:center;
+      font-size:54px; font-weight:900; color:white;">
+      0
+    </div>
+
+    <div id="verifiedTick"
+      style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
+      font-size:48px; color:#4dff88; opacity:0; transition:.6s;">
+      ✔
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section">
+  <h2>Your Personal Dashboard</h2>
+  <p>Every verification layer visualized clearly — score, checks, documents, peer trust & more.</p>
+
+  <div class="dash" style="border-radius:26px; background:linear-gradient(135deg, rgba(20,30,60,0.7), rgba(10,20,40,0.55)); box-shadow:0 0 45px rgba(77,146,255,0.35), inset 0 0 25px rgba(0,0,0,0.4);">
+    <h3 style="font-size:28px;font-weight:900;color:var(--blue);margin-top:0;text-shadow:0 0 12px rgba(77,146,255,0.5);">Futuristic Dashboard Preview</h3>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div style="font-size:18px;color:var(--light);">ECS Score</div>
+        <div style="font-weight:900;font-size:36px;color:var(--blue);">82</div>
+        <div style="color:var(--green);font-weight:700;margin-top:8px;">✔ Verified</div>
+      </div>
+
+      <div class="dash-card">
+        <div style="font-size:18px;color:var(--light);">Peer Trust</div>
+        <div style="font-weight:900;font-size:32px;">14 Peers</div>
+        <div style="color:var(--blue);font-weight:700;margin-top:8px;">Strong Network</div>
+      </div>
+
+      <div class="dash-card">
+        <div style="font-size:18px;color:var(--light);">Documents</div>
+        <div style="font-weight:900;font-size:32px;">7 / 9</div>
+        <div style="color:var(--blue);font-weight:700;margin-top:8px;">Verified Docs</div>
+      </div>
+
+      <div class="dash-card">
+        <div style="font-size:18px;color:var(--light);">Employer Checks</div>
+        <div style="font-weight:900;font-size:32px;">100%</div>
+        <div style="color:var(--green);font-weight:700;margin-top:8px;">Completed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LPA IMPACT -->
+<section class="section" style="text-align:center;">
+  <h2>Your Score Impacts Your LPA</h2>
+  <p style="color:var(--light);font-size:20px;max-width:750px;margin:auto;">
+    Higher ECS Score = Higher Credibility = Better Offers. <br> Gen-Z knows the math.
+  </p>
+
+  <div style="display:flex;justify-content:center;gap:30px;margin-top:50px;flex-wrap:wrap;">
+
+    <div class="dash-card" style="width:280px;height:180px;text-align:center;padding-top:25px;">
+      <div style="font-size:38px;font-weight:900;color:var(--green);">₹ 28,00,000+</div>
+      <div style="margin-top:10px;font-size:18px;color:var(--light);">Score 85+ Candidates</div>
+    </div>
+
+    <div class="dash-card" style="width:280px;height:180px;text-align:center;padding-top:25px;">
+      <div style="font-size:38px;font-weight:900;color:#ffcc66;">₹ 18,50,000</div>
+      <div style="margin-top:10px;font-size:18px;color:var(--light);">Score 70–85</div>
+    </div>
+
+    <div class="dash-card" style="width:280px;height:180px;text-align:center;padding-top:25px;">
+      <div style="font-size:38px;font-weight:900;color:#ff6b6b;">₹ 11,20,000</div>
+      <div style="margin-top:10px;font-size:18px;color:var(--light);">Below 70</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:40px;font-size:22px;font-weight:700;color:var(--blue);">
+    “Score upar, package upar.” — Simple Gen-Z Math.
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <h2>Your Journey to ECS Score</h2>
+
+  <div class="timeline">
+    <div class="step"><b>Step 1 — Submit Details</b><br>Upload your work history & documents.</div>
+    <div class="step"><b>Step 2 — Employer Verification</b><br>We confirm your roles with companies.</div>
+    <div class="step"><b>Step 3 — Peer Trust Signals</b><br>Colleagues vouch for your credibility.</div>
+    <div class="step"><b>Step 4 — Document Strength</b><br>Each document adds to your score.</div>
+    <div class="step"><b>Step 5 — Final Score</b><br>Your universal ECS Score activates.</div>
+  </div>
+</section>
+
+<footer>
+  © 2025 ECS Score — India’s Employment Credibility Layer
+</footer>
+
+<!-- FINAL WORKING ANIMATION -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const target = 80;
+  let current = 0;
+
+  const numEl = document.getElementById('scoreNumber');
+  const arc = document.getElementById('scoreArc');
+  const tick = document.getElementById('verifiedTick');
+
+  const circumference = 628;
+  arc.style.strokeDasharray = circumference;
+  arc.style.strokeDashoffset = circumference;
+
+  if (!numEl || !arc || !tick) return;
+
+  let glow = true;
+
+  const interval = setInterval(() => {
+    if (current >= target) {
+      clearInterval(interval);
+
+      tick.style.opacity = 1;
+
+      arc.style.stroke = "#4dff88";
+      setInterval(() => {
+        arc.style.filter = glow
+          ? "drop-shadow(0 0 20px #4dff88)"
+          : "drop-shadow(0 0 4px #4dff88)";
+        glow = !glow;
+      }, 550);
+
+      return;
+    }
+
+    current++;
+    numEl.textContent = current;
+
+    const offset = circumference - (circumference * current) / 100;
+    arc.style.strokeDashoffset = offset;
+
+    arc.style.stroke = "#4d92ff";
+    arc.style.filter = "drop-shadow(0 0 10px #4d92ff)";
+  }, 20);
+});
+</script>
+
+</body>
+</html>
