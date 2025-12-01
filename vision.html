@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ECS Score — Vision</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+<style>
+  body { margin:0; font-family:'Inter',sans-serif; background:#0B0F1F; color:#d9d9d9; }
+  a { text-decoration:none; color:#d9d9d9; }
+
+  nav {
+    width:100%; background:#0B0F1F; padding:18px 50px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid #2a3350; position:sticky; top:0; z-index:20;
+  }
+  nav .right a { margin-left:40px; font-size:18px; font-weight:600; position:relative; }
+  nav .right a:hover { color:#003BFF; }
+  nav .right a::after {
+    content:""; position:absolute; bottom:-4px; left:0; height:3px; width:0%; background:#003BFF;
+    transition:.3s;
+  }
+  nav .right a:hover::after { width:100%; }
+
+  .section { padding:80px 50px; max-width:1100px; margin:auto; }
+  h1 { font-size:48px; font-weight:800; color:#fff; margin-bottom:20px; }
+  p { font-size:20px; opacity:.85; line-height:1.6; }
+
+  .vision-box {
+    background:#11182b; border:1px solid #2a3350; padding:35px;
+    border-radius:14px; margin-top:40px; font-size:20px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div style="font-size:28px; font-weight:800; color:#fff;">ECS Score</div>
+  <div class="right">
+    <a href="index.html">Home</a>
+    <a href="team.html">Team</a>
+    <a href="about.html">About Us</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html" style="color:#003BFF;">Vision</a>
+  </div>
+</nav>
+
+<section class="section">
+  <h1>Our Vision</h1>
+  <p>
+    ECS is built on a bold vision — to become the world’s most trusted
+    <strong>employment credibility protocol</strong>. A universal standard that businesses,
+    professionals, platforms, and institutions rely on to ensure truth, trust and transparency
+    in careers.
+  </p>
+
+  <div class="vision-box">
+    <strong style="font-size:26px; color:#fff;">“To become the global standard for employment trust — like CIBIL, but for careers.”</strong>
+    <br><br>
+    A future where every individual carries a verified, portable career passport — accepted
+    across companies, countries, industries and platforms.
+  </div>
+
+  <h2 style="margin-top:60px; font-size:36px; font-weight:800; color:#fff;">The Future We Are Building</h2>
+  <p>
+    A world where hiring is no longer based on assumptions or subjective judgments — but on
+    verifiable proof. A world where talent is recognized accurately, instantly, and fairly.
+  </p>
+
+  <p>
+    Our vision is to create a <strong>trusted employment identity layer for India and the world</strong>,
+    powering everything from hiring and onboarding to upskilling, compliance and global mobility.
+  </p>
+</section>
+
+<footer style="margin-top:80px; background:#0B0F1F; padding:50px; text-align:center; color:#777; border-top:1px solid #2a3350;">
+  © 2025 ECS Score — India’s Employment Credibility Layer
+</footer>
+
+</body>
+</html>
