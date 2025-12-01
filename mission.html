@@ -1,49 +1,82 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mission & Vision | ECS Score</title>
+<meta charset="UTF-8" />
+<title>ECS Score — Mission</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
 <style>
-body{background:#041027;color:#E6EEF8;font-family:Inter,Poppins;padding:20px}
-.wrap{max-width:900px;margin:auto}
-h1{font-size:32px;margin:0 0 10px}
-h2{margin-top:25px;font-size:22px}
-.card{background:rgba(255,255,255,0.04);padding:18px;border-radius:12px;margin-top:15px;border:1px solid rgba(255,255,255,0.05)}
-a{color:#00D4FF;text-decoration:none;font-weight:700}
+  body { margin:0; font-family:'Inter',sans-serif; background:#0B0F1F; color:#d9d9d9; }
+  a { text-decoration:none; color:#d9d9d9; }
+
+  nav {
+    width:100%; background:#0B0F1F; padding:18px 50px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid #2a3350; position:sticky; top:0; z-index:20;
+  }
+  nav .right a { margin-left:40px; font-size:18px; font-weight:600; position:relative; }
+  nav .right a:hover { color:#003BFF; }
+  nav .right a::after {
+    content:""; position:absolute; bottom:-4px; left:0; height:3px; width:0%; background:#003BFF;
+    transition:.3s;
+  }
+  nav .right a:hover::after { width:100%; }
+
+  .section { padding:80px 50px; max-width:1100px; margin:auto; }
+  h1 { font-size:48px; font-weight:800; color:#fff; margin-bottom:20px; }
+  p { font-size:20px; opacity:.85; line-height:1.6; }
+
+  .mission-box {
+    background:#11182b; border:1px solid #2a3350; padding:35px;
+    border-radius:14px; margin-top:40px; font-size:20px;
+  }
+
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<a href="/">← Back to Home</a>
+<nav>
+  <div style="font-size:28px; font-weight:800; color:#fff;">ECS Score</div>
+  <div class="right">
+    <a href="index.html">Home</a>
+    <a href="team.html">Team</a>
+    <a href="about.html">About Us</a>
+    <a href="mission.html" style="color:#003BFF;">Mission</a>
+    <a href="vision.html">Vision</a>
+  </div>
+</nav>
 
-<h1>Our Mission & Vision</h1>
+<section class="section">
+  <h1>Our Mission</h1>
+  <p>
+    ECS exists with a single, powerful belief — that every professional in India deserves a
+    <strong>verified, portable and trusted career identity</strong>. One that isn’t based on claims, assumptions
+    or bias… but on <strong>proof</strong>.
+  </p>
 
-<div class="card">
-<h2>Mission</h2>
-<p>
-To build India’s most trusted employment credibility system — restoring trust, eliminating hiring guesswork, enabling fairness, and empowering professionals with verified proof of work and authentic career identity.
-</p>
-</div>
+  <div class="mission-box">
+    <strong style="font-size:26px; color:#fff;">“To make employment credibility universal, portable and proof‑driven for every professional.”</strong>
+    <br><br>
+    A mission to bring truth, transparency and trust to India’s hiring ecosystem by creating a standardized,
+    tamper-proof employment identity layer — the ECS Score.
+  </div>
 
-<div class="card">
-<h2>Vision</h2>
-<p>
-To become the global "Trust Layer" for work — where every hiring decision is backed by verified data, every professional carries a portable credibility passport, and companies hire confidently, fairly, and fast.
-</p>
-</div>
+  <h2 style="margin-top:60px; font-size:36px; font-weight:800; color:#fff;">Why This Mission Matters</h2>
+  <p>
+    Because the hiring ecosystem today is broken — fake experience, unverifiable claims, inconsistent references,
+    and biased evaluations make it impossible for employers to trust resumes… and just as impossible for deserving
+    candidates to stand out.
+  </p>
 
-<div class="card">
-<h2>The World We’re Building</h2>
-<ul>
-<li>Verified professionals respected for real work, not loud resumes</li>
-<li>Companies hiring based on proof, not bias</li>
-<li>A future where credibility is earned & owned — not guessed</li>
-<li>A transparent offer & employment ecosystem — like CIBIL for jobs</li>
-</ul>
-</div>
+  <p>
+    We are fixing this with a verification-first approach, creating a world where careers are built on
+    <strong>accuracy, trust and credibility</strong>.
+  </p>
+</section>
 
-</div>
+<footer style="margin-top:80px; background:#0B0F1F; padding:50px; text-align:center; color:#777; border-top:1px solid #2a3350;">
+  © 2025 ECS Score — India’s Employment Credibility Layer
+</footer>
+
 </body>
 </html>
