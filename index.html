@@ -1,296 +1,411 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ECS-Score | India’s Employment Credibility System</title>
-<meta name="description" content="ECS-Score — Build your verified professional credibility in minutes. Data-backed, bias-free hiring verification & offer intelligence — CIBIL for employment." />
-<link rel="icon" href="favicon.ico" />
+<meta charset="UTF-8">
+<title>ECS Score — Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#05060b;
-  --card:#0b1220;
-  --accent1:#00D4FF;
-  --accent2:#0066FF;
-  --muted:#9aa4b2;
-  --glass:rgba(255,255,255,0.03);
-  --white:#E6EEF8;
-  --maxw:1200px;
-  --gap:12px;
+  :root{
+    --bg:#0a1224;
+    --card:#111a33;
+    --border:#263455;
+    --blue:#4d92ff;
+    --light:#c7d3ec;
+  }
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;}
+  a{text-decoration:none;color:white;}
+
+  /* NAV */
+  nav{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 50px;background:#0d162c;border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:20;
+  }
+  .nav-links a{margin-left:35px;font-size:17px;font-weight:600;color:var(--light);} 
+  .nav-links a:hover{color:var(--blue);}  
+
+  /* HERO */
+  .hero{
+    padding:110px 50px;
+    background:linear-gradient(135deg,#0f1c3d,#0a1224,#0f1c3d);
+    display:flex;justify-content:space-between;align-items:center;gap:40px;
+    position:relative;overflow:hidden;
+  }
+  .hero-text{flex:1;}
+  .hero h1{font-size:64px;font-weight:900;line-height:1.15;margin:0;}
+  .hero p{font-size:24px;margin-top:18px;color:#c7d3ec;max-width:560px;line-height:1.6;}
+  .cta-btn{
+    margin-top:30px;padding:16px 38px;background:var(--blue);
+    border:none;border-radius:12px;font-size:20px;font-weight:700;color:white;
+    cursor:pointer;box-shadow:0 0 18px rgba(77,146,255,0.45);
+  }
+
+  /* SCORE METER */
+  .meter-box{
+    width:240px;height:240px;border-radius:50%;
+    border:6px solid #1a2642;box-shadow:0 0 28px rgba(77,146,255,0.55);
+    position:relative;overflow:hidden;flex-shrink:0;
+  }
+
+  /* SECTION */
+  .section{padding:60px 50px;max-width:1200px;margin:auto;}
+  .section h2{font-size:42px;font-weight:800;margin-bottom:20px;}
+  .section p{font-size:20px;color:var(--light);}  
+  .card-row{display:flex;gap:25px;margin-top:40px;flex-wrap:wrap;}
+  .card{
+    flex:1;min-width:260px;background:var(--card);border:1px solid var(--border);
+    border-radius:14px;padding:35px;font-size:17px;color:var(--light);
+  } 
+  .card:hover{border-color:var(--blue);}  
+
+  footer{padding:40px;text-align:center;color:var(--light);margin-top:60px;border-top:1px solid var(--border);}  
+</style>
+</head>
+<body>
+
+<nav>
+  <div style="font-size:28px;font-weight:800;color:var(--blue);">ECS Score</div>
+  <div class="nav-links">
+    <a href="Index.html">Home</a>
+    <a href="candidates.html">For Candidates</a>
+    <a href="employer-dashboard.html">For Employers</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html">Vision</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Floating accents -->
+  <div style="position:absolute; top:20%; left:5%; width:180px; height:180px; background:rgba(77,146,255,0.15); filter:blur(60px); border-radius:50%;"></div>
+  <div style="position:absolute; bottom:10%; right:10%; width:220px; height:220px; background:rgba(29,70,180,0.18); filter:blur(70px); border-radius:50%;"></div>
+
+  <div class="hero-text">
+    <h1 style="background:linear-gradient(90deg,#4d92ff,#9bb8ff); -webkit-background-clip:text; color:transparent;">
+      The Credibility Layer<br>For Modern Careers.
+    </h1>
+    <p>
+      ECS Score converts your experience into trusted proof — verified history, document checks,
+      peer credibility & one universal score.
+    </p>
+    <button class="cta-btn">Get Your Score →</button>
+  </div>
+
+  <!-- Animated score meter -->
+  <div class="meter-box">
+    <svg id="scoreMeter" width="240" height="240" viewBox="0 0 240 240" style="transform:rotate(-90deg);">
+      <circle cx="120" cy="120" r="100" stroke="#1a2642" stroke-width="20" fill="none" />
+      <circle id="scoreArc" cx="120" cy="120" r="100" stroke="#4d91ff" stroke-width="20" fill="none" stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628" />
+    </svg>
+    <div id="scoreNumber" style="position:absolute; inset:0; display:flex; justify-content:center; align-items:center; font-size:48px; font-weight:800; color:#ffffff;">0</div>
+    <div id="verifiedTick" style="position:absolute; bottom:20px; right:20px; font-size:42px; color:#4dff88; opacity:0; transition:0.6s;">✔</div>
+  </div>
+</section>
+
+<!-- USER REVIEWS SECTION -->
+<section class="section" style="text-align:center;">
+  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">What Professionals Say</h2>
+  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
+    Thousands of candidates trust ECS Score to verify their careers and build credibility.
+  </p>
+
+  <div class="card-row" style="margin-top:45px;">
+    <div class="card" style="min-height:180px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/70?img=32" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
+        <b style="font-size:18px;">Priya S. — Marketing Manager</b>
+      </div>
+      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“ECS Score helped me secure a better offer because my verification was already done.”</div>
+    </div>
+
+    <div class="card" style="min-height:180px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/70?img=15" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
+        <b style="font-size:18px;">Rohit V. — Software Engineer</b>
+      </div>
+      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“My employer didn't need separate checks — ECS Score made the process super smooth.”</div>
+    </div>
+
+    <div class="card" style="min-height:180px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/70?img=48" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
+        <b style="font-size:18px;">Neha R. — HR Professional</b>
+      </div>
+      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“Finally something unbiased and transparent. Peer trust signals were a game changer for me.”</div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPLOYER REVIEWS -->
+<section class="section" style="text-align:center;">
+  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">What Employers Say</h2>
+  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
+    HR teams use ECS to reduce hiring risk and speed up verification.
+  </p>
+
+  <div class="card-row" style="margin-top:45px;">
+    <div class="card" style="min-height:150px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/70?img=50" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
+        <b>TalentHead — FinTech Co.</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>“Verification time dropped by 70%. ECS Score is now part of our workflow.”</div>
+    </div>
+
+    <div class="card" style="min-height:150px; text-align:left;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/70?img=55" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
+        <b>HR Director — SaaS Startup</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>“The risk indicators save us from bad hires. Must-have for any HR department.”</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS SECTION -->
+<section class="section" style="text-align:center;">
+  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">Our Clients & Partners</h2>
+  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
+    Companies that trust our verification ecosystem.
+  </p>
+
+  <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:40px;">
+    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company A</div>
+    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company B</div>
+    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company C</div>
+    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company D</div>
+  </div>
+</section>
+
+<!-- WHY ECS -->
+<section class="section">
+  <h2>Why ECS?</h2>
+  <p>ECS Score converts your career into a verifiable credibility layer that employers can trust instantly.</p>
+
+  <div class="card-row">
+    <div class="card"><b>Verified Roles</b><br>Your work history directly confirmed by employers.</div>
+    <div class="card"><b>Peer Trust Signals</b><br>People who worked with you validate your credibility.</div>
+    <div class="card"><b>Document Strength</b><br>Stronger documents = Stronger score.</div>
+  </div>
+</section>
+
+<!-- ===================== OP FUTURISTIC FOOTER ===================== -->
+<style>
+/* Footer Setup */
+.super-footer {
+  width: 100%;
+  padding: 90px 60px;
+  background: radial-gradient(circle at 20% 30%, #0d1a33, #060b16 60%);
+  border-top: 1px solid #1c2940;
+  position: relative;
+  overflow: hidden;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  background: radial-gradient(800px 400px at 5% 6%, rgba(0,212,255,0.03), transparent), linear-gradient(180deg,#041027 0%, #071825 100%);
-  color:var(--white);line-height:1.35;font-size:15px;
+
+/* Floating glowing blobs */
+.sf-blob {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: #4d92ff33;
+  filter: blur(90px);
+  border-radius: 50%;
+  animation: blobFloat 12s ease-in-out infinite alternate;
 }
-.wrap{max-width:var(--maxw);margin:0 auto;padding:18px;}
-header{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:10px}
-.brand{display:flex;gap:10px;align-items:center;font-weight:800}
-.brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:grid;place-items:center;font-weight:900;color:#031024}
-nav{display:flex;gap:12px;align-items:center}
-nav a{color:var(--muted);text-decoration:none;font-weight:700;padding:8px 10px;border-radius:8px}
-nav a:hover{color:var(--white);background:rgba(255,255,255,0.02)}
 
-.hero{display:flex;gap:20px;align-items:flex-start;padding:18px 0}
-.hero-left{flex:1;min-width:320px}
-h1{margin:0;font-size:36px;letter-spacing:-0.4px}
-.sub{color:var(--muted);margin-top:8px;margin-bottom:14px;font-size:15px}
-.ctas{display:flex;gap:10px;flex-wrap:wrap}
-.btn{border:0;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer}
-.btn-primary{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#031024;box-shadow:0 8px 40px rgba(0,212,255,0.06)}
-.btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,0.04)}
-.hero-right{width:380px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03)}
-.meter{width:150px;height:150px;border-radius:50%;margin:8px auto;background:conic-gradient(var(--accent1) 0deg, rgba(255,255,255,0.02) 0deg);display:grid;place-items:center;font-weight:900;color:var(--accent1);font-size:36px}
-.small{color:var(--muted);font-size:13px}
-.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);margin-top:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
-.feature{padding:12px;border-radius:8px;background:rgba(255,255,255,0.01);font-weight:700;font-size:14px}
-.grid2{display:grid;grid-template-columns:1fr 360px;gap:12px;align-items:start;margin-top:12px}
-.stat{padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(0,102,255,0.04), rgba(0,0,0,0));font-weight:800}
-.float-cta{position:fixed;right:16px;bottom:16px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#031024;font-weight:900;cursor:pointer;z-index:999}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:80px;background:#071528;color:var(--accent1);padding:12px 18px;border-radius:10px;border:1px solid rgba(0,212,255,0.12);display:none;z-index:1100;font-weight:700}
-.leader{display:inline-block;padding:6px 10px;background:rgba(255,255,255,0.02);border-radius:8px;color:var(--accent1);font-weight:800;text-decoration:none;margin-left:8px}
+.sf-blob.two {
+  background: #00eaff33;
+  top: 40%;
+  right: 10%;
+  animation-delay: 2.5s;
+}
 
-.smallcaps{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:0.12em}
+.sf-blob.three {
+  background: #8a2bff33;
+  top: 10%;
+  right: 40%;
+  width: 230px;
+  height: 230px;
+  filter: blur(70px);
+  animation-delay: 4s;
+}
 
-/* compact */
-section{padding:10px 0;border-top:1px solid rgba(255,255,255,0.02)}
-footer{padding:18px 0;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-@media (max-width:980px){.hero{flex-direction:column}.hero-right{width:100%}.grid3{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
-@media (max-width:600px){.grid3{grid-template-columns:1fr}h1{font-size:26px}nav{display:none}}
-  #form {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding: 50px 0;
+@keyframes blobFloat {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-80px) scale(1.2); }
+}
+
+/* Stars background */
+.sf-stars {
+  position: absolute;
+  inset: 0;
+  background: url('https://i.ibb.co/GF4CvJ8/stars.png');
+  opacity: .12;
+  animation: starMove 40s linear infinite;
+}
+
+@keyframes starMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-800px); }
+}
+
+/* Mouse reactive spotlight */
+.super-footer::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #4d92ff22, transparent);
+  border-radius: 50%;
+  top: var(--mouseY, 50%);
+  left: var(--mouseX, 50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: 0.1s;
+}
+
+/* Footer content grid */
+.sf-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 5;
+}
+
+.sf-col {
+  width: 260px;
+  margin-bottom: 50px;
+  animation: fadeUp 1.2s ease forwards;
+  opacity: 0;
+}
+
+.sf-col:nth-child(2) { animation-delay: .3s; }
+.sf-col:nth-child(3) { animation-delay: .6s; }
+.sf-col:nth-child(4) { animation-delay: .9s; }
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(25px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.sf-col h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  color: white;
+  text-shadow: 0 0 12px #4d92ff55;
+}
+
+.sf-col a {
+  display: block;
+  margin-bottom: 12px;
+  color: #c7d3ec;
+  font-size: 16px;
+  transition: .25s;
+}
+
+.sf-col a:hover {
+  color: #4d92ff;
+  text-shadow: 0 0 12px #4d92ff;
+}
+
+/* Buttons */
+.sf-btn {
+  padding: 10px 20px;
+  background: #102040;
+  border: 1px solid #233b60;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  display: inline-block;
+  margin-top: 12px;
+  transition: .3s;
+}
+
+.sf-btn:hover {
+  background: #1d4aff;
+  border-color: #4d92ff;
+  box-shadow: 0 0 18px #4d92ff88;
+}
+
+/* Bottom strip */
+.sf-copy {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  color: #b8c3da;
+  border-top: 1px solid #19283d;
+  position: relative;
+  z-index: 5;
 }
 
 </style>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9T58G0HBF7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-9T58G0HBF7');
-</script>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <div class="brand"><div class="logo">E</div><div>ECS-Score</div></div>
-    <nav>
-      <a href="#how">How</a>
-      <a href="#features">Features</a>
-      <a href="#employers">Employers</a>
-      <a href="/leaderboard.html" class="leader">Leaderboard</a>
-       <a href="/mission.html">Mission & Vision</a>
-      <a href="/team.html">Team</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<div class="super-footer" id="superFooter">
 
-  <section class="hero">
-    <div class="hero-left">
-      <div class="smallcaps">CIBIL for Employment — Beta • Early access</div>
-      <h1>Build your verified professional credibility — fast, fair, and portable.</h1>
-      <div class="sub">We turn hiring assumptions into verifiable signals: employment history confirmations, peer endorsements and authenticated documents combined into one transparent score.</div>
+  <div class="sf-stars"></div>
+  <div class="sf-blob one"></div>
+  <div class="sf-blob two"></div>
+  <div class="sf-blob three"></div>
 
-      <!-- Story / investor tone with light sarcasm -->
-      <div class="card" style="font-weight:600;">
-        <div style="font-size:15px;margin-bottom:8px">Why we made ECS</div>
-        <div class="small" style="margin-bottom:8px">
-          Because for too long hiring has depended on trust signals that are noisy: resumes, interview flair and lucky buzzwords.
-          We believe work reputation should be portable, auditable and useful — for candidates, HR teams and investors.
-        </div>
-        <div style="color:var(--muted);font-size:13px">
-          Quick pitch: if you’d rather judge candidates by coffee preferences, go ahead — we’ll be building trust infrastructure for the rest.
-        </div>
-      </div>
+  <div class="sf-grid">
 
-      <div style="margin-top:12px" class="ctas">
-        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
->Generate My ECS Score</button>
-        <a class="btn btn-ghost" href="/dashboard.html">View Dashboard (demo)</a>
-      </div>
-
-      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
-        <div class="card" style="padding:10px;border-radius:8px;font-weight:800">Trusted by HRs</div>
-        <div class="card" style="padding:10px;border-radius:8px">Enterprise pilots available</div>
-      </div>
+    <!-- COL 1 -->
+    <div class="sf-col">
+      <h3>ECS Score</h3>
+      <p style="color:#c7d3ec; line-height:1.6;">
+        C-2 42/A<br>Dwarka, West Delhi, India
+      </p>
+      <p style="margin-top:10px;">✉ contact@ecsscore.com</p>
     </div>
 
-    <div class="hero-right">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-weight:900">ECS Score</div>
-        <div class="small">Verified metric (0–100)</div>
-      </div>
-      <div class="meter" id="meter">82</div>
-      <div style="text-align:center" class="small">Sample: Priya S — Score 82 • TrustSeal</div>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
-        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
->Get Verified</button>
-        <a class="btn btn-ghost" href="#features">How it helps</a>
-      </div>
+    <!-- COL 2 -->
+    <div class="sf-col">
+      <h3>Explore</h3>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="mission.html">Mission</a>
+      <a href="vision.html">Vision</a>
     </div>
-  </section>
 
-  <!-- How it works (investor-deck tone) -->
-  <section id="how">
-    <div class="card">
-      <h3 style="margin:0 0 6px">How ECS Works — Simple flow for scale</h3>
-      <div class="small" style="margin-bottom:8px">Submit → Verify → Score → Share</div>
+    <!-- COL 3 -->
+    <div class="sf-col">
+      <h3>Legal</h3>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="dpdp.html">Data Protection Policy</a>
 
-      <div class="grid3">
-        <div class="feature">1. Submit verified details & documents</div>
-        <div class="feature">2. Employer confirmations & peer endorsements</div>
-        <div class="feature">3. Algorithmic scoring (transparent & auditable)</div>
-        <div class="feature">4. Portable TrustSeal for platforms</div>
-        <div class="feature">5. Offer Intelligence for negotiation</div>
-        <div class="feature">6. Employer Trust Index (feedback loop)</div>
-      </div>
+      <a class="sf-btn" href="External Privacy policy (1).pdf" download>⬇ Privacy PDF</a>
+      <a class="sf-btn" href="ECS Data Protection Policy (1).pdf" download>⬇ DPDP PDF</a>
     </div>
-  </section>
 
-  <!-- Detailed Benefits -->
-  <section id="features">
-    <div class="card">
-      <h3 style="margin:0 0 6px">Why this matters — for everyone</h3>
-
-      <div style="margin-top:8px" class="grid2">
-        <div>
-          <h4 style="margin:0 0 6px">For Professionals</h4>
-          <ul class="small" style="color:var(--muted)">
-            <li>Verified career passport — no repeated reference checks</li>
-            <li>Negotiate offers with AI-backed benchmarks</li>
-            <li>Portable TrustSeal boosts discoverability</li>
-            <li>Fairness: less bias, more data</li>
-          </ul>
-
-          <h4 style="margin-top:10px;margin-bottom:6px">For Employers (Recruiters & HR)</h4>
-          <ul class="small" style="color:var(--muted)">
-            <li>Faster verifications — save time and cost</li>
-            <li>Batch API for screening at scale</li>
-            <li>Employer Trust Index reduces bad-hire risk</li>
-            <li>Offer Intelligence reduces compensation mistakes</li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="card" style="padding:12px;margin-bottom:8px">
-            <div style="font-weight:900">Business model (brief)</div>
-            <div class="small" style="margin-top:6px">
-              B2B: subscription APIs & enterprise pilots. B2C: freemium verifications + premium TrustSeal & visibility.
-            </div>
-          </div>
-
-          <div class="card" style="padding:12px">
-            <div style="font-weight:900">Process (7–step simplified)</div>
-            <ol class="small" style="margin:8px 0 0 18px;color:var(--muted)">
-              <li>Candidate submits form & resume.</li>
-              <li>We trigger employer & peer checks.</li>
-              <li>Documents authenticated.</li>
-              <li>Score computed and reviewed.</li>
-              <li>ECS profile published (candidate consent).</li>
-              <li>Employers query via API / dashboard.</li>
-              <li>Recognitions & leaderboard for 90+ scorers.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
+    <!-- COL 4 -->
+    <div class="sf-col">
+      <h3>Connect</h3>
+      <a>Email: contact@ecsscore.com</a>
+      <a>Support: support@ecsscore.com</a>
     </div>
-  </section>
 
-  <!-- Employers callout -->
-  <section id="employers">
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-        <div style="flex:1">
-          <h3 style="margin:0 0 6px">For Employers</h3>
-          <div class="small" style="margin-bottom:8px">Integrate ECS into your ATS/HRMS. Reduce verification time and hiring risk.</div>
-          <div style="display:flex;gap:8px">
-            <a class="btn btn-primary" href="/employer.html">Employer Dashboard (demo)</a>
-            <button class="btn btn-ghost" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
->Submit Candidate</button>
-          </div>
-        </div>
-        <div style="width:240px">
-          <div style="padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);font-weight:800">API: /v1/verify (future)</div>
-          <div class="small" style="margin-top:8px">Batch checks, sandbox, webhooks.</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 
-  <!-- CTA -->
-  <section>
-    <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-      <div>
-        <div style="font-weight:900">From Resumes to Realities. From Negotiation to Trust.</div>
-        <div class="small" style="margin-top:6px">We build the credibility layer that employers and professionals can rely on.</div>
-      </div>
-      <div>
-        <button class="btn btn-primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
->Get Verified</button>
-      </div>
-    </div>
-  </section>
-  <!-- Embedded Form Section -->
-<section id="form">
-  <h2 style="text-align:center;margin-bottom:16px;font-weight:800;">Generate Your ECS Score 🚀</h2>
-  <p style="text-align:center;color:var(--muted);margin-bottom:20px;">
-    Fill the verification form below — we’ll review and send your ECS Score within 7 working days.
-  </p>
-  
-  <iframe 
-    data-tally-src="https://tally.so/r/rjyj2p"
-    loading="lazy"
-    width="100%"
-    height="850"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0"
-    title="ECS Score Form"
-    style="border-radius:12px; background:rgba(255,255,255,0.02);">
-  </iframe>
-</section>
+  <div class="sf-copy">
+    © 2025 ECS Score — India’s Employment Credibility Layer
+  </div>
 
-<!-- Tally Script -->
-<script async src="https://tally.so/widgets/embed.js"></script>
-
-  <!-- Footer -->
-  <footer>
-    <div class="small">ECS-Score — Trust Infrastructure for Work © 2025</div>
-    <div class="small">Contact us or write to us : ecsscore@gmail.com</div>
-    <div class="small">Terms • Privacy • Disclaimer</div>
-  </footer>
 </div>
 
-<div class="float-cta" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})"
->Get Verified →</div>
-<div class="toast" id="toast">Form opened. We'll verify and mail you in ~7 working days.</div>
-
 <script>
-/*
-  FINAL NOTES:
-  - FORM_URL is where users submit their data (Tally or Google Form).
-  - CURRENT SETUP opens Tally; change to your Google form if needed.
-*/
-
-function showToast(msg){
-  const t = document.getElementById("toast");
-  t.innerText = msg || t.innerText;
-  t.style.display = "block"; t.style.opacity = 1;
-  setTimeout(()=>{ t.style.opacity = 0; setTimeout(()=> t.style.display="none",400); },6500);
-}
-
-/* small meter animation for hero */
-(function(){
-  const el = document.getElementById("meter");
-  let v = 62; const target = 82;
-  const i = setInterval(()=>{ if(v>=target){ clearInterval(i); return;} v++; el.innerText=v; el.style.background = `conic-gradient(var(--accent1) ${(v/100)*360}deg, rgba(255,255,255,0.02) 0deg)`; },18);
-})();
+/* Mouse-reactive light effect */
+document.getElementById("superFooter").addEventListener("mousemove", (e) => {
+  const rect = e.target.getBoundingClientRect();
+  document.documentElement.style.setProperty('--mouseX', e.clientX - rect.left + "px");
+  document.documentElement.style.setProperty('--mouseY', e.clientY - rect.top + "px");
+});
 </script>
+<!-- ===================== FOOTER END ===================== -->
+
+
 </body>
 </html>
