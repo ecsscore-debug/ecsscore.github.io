@@ -5,37 +5,161 @@
 <title>ECS Score — Vision</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+
 <style>
-  body { margin:0; font-family:'Inter',sans-serif; background:#0B0F1F; color:#d9d9d9; }
-  a { text-decoration:none; color:#d9d9d9; }
+/* ---------------- GLOBAL ---------------- */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#06070F;
+  font-family:'Inter',sans-serif;
+  color:#d9d9d9;
+  overflow-x:hidden;
+}
 
-  nav {
-    width:100%; background:#0B0F1F; padding:18px 50px;
-    display:flex; justify-content:space-between; align-items:center;
-    border-bottom:1px solid #2a3350; position:sticky; top:0; z-index:20;
-  }
-  nav .right a { margin-left:40px; font-size:18px; font-weight:600; position:relative; }
-  nav .right a:hover { color:#003BFF; }
-  nav .right a::after {
-    content:""; position:absolute; bottom:-4px; left:0; height:3px; width:0%; background:#003BFF;
-    transition:.3s;
-  }
-  nav .right a:hover::after { width:100%; }
+.bg {
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at top left, #003BFF33, transparent 50%),
+    radial-gradient(circle at bottom right, #FF009933, transparent 50%),
+    #06070F;
+  z-index:-1;
+}
 
-  .section { padding:80px 50px; max-width:1100px; margin:auto; }
-  h1 { font-size:48px; font-weight:800; color:#fff; margin-bottom:20px; }
-  p { font-size:20px; opacity:.85; line-height:1.6; }
+/* ---------------- NAVBAR ---------------- */
+nav {
+  width:100%; height:70px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 50px;
+  background:rgba(10,14,25,0.65);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  position:sticky; top:0; z-index:100;
+}
 
-  .vision-box {
-    background:#11182b; border:1px solid #2a3350; padding:35px;
-    border-radius:14px; margin-top:40px; font-size:20px;
-  }
+.logo {
+  font-size:28px; font-weight:800; color:#fff;
+}
+
+/* Desktop Menu */
+.right a {
+  margin-left:35px;
+  color:#d9d9d9;
+  font-size:17px;
+  font-weight:600;
+  transition:.3s;
+  position:relative;
+}
+.right a:hover { color:#4C8CFF; }
+.right a::after {
+  content:""; position:absolute; width:0; height:2px;
+  background:#4C8CFF; bottom:-4px; left:0;
+  transition:.3s;
+}
+.right a:hover::after { width:100%; }
+
+/* Mobile Menu */
+.hamburger { display:none; font-size:26px; color:#fff; cursor:pointer; }
+
+.mobile-menu {
+  display:none; flex-direction:column;
+  background:#0B0F1F;
+  padding:20px 30px;
+  border-top:1px solid #22283e;
+}
+.mobile-menu a {
+  padding:12px 0; color:#fff; font-weight:600;
+}
+
+/* Responsive Nav */
+@media (max-width:900px) {
+  nav { padding:0 25px; }
+  .right { display:none; }
+  .hamburger { display:block; }
+}
+
+/* ---------------- SECTION ---------------- */
+.section {
+  max-width:880px; margin:auto;
+  padding:100px 20px;
+  text-align:center;
+}
+
+/* Text animations base */
+.animate {
+  opacity:0;
+  transform:translateY(25px);
+  transition:all 0.9s ease-out;
+}
+
+/* When visible */
+.show {
+  opacity:1 !important;
+  transform:translateY(0px) !important;
+}
+
+h1 {
+  font-size:50px;
+  font-weight:800;
+  color:#fff;
+}
+
+p {
+  margin-top:20px;
+  font-size:20px;
+  line-height:1.7;
+  opacity:.9;
+}
+
+@media(max-width:500px){
+  h1 { font-size:36px; }
+  p { font-size:18px; }
+}
+
+/* ---------------- VISION BOX ---------------- */
+.vision-box {
+  margin-top:50px;
+  padding:35px;
+  border-radius:18px;
+  background:rgba(20,26,45,0.45);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.07);
+  font-size:22px;
+  transition:.4s;
+}
+.vision-box:hover {
+  transform:translateY(-6px) scale(1.02);
+  border-color:#4C8CFF;
+  box-shadow:0 0 25px #4c8cff3a;
+}
+
+h2 {
+  margin-top:70px;
+  font-size:38px;
+  font-weight:800;
+  color:#fff;
+}
+@media(max-width:500px){ h2 { font-size:28px; } }
+
+/* ---------------- FOOTER ---------------- */
+footer {
+  margin-top:100px;
+  padding:40px 20px;
+  text-align:center;
+  color:#777;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
 </style>
 </head>
+
 <body>
 
+<div class="bg"></div>
+
+<!-- NAVBAR -->
 <nav>
-  <div style="font-size:28px; font-weight:800; color:#fff;">ECS Score</div>
+  <div class="logo">ECS Score</div>
+
   <div class="right">
     <a href="index.html">Home</a>
     <a href="candidates.html">For Candidates</a>
@@ -46,39 +170,75 @@
     <a href="team.html">Team</a>
     <a href="mission.html">Mission</a>
   </div>
+
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
 </nav>
 
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="candidates.html">For Candidates</a>
+  <a href="employer-dashboard.html">For Employers</a>
+  <a href="atsresume.html">ATS-Resume at 99</a>
+  <a href="postjobfree.html">Free Job Post</a>
+  <a href="about.html">About</a>
+  <a href="team.html">Team</a>
+  <a href="mission.html">Mission</a>
+</div>
+
+<!-- CONTENT -->
 <section class="section">
-  <h1>Our Vision</h1>
-  <p>
-    ECS is built on a bold vision — to become the world’s most trusted
-    <strong>employment credibility protocol</strong>. A universal standard that businesses,
-    professionals, platforms, and institutions rely on to ensure truth, trust and transparency
-    in careers.
+
+  <h1 class="animate">Our Vision</h1>
+
+  <p class="animate">
+    ECS aims to become the global <strong>Employment Credibility Protocol</strong> —
+    the universal standard of trust for companies, professionals, and platforms.
   </p>
 
-  <div class="vision-box">
-    <strong style="font-size:26px; color:#fff;">“To become the global standard for employment trust — like CIBIL, but for careers.”</strong>
+  <div class="vision-box animate">
+    <strong style="font-size:26px; color:#fff;">
+      “To become the global standard for employment trust — like CIBIL, but for careers.”
+    </strong>
     <br><br>
-    A future where every individual carries a verified, portable career passport — accepted
-    across companies, countries, industries and platforms.
+    A future where every professional carries a verified, portable  
+    <strong>career passport</strong> accepted globally.
   </div>
 
-  <h2 style="margin-top:60px; font-size:36px; font-weight:800; color:#fff;">The Future We Are Building</h2>
-  <p>
-    A world where hiring is no longer based on assumptions or subjective judgments — but on
-    verifiable proof. A world where talent is recognized accurately, instantly, and fairly.
+  <h2 class="animate">The Future We Are Building</h2>
+
+  <p class="animate">
+    Hiring will no longer rely on assumptions; it will rely on verified truth.
   </p>
 
-  <p>
-    Our vision is to create a <strong>trusted employment identity layer for India and the world</strong>,
-    powering everything from hiring and onboarding to upskilling, compliance and global mobility.
+  <p class="animate">
+    ECS is creating a trusted <strong>Employment Identity Layer</strong> powering hiring,
+    onboarding, compliance, mobility, and skill validation.
   </p>
+
 </section>
 
-<footer style="margin-top:80px; background:#0B0F1F; padding:50px; text-align:center; color:#777; border-top:1px solid #2a3350;">
+<footer>
   © 2025 ECS Score — India’s Employment Credibility Layer
 </footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("mobileMenu");
+  menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+}
+
+/* TEXT ANIMATION OBSERVER */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+});
+
+document.querySelectorAll(".animate")
+  .forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
