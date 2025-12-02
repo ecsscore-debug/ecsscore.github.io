@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Post a Job | ECSS Hiring Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ========== GLOBAL ========== */
+body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:#030611;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* Floating particles */
+.particle{
+    position:fixed;
+    width:6px;height:6px;
+    background:#4da8ff;
+    border-radius:50%;
+    opacity:0.5;
+    animation:floatUp 10s linear infinite;
+}
+@keyframes floatUp{
+    from{transform:translateY(100vh);opacity:0.2;}
+    to{transform:translateY(-10vh);opacity:0.9;}
+}
+
+/* Center wrapper */
+.wrapper{
+    max-width:750px;
+    margin:110px auto;
+    padding:40px 35px;
+    background:rgba(15,25,55,0.4);
+    border-radius:28px;
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(120,160,255,0.25);
+    box-shadow:0 0 40px rgba(0,140,255,0.25);
+    animation:fadeIn 1s ease;
+}
+@keyframes fadeIn{ 
+    from{opacity:0;transform:translateY(30px);} 
+    to{opacity:1;transform:translateY(0);}
+}
+
+/* Title */
+h1{
+    text-align:center;
+    font-size:44px;
+    background:linear-gradient(90deg,#5ac8ff,#d9f6ff);
+    -webkit-background-clip:text;
+    color:transparent;
+    font-weight:800;
+}
+.subtext{
+    text-align:center;
+    font-size:18px;
+    opacity:0.75;
+    margin-bottom:35px;
+}
+
+/* Progress bar */
+.progress{
+    width:100%;
+    height:10px;
+    background:#0c152b;
+    border-radius:20px;
+    margin-bottom:30px;
+    overflow:hidden;
+}
+.progress-fill{
+    height:100%;
+    width:20%;
+    background:linear-gradient(90deg,#4f9dff,#6aeaff);
+    transition:0.5s;
+}
+
+/* Step section */
+.step{
+    display:none;
+    animation:slideIn 0.5s ease;
+}
+.step.active{ display:block; }
+
+@keyframes slideIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+/* Inputs */
+label{
+    font-size:15px;
+    opacity:0.9;
+}
+input,textarea,select{
+    width:100%;
+    margin:10px 0 25px 0;
+    padding:15px;
+    font-size:16px;
+    border-radius:14px;
+    border:1px solid rgba(120,160,255,0.3);
+    background:rgba(10,20,40,0.6);
+    color:#e6f0ff;
+    outline:none;
+    transition:0.3s;
+}
+input:focus, textarea:focus, select:focus{
+    border-color:#69c3ff;
+    box-shadow:0 0 15px rgba(100,170,255,0.3);
+}
+
+textarea{
+    height:130px;
+    resize:none;
+}
+
+/* Buttons */
+.btn{
+    width:100%;
+    padding:15px;
+    font-size:20px;
+    font-weight:700;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(90deg,#4a6cf7,#59dbff);
+    color:#fff;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:20px;
+}
+.btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px rgba(80,140,255,0.6);
+}
+
+/* Success message */
+#successBox{
+    display:none;
+    padding:20px;
+    text-align:center;
+    margin-top:25px;
+    border-radius:16px;
+    background:rgba(50,210,120,0.15);
+    border:1px solid rgba(50,210,120,0.4);
+    color:#b2ffd0;
+}
+
+/* Step heading icon */
+.step-icon{
+    font-size:40px;
+    margin-bottom:10px;
+    animation:float 3s infinite ease-in-out;
+}
+@keyframes float{
+    0%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+    100%{transform:translateY(0)}
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+for(let i=0;i<45;i++){
+    let p=document.createElement("div");
+    p.classList.add("particle");
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDelay=(Math.random()*8)+"s";
+    document.body.appendChild(p);
+}
+</script>
+
+<div class="wrapper">
+
+    <h1>Post Your Job</h1>
+    <div class="subtext">3-step simple form. We deliver screened candidates in 24–48 hrs.</div>
+
+    <div class="progress"><div class="progress-fill" id="prog"></div></div>
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+        <div class="step-icon">🏢</div>
+        <h2>Company Details</h2>
+
+        <label>Company Name</label>
+        <input name="company" required>
+
+        <label>Company Website / LinkedIn</label>
+        <input name="website">
+
+        <button class="btn" onclick="nextStep()">Next →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step2">
+        <div class="step-icon">👤</div>
+        <h2>Recruiter Details</h2>
+
+        <label>Your Full Name</label>
+        <input name="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Phone</label>
+        <input name="phone">
+
+        <button class="btn" onclick="nextStep()">Next →</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step3">
+        <div class="step-icon">💼</div>
+        <h2>Job Information</h2>
+
+        <label>Job Title</label>
+        <input name="title" required>
+
+        <label>Work Type</label>
+        <select name="location">
+            <option value="">Choose...</option>
+            <option>Remote</option>
+            <option>Hybrid</option>
+            <option>On-site</option>
+        </select>
+
+        <label>Experience Required</label>
+        <select name="exp">
+            <option value="">Choose...</option>
+            <option>0–1 yrs</option>
+            <option>1–3 yrs</option>
+            <option>3–5 yrs</option>
+            <option>5+ yrs</option>
+        </select>
+
+        <label>CTC Range</label>
+        <input name="ctc">
+
+        <label>Job Description</label>
+        <textarea name="jd"></textarea>
+
+        <label>Skills Required</label>
+        <textarea name="skills"></textarea>
+
+        <button class="btn" onclick="submitForm()">Submit Job</button>
+    </div>
+
+    <div id="successBox">🎉 Job submitted successfully! We’ll share candidates soon.</div>
+
+</div>
+
+<script>
+let step = 1;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwMUU0D0Pc0cC80N8Y7qUJtU7GEb4aVToAGaJMJo5XF6HDYqWtBeQ7sOma6WiD06Yv/exec"; 
+
+function nextStep(){
+    document.getElementById("step"+step).classList.remove("active");
+    step++;
+    document.getElementById("step"+step).classList.add("active");
+    document.getElementById("prog").style.width = (step*33)+"%";
+}
+
+function submitForm(){
+
+    const wrapper = document.querySelector('.wrapper');
+    const inputs = wrapper.querySelectorAll('input, textarea, select');
+    
+    let data = {};
+    inputs.forEach(el=>{
+        data[el.name] = el.value;
+    });
+
+    const btn = document.querySelector('#step3 .btn');
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+
+   fetch("https://script.google.com/macros/s/AKfycbwwMUU0D0Pc0cC80N8Y7qUJtU7GEb4aVToAGaJMJo5XF6HDYqWtBeQ7sOma6WiD06Yv/exec", {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+})
+.then(() => {
+    document.getElementById("successBox").style.display = "block";
+    document.getElementById("step3").style.display = "none";
+    document.getElementById("prog").style.width = "100%";
+})
+.catch(err => {
+    alert("Network error!");
+    console.error(err);
+});
+
+}
+</script>
+
+
+</body>
+</html>
