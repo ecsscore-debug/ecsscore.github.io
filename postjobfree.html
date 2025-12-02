@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Post a Job for Free | ECSS Score Hiring Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* NAVBAR */
+.navbar{
+    width:100%;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:999;
+    background:rgba(10,20,45,0.55);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(120,160,255,0.25);
+}
+
+.nav-logo{
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-1px;
+    background:linear-gradient(90deg,#7fcaff,#e0f3ff);
+    -webkit-background-clip:text;
+    color:transparent;
+    user-select:none;
+}
+
+.nav-links{
+    display:flex;
+    gap:35px;
+    align-items:center;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#cfe2ff;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#7fcaff;
+}
+
+.nav-btn{
+    background:#4a6cf7;
+    padding:10px 20px;
+    border-radius:12px;
+    color:#fff !important;
+    box-shadow:0 0 20px rgba(90,140,255,0.5);
+}
+
+.nav-btn:hover{
+    background:#3554d3;
+    transform:scale(1.07);
+}
+
+/********************* HAMBURGER *********************/
+.hamburger{
+    width:32px;
+    height:22px;
+    display:none;
+    flex-direction:column;
+    justify-content:space-between;
+    cursor:pointer;
+}
+.hamburger span{
+    width:100%;
+    height:4px;
+    background:#cfe2ff;
+    border-radius:5px;
+    transition:0.3s;
+}
+
+/********************* MOBILE MENU *********************/
+@media(max-width:900px){
+
+    .nav-links{
+        position:fixed;
+        top:70px;
+        right:-100%;
+        flex-direction:column;
+        background:rgba(10,20,45,0.95);
+        width:240px;
+        height:100vh;
+        padding:40px 20px;
+        gap:25px;
+        transition:0.4s ease-in-out;
+        border-left:1px solid rgba(120,160,255,0.25);
+    }
+
+    .nav-links.active{
+        right:0;
+    }
+
+    .hamburger{
+        display:flex;
+    }
+
+    .hamburger.open span:nth-child(1){
+        transform:translateY(9px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2){
+        opacity:0;
+    }
+    .hamburger.open span:nth-child(3){
+        transform:translateY(-9px) rotate(-45deg);
+    }
+
+    .nav-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+
+
+/* GLOBAL */
+body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    background:#030611;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* UNIVERSAL CENTER FIX */
+.section, 
+.counter-section, 
+.logo-slider, 
+.carousel, 
+.test-row, 
+.dashboard-box, 
+.policy-grid {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* INNER WIDTH LIMIT */
+.section > *, 
+.counter-section > *, 
+.logo-slider > *, 
+.carousel > *, 
+.test-row > *, 
+.dashboard-box > *, 
+.policy-grid > * {
+    max-width:1100px;
+    width:100%;
+}
+
+/*********** FLOATING NEON PARTICLES ***********/
+.particle{
+    position:fixed;
+    width:6px; height:6px;
+    border-radius:50%;
+    background:#4da8ff;
+    opacity:0.5;
+    animation:floatUp 10s linear infinite;
+}
+@keyframes floatUp{
+    from{ transform:translateY(100vh); opacity:0.2; }
+    to{ transform:translateY(-10vh); opacity:0.9; }
+}
+
+/*********** SCROLL FADE-IN ***********/
+.fade-in{
+    opacity:0;
+    transform:translateY(20px);
+    transition:1s ease;
+}
+.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/*********** HERO ***********/
+.hero{
+    padding:180px 20px;
+    text-align:center;
+    background:linear-gradient(135deg,#0f1e46,#050916,#0f1e46);
+    position:relative;
+    overflow:hidden;
+}
+.ball{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(45px);
+    opacity:0.45;
+}
+.ball1{ width:300px; height:300px; background:#0058ff; top:-60px; left:-60px; }
+.ball2{ width:280px; height:280px; background:#ff0095; bottom:-80px; right:-50px; }
+
+.hero h1{
+    font-size:65px;
+    font-weight:800;
+    background:linear-gradient(90deg,#54b8ff,#9eeeff,#e5fdff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+.hero-sub{
+    font-size:24px;
+    color:#d4e8ff;
+    margin-top:15px;
+    opacity:0.85;
+}
+
+/*********** CTA ***********/
+.btn{
+    background:#4a6cf7;
+    padding:16px 34px;
+    border-radius:14px;
+    font-size:22px;
+    font-weight:700;
+    display:inline-block;
+    color:#fff;
+    text-decoration:none;
+    margin-top:35px;
+    transition:0.4s;
+    box-shadow:0 0 25px rgba(90,140,255,0.5);
+}
+.btn:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 35px rgba(90,140,255,0.8);
+}
+
+/*********** LOGO SCROLLER ***********/
+.logo-slider{
+    margin-top:60px;
+    overflow:hidden;
+    white-space:nowrap;
+}
+.logo-track{
+    display:inline-flex;
+    animation:scrollLogos 14s linear infinite;
+    gap:70px;
+}
+.logo-track img{
+    width:140px;
+    filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));
+    opacity:0.85;
+    transition:0.3s;
+}
+.logo-track img:hover{
+    opacity:1;
+    transform:scale(1.12);
+}
+
+@keyframes scrollLogos{
+    0%{ transform:translateX(100%); }
+    100%{ transform:translateX(-100%); }
+}
+
+/*********** COUNTERS ***********/
+.counter-section{
+    padding:80px 20px;
+    text-align:center;
+    max-width:1200px;
+    margin:auto;
+}
+.counter-boxes{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    flex-wrap:wrap;
+}
+.counter{
+    width:220px;
+    padding:20px;
+    background:rgba(15,25,55,0.55);
+    border-radius:18px;
+    border:1px solid rgba(120,160,255,0.25);
+    backdrop-filter:blur(12px);
+    transition:0.4s;
+}
+.counter:hover{
+    transform:translateY(-10px);
+    border-color:#7ecbff;
+    box-shadow:0 0 25px rgba(120,180,255,0.45);
+}
+.counter-number{
+    font-size:48px;
+    font-weight:900;
+    background:linear-gradient(90deg,#7fceff,#c9f3ff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+.counter-label{
+    margin-top:6px;
+    font-size:17px;
+    color:#cfe2ff;
+}
+
+/*********** HOW IT WORKS ***********/
+.hiw-step{
+    display:flex;
+    gap:22px;
+    background:rgba(15,25,55,0.55);
+    padding:25px;
+    border-radius:18px;
+    border:1px solid rgba(120,160,255,0.25);
+    backdrop-filter:blur(10px);
+    transition:0.4s;
+    align-items:center;
+}
+.hiw-step:hover{
+    transform:translateX(10px);
+    border-color:#7fcbff;
+    box-shadow:0 0 25px rgba(120,180,255,0.4);
+}
+.hiw-icon{
+    font-size:42px;
+}
+.hiw-text h3{
+    margin:0;
+    font-size:24px;
+}
+.hiw-text p{
+    margin:6px 0 0;
+    opacity:0.85;
+}
+
+/*********** CANDIDATE CAROUSEL ***********/
+.carousel{
+    width:100%;
+    overflow:hidden;
+    margin-top:40px;
+}
+.carousel-track{
+    display:flex;
+    gap:35px;
+    animation:scrollCandidates 15s linear infinite;
+}
+@keyframes scrollCandidates{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+}
+.cand-card{
+    min-width:220px;
+    background:rgba(15,25,55,0.5);
+    padding:20px;
+    border-radius:18px;
+    border:1px solid rgba(120,160,255,0.3);
+    text-align:center;
+    backdrop-filter:blur(10px);
+    transition:0.4s;
+}
+.cand-card:hover{
+    transform:translateY(-10px) scale(1.03);
+    border-color:#8fd6ff;
+    box-shadow:0 0 30px rgba(120,180,255,0.4);
+}
+.cand-card img{
+    width:90px; height:90px;
+    border-radius:50%;
+    margin-bottom:10px;
+}
+.cand-card h3{
+    margin:8px 0 5px;
+    font-size:20px;
+}
+.cand-card .tag{
+    margin-top:8px;
+    display:inline-block;
+    background:#4da8ff;
+    padding:4px 12px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:600;
+}
+
+/*********** TESTIMONIALS ***********/
+.test-card{
+    width:300px;
+    padding:25px;
+    background:rgba(15,25,55,0.55);
+    border-radius:18px;
+    border:1px solid rgba(120,160,255,0.25);
+    backdrop-filter:blur(12px);
+    transition:0.4s;
+}
+.test-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 25px rgba(120,180,255,0.45);
+    border-color:#8fd6ff;
+}
+.test-card p{
+    font-size:16px;
+    line-height:1.6;
+    opacity:0.9;
+}
+.test-card h4{
+    margin-top:15px;
+    opacity:0.8;
+}
+
+/*********** DASHBOARD ***********/
+.dashboard-box{
+    background:rgba(15,25,55,0.55);
+    border:1px solid rgba(120,160,255,0.25);
+    backdrop-filter:blur(12px);
+    border-radius:18px;
+    padding:25px;
+    max-width:850px;
+    margin:auto;
+    box-shadow:0 0 35px rgba(0,140,255,0.2);
+    transition:0.4s;
+}
+.dashboard-box:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 50px rgba(120,180,255,0.45);
+}
+.dash-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+    font-size:20px;
+}
+.dash-row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.dash-row:last-child{
+    border-bottom:none;
+}
+.tag{
+    padding:5px 12px;
+    border-radius:10px;
+    font-weight:700;
+}
+.hired{ background:#39e6ff33; color:#39e6ff; }
+.medium{ background:#7fcaff33; color:#7fcaff; }
+.low{ background:#ffd66b33; color:#ffd66b; }
+
+/*********** LEGAL ***********/
+.policy-card{
+    background:rgba(15,25,55,0.55);
+    border:1px solid rgba(120,160,255,0.25);
+    padding:25px;
+    border-radius:18px;
+    text-align:left;
+    backdrop-filter:blur(12px);
+    transition:0.4s;
+}
+.policy-card:hover{
+    transform:translateY(-10px);
+    border-color:#8fd6ff;
+    box-shadow:0 0 30px rgba(120,180,255,0.4);
+}
+.policy-card h3{
+    margin-top:0;
+    font-size:22px;
+    color:#d6ecff;
+}
+.policy-card p{
+    font-size:15px;
+    opacity:0.9;
+    margin-top:10px;
+}
+
+</style>
+</head>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo">ECSS Score</div>
+    </div>
+
+    <div class="nav-links" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="candidates.html">For candidates</a>
+    <a href="employer-dashboard.html">For Employers</a>
+    <a href="atsresume.html">ATS-Resume at 99 </a>
+    <a href="team.html">Team</a>
+    <a href="about.html">About Us</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html" style="color:#003BFF;">Vision</a>
+    </div>
+
+    <!-- Hamburger -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<body>
+
+<script>
+/* Floating particles */
+for(let i=0;i<45;i++){
+    let p=document.createElement("div");
+    p.classList.add("particle");
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDelay=(Math.random()*9)+"s";
+    document.body.appendChild(p);
+}
+</script>
+
+<!-- HERO -->
+<div class="hero fade-in">
+    <div class="ball ball1"></div>
+    <div class="ball ball2"></div>
+
+    <h1>Post Jobs. Hire Faster. Free Forever.</h1>
+    <div class="hero-sub">Get curated, high-intent, pre-scored candidates within 24–48 hrs.</div>
+
+    <a href="YOUR_FORM_LINK" class="btn" target="_blank">Post a Job (Free)</a>
+</div>
+
+<!-- LOGO SLIDER -->
+<div class="logo-slider fade-in">
+    <div class="logo-track">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Logo_of_Deloitte.svg/500px-Logo_of_Deloitte.svg.png">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/EY_logo_2019.svg">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/KPMG_blue_logo.svg/500px-KPMG_blue_logo.svg.png">
+        <img src="https://seeklogo.com/images/S/swiggy-logo-8EF8260FA4-seeklogo.com.png">
+        <img src="https://seeklogo.com/images/Z/zepto-logo-4C7C221404-seeklogo.com.png">
+    </div>
+</div>
+
+<!-- COUNTERS -->
+<div class="counter-section fade-in">
+    <h2 style="font-size:42px;background:linear-gradient(90deg,#8bb3ff,#d8eeff);-webkit-background-clip:text;color:transparent;">
+        Trusted by Founders, HRs & Fast-Growing Startups
+    </h2>
+
+    <div class="counter-boxes">
+        <div class="counter"><div id="ct1" class="counter-number">0</div><div class="counter-label">Resumes Processed</div></div>
+        <div class="counter"><div id="ct2" class="counter-number">0</div><div class="counter-label">Profiles Optimized</div></div>
+        <div class="counter"><div id="ct3" class="counter-number">0</div><div class="counter-label">Recruiters Served</div></div>
+        <div class="counter"><div id="ct4" class="counter-number">0</div><div class="counter-label">Roles Closed</div></div>
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section fade-in" style="margin-top:40px;">
+    <h2 style="font-size:44px;background:linear-gradient(90deg,#72c7ff,#d9f5ff);-webkit-background-clip:text;color:transparent;">How ECSS Hiring Works</h2>
+
+    <div style="display:flex;flex-direction:column;gap:40px;max-width:900px;margin:auto;">
+        <div class="hiw-step"><div class="hiw-icon">📝</div><div class="hiw-text"><h3>1. Post Your Job (FREE)</h3><p>No charges. No limits.</p></div></div>
+        <div class="hiw-step"><div class="hiw-icon">🤖</div><div class="hiw-text"><h3>2. AI Filters Candidates</h3><p>ECSS engine screens & scores resumes.</p></div></div>
+        <div class="hiw-step"><div class="hiw-icon">🚀</div><div class="hiw-text"><h3>3. Best Profiles Sent</h3><p>You get high-intent candidates.</p></div></div>
+        <div class="hiw-step"><div class="hiw-icon">🎯</div><div class="hiw-text"><h3>4. Hire Faster</h3><p>No spam. Only relevance.</p></div></div>
+    </div>
+</div>
+
+<!-- CANDIDATE CAROUSEL -->
+<div class="section fade-in" style="margin-top:70px;">
+    <h2 style="font-size:42px;background:linear-gradient(90deg,#7fcaff,#def2ff);-webkit-background-clip:text;color:transparent;">Recently Active Candidates</h2>
+
+    <div class="carousel">
+        <div class="carousel-track">
+
+            <div class="cand-card"><img src="https://randomuser.me/api/portraits/women/44.jpg"><h3>Riya Sharma</h3><p>Strategy Associate • Ex-KPMG</p><span class="tag">₹28 LPA</span></div>
+            <div class="cand-card"><img src="https://randomuser.me/api/portraits/men/32.jpg"><h3>Aditya Verma</h3><p>Chief of Staff Track • Ex-Swiggy</p><span class="tag">₹32 LPA</span></div>
+            <div class="cand-card"><img src="https://randomuser.me/api/portraits/men/65.jpg"><h3>Raj Mehta</h3><p>Business Ops • Ex-Zepto</p><span class="tag">₹22 LPA</span></div>
+            <div class="cand-card"><img src="https://randomuser.me/api/portraits/women/55.jpg"><h3>Ananya Sen</h3><p>EA to Founder • Ex-Accenture</p><span class="tag">₹18 LPA</span></div>
+            <div class="cand-card"><img src="https://randomuser.me/api/portraits/women/33.jpg"><h3>Tanvi Rao</h3><p>Marketing Growth • Ex-Zomato</p><span class="tag">₹26 LPA</span></div>
+
+        </div>
+    </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section fade-in" style="margin-top:80px;">
+    <h2 style="font-size:42px;background:linear-gradient(90deg,#9ed8ff,#e6f6ff);-webkit-background-clip:text;color:transparent;">Loved by HRs & Founders</h2>
+
+    <div class="test-row">
+        <div class="test-card"><p>“We closed 2 roles in 5 days. Profiles were clean & relevant.”</p><h4>— Ankit Raj, HR @ Zepto</h4></div>
+        <div class="test-card"><p>“Much better than LinkedIn spam. Only quality candidates.”</p><h4>— Priya Menon, TA Lead @ Deloitte</h4></div>
+        <div class="test-card"><p>“ECSS scoring helped shortlist candidates 3× faster.”</p><h4>— Suraj Khanna, Founder @ Growthify</h4></div>
+    </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<div class="section fade-in" style="margin-top:80px;">
+    <h2 style="font-size:42px;background:linear-gradient(90deg,#7ccaff,#dcf4ff);-webkit-background-clip:text;color:transparent;">Your Mini Hiring Dashboard (Free)</h2>
+
+    <p style="color:#cfe0ff;font-size:18px;margin-top:10px;">A futuristic preview of incoming applicants.</p>
+
+    <div class="dashboard-box">
+        
+        <div class="dash-header">
+            <div class="dash-title">Job: Business Analyst – Bangalore</div>
+            <div class="dash-count">12 Applications</div>
+        </div>
+
+        <div class="dash-row"><div>Riya Sharma</div><div>ECSS Score: 87</div><div class="tag hired">Highly Relevant</div></div>
+        <div class="dash-row"><div>Aditya Verma</div><div>ECSS Score: 81</div><div class="tag medium">Good Fit</div></div>
+        <div class="dash-row"><div>Ananya Sen</div><div>ECSS Score: 76</div><div class="tag low">Relevant</div></div>
+
+    </div>
+</div>
+
+<!-- LEGAL -->
+<div class="section fade-in" style="margin-top:90px;">
+    <h2 style="font-size:42px;background:linear-gradient(90deg,#9ed8ff,#ebf9ff);-webkit-background-clip:text;color:transparent;">
+        Legal & Trust Policies
+    </h2>
+
+    <p style="color:#cfe0ff;margin-bottom:35px;">We maintain complete transparency for employers & candidates.</p>
+
+    <div class="policy-grid">
+        
+        <div class="policy-card"><h3>Privacy Policy</h3><p>Your data is encrypted & never shared.</p></div>
+
+        <div class="policy-card"><h3>Refund & Cancellation</h3><p>Employers never charged. Candidates refunded if SLA breaks.</p></div>
+
+        <div class="policy-card"><h3>Data Security</h3><p>Files stored securely & auto-deleted.</p></div>
+
+        <div class="policy-card"><h3>Terms & Conditions</h3><p>Free job postings. No hiring guarantees.</p></div>
+
+        <div class="policy-card"><h3>Contact Support</h3><p>Email: <b>support@ecsscore.com</b></p></div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:40px;color:#7e8db5;font-size:15px;margin-top:60px;">
+    © 2025 ECS-Score — All Rights Reserved.
+    <br><br>
+    <span style="opacity:0.5;">Powered by ecsscores.com</span>
+</footer>
+
+<!-- JS: Scroll Animation -->
+<script>
+const faders = document.querySelectorAll('.fade-in');
+const options = { threshold: 0.4 };
+const appearOnScroll = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+        }
+    })
+}, options);
+faders.forEach(fader => appearOnScroll.observe(fader));
+</script>
+
+<script>
+function toggleMenu(){
+    document.getElementById("navMenu").classList.toggle("active");
+    document.querySelector(".hamburger").classList.toggle("open");
+}
+</script>
+<script>
+// Animated Counters
+function animateCounter(id, target, speed = 30) {
+    let element = document.getElementById(id);
+    let count = 0;
+
+    let interval = setInterval(() => {
+        if (count >= target) {
+            clearInterval(interval);
+        } else {
+            count++;
+            element.textContent = count;
+        }
+    }, speed);
+}
+
+// Run when section is visible
+const counterSection = document.querySelector('.counter-section');
+let countersStarted = false;
+
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !countersStarted) {
+            countersStarted = true;
+
+            // REALISTIC TARGET NUMBERS (customize here)
+            animateCounter("ct1", 32); // Resumes Processed
+            animateCounter("ct2", 27); // Profiles Optimized
+            animateCounter("ct3", 18); // Recruiters Served
+            animateCounter("ct4", 24); // Roles Closed
+        }
+    });
+}, { threshold: 0.4 });
+
+counterObserver.observe(counterSection);
+</script>
+
+</body>
+</html>
