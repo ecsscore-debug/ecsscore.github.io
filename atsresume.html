@@ -16,7 +16,37 @@ body{
     color:#fff;
     overflow-x:hidden;
 }
+/* NAVBAR */
+:root{
+    --blue:#4da8ff;
+}
 
+nav{
+    width:100%;
+    padding:18px 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:9999;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(5,10,25,0.40);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(120,150,255,0.18);
+}
+
+.nav-links a{
+    text-decoration:none;
+    margin-left:28px;
+    color:#c8d8ff;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:var(--blue);
+}
 /* Fade-in animation */
 .fade-in{
     opacity:0;
@@ -165,7 +195,19 @@ body{
 </head>
 
 <body>
-
+<!-- NAVBAR -->
+<nav>
+  <div style="font-size:28px;font-weight:800;color:var(--blue);">ECS Score</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="candidates.html" style="color:var(--blue);">For Candidates</a>
+    <a href="employer-dashboard.html">For Employers</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <a href="mission.html">Mission</a>
+    <a href="vision.html">Vision</a>
+  </div>
+</nav>
 <script>
 /* Floating Particles */
 for(let i=0;i<45;i++){
