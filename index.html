@@ -5,6 +5,7 @@
 <title>ECS Score — Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --bg:#0a1224;
@@ -16,356 +17,428 @@
   body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;}
   a{text-decoration:none;color:white;}
 
-  /* NAV */
-  nav{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:22px 50px;background:#0d162c;border-bottom:1px solid var(--border);
-    position:sticky;top:0;z-index:20;
+  /* ================= NAVBAR ================= */
+  .navbar{
+    width:100%;
+    padding:18px 35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#0d162c;
+    border-bottom:0px solid var(--border);
+    position:sticky;
+    top:0;
+    z-index:9999;
   }
-  .nav-links a{margin-left:35px;font-size:17px;font-weight:600;color:var(--light);} 
-  .nav-links a:hover{color:var(--blue);}  
+  .nav-logo{
+    font-size:28px;
+    font-weight:800;
+    background:linear-gradient(90deg,#4d92ff,#9bb8ff);
+    -webkit-background-clip:text;
+    color:transparent;
+  }
+  .nav-links{
+    display:flex;
+    gap:25px;
+    align-items:center;
+  }
+  .nav-links a{
+    font-size:16px;
+    font-weight:600;
+    color:var(--light);
+  }
+  .nav-links a:hover{
+    color:var(--blue);
+  }
 
-  /* HERO */
-  .hero{
-    padding:110px 50px;
-    background:linear-gradient(135deg,#0f1c3d,#0a1224,#0f1c3d);
-    display:flex;justify-content:space-between;align-items:center;gap:40px;
-    position:relative;overflow:hidden;
+  /* DROPDOWN */
+  .dropdown{position:relative;}
+  .dropbtn{
+    background:none;border:none;color:var(--light);
+    font-size:16px;font-weight:600;cursor:pointer;
   }
-  .hero-text{flex:1;}
-  .hero h1{font-size:64px;font-weight:900;line-height:1.15;margin:0;}
-  .hero p{font-size:24px;margin-top:18px;color:#c7d3ec;max-width:560px;line-height:1.6;}
+  .dropbtn:hover{color:var(--blue);}
+  .dropdown-content{
+    display:none;position:absolute;top:25px;
+    background:#0d162cef;border:1px solid var(--border);
+    border-radius:10px;backdrop-filter:blur(10px);
+    min-width:180px;padding:8px 0;
+  }
+  .dropdown-content a{
+    display:block;padding:8px 14px;color:var(--light);
+  }
+  .dropdown-content a:hover{
+    background:#1b233a;color:var(--blue);
+  }
+  .dropdown:hover .dropdown-content{display:block;}
+
+  /* HAMBURGER */
+  .hamburger{
+    width:30px;height:22px;display:none;
+    flex-direction:column;justify-content:space-between;
+    cursor:pointer;
+  }
+  .hamburger span{
+    width:100%;height:3px;background:white;border-radius:3px;
+    transition:.3s;
+  }
+
+  @media(max-width:900px){
+    .hamburger{display:flex;}
+
+    .nav-links{
+      position:fixed;right:-100%;top:70px;
+      width:260px;height:100vh;
+      background:#0d162ef0;border-left:1px solid var(--border);
+      display:flex;flex-direction:column;
+      gap:22px;padding:35px 20px;transition:.4s ease;
+    }
+    .nav-links.active{right:0;}
+
+    .dropdown-content{
+      position:relative;top:0;background:none;border:none;
+    }
+  }
+
+  /* BLINKING Current Openings */
+  .blink-box{
+    text-align:center;background:#111a33;
+    padding:4px 0;border-bottom:1px solid var(--border);
+  }
+  .blink-link{
+    font-size:18px;font-weight:700;color:#4d92ff;
+    animation:blink 1.5s infinite;
+  }
+  @keyframes blink{
+    0%{opacity:1;} 50%{opacity:.4;} 100%{opacity:1;}
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    padding:90px 50px 80px;
+    background:linear-gradient(135deg,#0f1c3d,#0a1224,#0f1c3d);
+    display:flex;justify-content:space-between;
+    align-items:center;gap:40px;position:relative;overflow:hidden;
+  }
+  @media(max-width:900px){
+    .hero{flex-direction:column;text-align:center;padding:150px 25px 80px;}
+  }
+  .hero h1{
+    font-size:64px;font-weight:900;line-height:1.15;margin:0;
+    background:linear-gradient(90deg,#4d92ff,#9bb8ff);
+    -webkit-background-clip:text;color:transparent;
+  }
+  @media(max-width:900px){.hero h1{font-size:44px;}}
+  .hero p{
+    font-size:22px;color:var(--light);
+    max-width:560px;line-height:1.6;margin-top:18px;
+  }
   .cta-btn{
-    margin-top:30px;padding:16px 38px;background:var(--blue);
-    border:none;border-radius:12px;font-size:20px;font-weight:700;color:white;
+    margin-top:30px;padding:16px 38px;
+    background:var(--blue);border:none;border-radius:12px;
+    font-size:20px;font-weight:700;color:white;
     cursor:pointer;box-shadow:0 0 18px rgba(77,146,255,0.45);
   }
 
-  /* SCORE METER */
+  /* Score meter */
   .meter-box{
     width:240px;height:240px;border-radius:50%;
     border:6px solid #1a2642;box-shadow:0 0 28px rgba(77,146,255,0.55);
-    position:relative;overflow:hidden;flex-shrink:0;
+    position:relative;overflow:hidden;
   }
 
-  /* SECTION */
-  .section{padding:60px 50px;max-width:1200px;margin:auto;}
-  .section h2{font-size:42px;font-weight:800;margin-bottom:20px;}
-  .section p{font-size:20px;color:var(--light);}  
-  .card-row{display:flex;gap:25px;margin-top:40px;flex-wrap:wrap;}
+  /* ================= SECTIONS ================= */
+  .section{
+    padding:60px 50px;max-width:1200px;margin:auto;text-align:center;
+  }
+  .section h2{
+    font-size:42px;font-weight:800;margin-bottom:20px;
+  }
+  .section p{
+    font-size:20px;color:var(--light);
+  }
+  .card-row{
+    display:flex;gap:25px;margin-top:40px;flex-wrap:wrap;
+  }
   .card{
-    flex:1;min-width:260px;background:var(--card);border:1px solid var(--border);
-    border-radius:14px;padding:35px;font-size:17px;color:var(--light);
-  } 
-  .card:hover{border-color:var(--blue);}  
+    flex:1;min-width:260px;background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;padding:35px;
+    font-size:17px;color:var(--light);
+  }
+  .card:hover{border-color:var(--blue);}
 
-  footer{padding:40px;text-align:center;color:var(--light);margin-top:60px;border-top:1px solid var(--border);}  
+  /* ================= FOOTER ================= */
+  .super-footer{
+    width:100%;padding:90px 60px;
+    background:radial-gradient(circle at 20% 30%,#0d1a33,#060b16 60%);
+    border-top:1px solid #1c2940;
+    position:relative;overflow:hidden;
+  }
+  .sf-stars{
+    position:absolute;inset:0;
+    background:url('https://i.ibb.co/GF4CvJ8/stars.png');
+    opacity:.12;animation:stars 45s linear infinite;
+  }
+  @keyframes stars{
+    0%{transform:translateY(0);}100%{transform:translateY(-900px);}
+  }
+  .sf-blob{
+    position:absolute;width:300px;height:300px;
+    background:#4d92ff33;filter:blur(90px);
+    border-radius:50%;animation:blob 12s ease-in-out infinite alternate;
+  }
+  .sf-blob.two{background:#00eaff33;top:40%;right:10%;animation-delay:2s;}
+  .sf-blob.three{background:#8a2bff33;top:12%;right:40%;animation-delay:4s;}
+  @keyframes blob{
+    0%{transform:translateY(0) scale(1);}
+    100%{transform:translateY(-60px) scale(1.2);}
+  }
+
+  .sf-grid{
+    display:flex;justify-content:space-between;flex-wrap:wrap;position:relative;z-index:5;
+  }
+  .sf-col{width:260px;margin-bottom:50px;color:var(--light);}
+  .sf-col h3{font-size:22px;font-weight:800;margin-bottom:15px;color:white;}
+  .sf-col a{display:block;margin:8px 0;color:var(--light);}
+  .sf-col a:hover{color:var(--blue);}
+
+  .sf-btn{
+    padding:10px 20px;background:#102040;
+    border:1px solid #233b60;border-radius:10px;color:white;
+    display:inline-block;margin-top:10px;
+  }
+
+  .sf-copy{
+    text-align:center;margin-top:40px;padding-top:20px;
+    border-top:1px solid #1c2940;color:#b6c4e0;
+  }
 </style>
+
 </head>
 <body>
 
-<nav>
-  <div style="font-size:28px;font-weight:800;color:var(--blue);">ECS Score</div>
-  <div class="nav-links">
+<!-- ================= NAV ================= -->
+<nav class="navbar">
+  <a class="nav-logo" href="/">ECS Score</a>
+
+  <div class="nav-links" id="navMenu">
     <a href="candidates.html">For Candidates</a>
     <a href="employer-dashboard.html">For Employers</a>
     <a href="atsresume.html">ATS-Resume at 99</a>
-    <a href="postjobfree.html">Free Job Post</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Free Job Post ▾</button>
+      <div class="dropdown-content">
+        <a href="postjobfree.html">Post a Job</a>
+        <a href="jobopenings.html">Current Openings</a>
+      </div>
+    </div>
+
     <a href="about.html">About</a>
     <a href="team.html">Team</a>
     <a href="mission.html">Mission</a>
     <a href="vision.html">Vision</a>
   </div>
+
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <!-- Floating accents -->
-  <div style="position:absolute; top:20%; left:5%; width:180px; height:180px; background:rgba(77,146,255,0.15); filter:blur(60px); border-radius:50%;"></div>
-  <div style="position:absolute; bottom:10%; right:10%; width:220px; height:220px; background:rgba(29,70,180,0.18); filter:blur(70px); border-radius:50%;"></div>
+<!-- BLINKING CTA -->
+<div class="blink-box">
+  <a href="jobs.html" class="blink-link">🔥 View Current Openings →</a>
+</div>
 
+<!-- ================= HERO ================= -->
+<section class="hero">
   <div class="hero-text">
-    <h1 style="background:linear-gradient(90deg,#4d92ff,#9bb8ff); -webkit-background-clip:text; color:transparent;">
-      The Credibility Layer<br>For Modern Careers.
-    </h1>
+    <h1 id="heroHeadline" class="hero-rotate"></h1>
+
+<style>
+.hero-rotate{
+  font-size:64px;
+  font-weight:900;
+  line-height:1.15;
+  margin:0;
+  background:linear-gradient(90deg,#4d92ff,#9bb8ff);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn{
+  0%{opacity:0; transform:translateY(10px);}
+  100%{opacity:1; transform:translateY(0);}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const lines = [
+    "The Credibility Layer<br>For Modern Careers.",
+    "Fake Experience doesn’t exist…<br>but your ECS Score does.",
+    "Luck doesn't. ECS does.<br>You know where →",
+    "Motivation doesn't last.<br>Verified ECS does.",
+    "Weekends don't exist.<br>But dream jobs do."
+  ];
+
+  let i = 0;
+  const el = document.getElementById("heroHeadline");
+
+  function updateText(){
+    el.style.opacity = 0;
+    setTimeout(() => {
+      el.innerHTML = lines[i];
+      el.style.opacity = 1;
+      i = (i + 1) % lines.length;
+    }, 300);
+  }
+
+  updateText();
+  setInterval(updateText, 3500);
+});
+</script>
     <p>
       ECS Score converts your experience into trusted proof — verified history, document checks,
       peer credibility & one universal score.
     </p>
     <a href="https://tally.so/r/rjyj2p" target="_blank">
-    <button class="cta-btn">Get Your Score →</button>
-      </a>
+      <button class="cta-btn">Get Your Score →</button>
+    </a>
   </div>
 
-  <!-- Animated score meter -->
   <div class="meter-box">
     <svg id="scoreMeter" width="240" height="240" viewBox="0 0 240 240" style="transform:rotate(-90deg);">
       <circle cx="120" cy="120" r="100" stroke="#1a2642" stroke-width="20" fill="none" />
-      <circle id="scoreArc" cx="120" cy="120" r="100" stroke="#4d91ff" stroke-width="20" fill="none" stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628" />
+      <circle id="scoreArc" cx="120" cy="120" r="100" stroke="#4d91ff" stroke-width="20" fill="none"
+        stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628" />
     </svg>
-    <div id="scoreNumber" style="position:absolute; inset:0; display:flex; justify-content:center; align-items:center; font-size:48px; font-weight:800; color:#ffffff;">0</div>
-    <div id="verifiedTick" style="position:absolute; bottom:20px; right:20px; font-size:42px; color:#4dff88; opacity:0; transition:0.6s;">✔</div>
-  </div>
-</section>
-
-<!-- USER REVIEWS SECTION -->
-<section class="section" style="text-align:center;">
-  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">What Professionals Say</h2>
-  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
-    Thousands of candidates trust ECS Score to verify their careers and build credibility.
-  </p>
-
-  <div class="card-row" style="margin-top:45px;">
-    <div class="card" style="min-height:180px; text-align:left;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/70?img=32" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
-        <b style="font-size:18px;">Priya S. — Marketing Manager</b>
-      </div>
-      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“ECS Score helped me secure a better offer because my verification was already done.”</div>
+    <div id="scoreNumber"
+      style="position:absolute; inset:0; display:flex; justify-content:center; align-items:center; font-size:48px; font-weight:800; color:#ffffff;">
+      0
     </div>
-
-    <div class="card" style="min-height:180px; text-align:left;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/70?img=15" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
-        <b style="font-size:18px;">Rohit V. — Software Engineer</b>
-      </div>
-      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“My employer didn't need separate checks — ECS Score made the process super smooth.”</div>
-    </div>
-
-    <div class="card" style="min-height:180px; text-align:left;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/70?img=48" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
-        <b style="font-size:18px;">Neha R. — HR Professional</b>
-      </div>
-      <div style="margin-top:10px; font-size:16px;">⭐⭐⭐⭐⭐<br>“Finally something unbiased and transparent. Peer trust signals were a game changer for me.”</div>
+    <div id="verifiedTick"
+      style="position:absolute; bottom:20px; right:20px; font-size:42px; color:#4dff88; opacity:0; transition:0.6s;">
+      ✔
     </div>
   </div>
 </section>
 
-<!-- EMPLOYER REVIEWS -->
-<section class="section" style="text-align:center;">
-  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">What Employers Say</h2>
-  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
-    HR teams use ECS to reduce hiring risk and speed up verification.
-  </p>
-
-  <div class="card-row" style="margin-top:45px;">
-    <div class="card" style="min-height:150px; text-align:left;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/70?img=50" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
-        <b>TalentHead — FinTech Co.</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>“Verification time dropped by 70%. ECS Score is now part of our workflow.”</div>
-    </div>
-
-    <div class="card" style="min-height:150px; text-align:left;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/70?img=55" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--blue);">
-        <b>HR Director — SaaS Startup</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>“The risk indicators save us from bad hires. Must-have for any HR department.”</div>
-    </div>
-  </div>
-</section>
-
-<!-- PARTNERS SECTION -->
-<section class="section" style="text-align:center;">
-  <h2 style="font-size:38px; font-weight:800; margin-bottom:10px;">Our Clients & Partners</h2>
-  <p style="color:var(--light); font-size:20px; max-width:700px; margin:auto;">
-    Companies that trust our verification ecosystem.
-  </p>
-
-  <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:40px;">
-    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company A</div>
-    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company B</div>
-    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company C</div>
-    <div style="width:140px; height:60px; background:#1a2742; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#4d92ff; font-weight:700;">Company D</div>
-  </div>
-</section>
-
-<!-- WHY ECS -->
+<!-- ================= USER REVIEWS SECTION ================= -->
 <section class="section">
-  <h2>Why ECS?</h2>
-  <p>ECS Score converts your career into a verifiable credibility layer that employers can trust instantly.</p>
+  <h2>What Professionals Say</h2>
+  <p>Thousands trust ECS Score to verify their careers.</p>
 
   <div class="card-row">
-    <div class="card"><b>Verified Roles</b><br>Your work history directly confirmed by employers.</div>
-    <div class="card"><b>Peer Trust Signals</b><br>People who worked with you validate your credibility.</div>
-    <div class="card"><b>Document Strength</b><br>Stronger documents = Stronger score.</div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/80?img=11" 
+             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
+        <b>Priya S. — Marketing Manager</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
+        “ECS Score helped me secure a better offer because verification was pre-done.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/80?img=22" 
+             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
+        <b>Rohit V. — Software Engineer</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
+        “My employer didn’t need to run separate checks — ECS made it smooth.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/80?img=47" 
+             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
+        <b>Neha R. — HR Professional</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
+        “Peer trust signals + verified experience = total credibility layer.”
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- ===================== OP FUTURISTIC FOOTER ===================== -->
-<style>
-/* Footer Setup */
-.super-footer {
-  width: 100%;
-  padding: 90px 60px;
-  background: radial-gradient(circle at 20% 30%, #0d1a33, #060b16 60%);
-  border-top: 1px solid #1c2940;
-  position: relative;
-  overflow: hidden;
-}
+<!-- ================= EMPLOYER REVIEWS ================= -->
+<section class="section">
+  <h2>What Employers Say</h2>
+  <p>HR & Founders now rely on ECS to reduce hiring risk.</p>
 
-/* Floating glowing blobs */
-.sf-blob {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: #4d92ff33;
-  filter: blur(90px);
-  border-radius: 50%;
-  animation: blobFloat 12s ease-in-out infinite alternate;
-}
+  <div class="card-row">
 
-.sf-blob.two {
-  background: #00eaff33;
-  top: 40%;
-  right: 10%;
-  animation-delay: 2.5s;
-}
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/80?img=56" 
+             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
+        <b>Talent Head — FinTech Co.</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
+        “Verification time dropped by 70%. ECS Score is now part of hiring workflow.”
+      </div>
+    </div>
 
-.sf-blob.three {
-  background: #8a2bff33;
-  top: 10%;
-  right: 40%;
-  width: 230px;
-  height: 230px;
-  filter: blur(70px);
-  animation-delay: 4s;
-}
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.pravatar.cc/80?img=58" 
+             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
+        <b>HR Director — SaaS Startup</b>
+      </div>
+      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
+        “Risk indicators save us from bad hires — ECS is a must-have.”
+      </div>
+    </div>
 
-@keyframes blobFloat {
-  0% { transform: translateY(0px) scale(1); }
-  100% { transform: translateY(-80px) scale(1.2); }
-}
+  </div>
+</section>
+<!-- ================= PARTNERS ================= -->
+<section class="section">
+  <h2>Our Clients & Partners</h2>
+  <p>Companies trusting our verification ecosystem.</p>
 
-/* Stars background */
-.sf-stars {
-  position: absolute;
-  inset: 0;
-  background: url('https://i.ibb.co/GF4CvJ8/stars.png');
-  opacity: .12;
-  animation: starMove 40s linear infinite;
-}
+  <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:30px;">
+    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company A</div>
+    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company B</div>
+    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company C</div>
+  </div>
+</section>
 
-@keyframes starMove {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-800px); }
-}
+<!-- ================= WHY ECS ================= -->
+<section class="section">
+  <h2>Why ECS?</h2>
+  <p>ECS Score converts your career into a verifiable credibility signal.</p>
 
-/* Mouse reactive spotlight */
-.super-footer::before {
-  content: "";
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #4d92ff22, transparent);
-  border-radius: 50%;
-  top: var(--mouseY, 50%);
-  left: var(--mouseX, 50%);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  transition: 0.1s;
-}
+  <div class="card-row">
+    <div class="card"><b>Verified Roles</b><br>Your experience confirmed by employers.</div>
+    <div class="card"><b>Peer Signals</b><br>Colleagues validate credibility.</div>
+    <div class="card"><b>Document Strength</b><br>Stronger documents = higher score.</div>
+  </div>
+</section>
 
-/* Footer content grid */
-.sf-grid {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 5;
-}
 
-.sf-col {
-  width: 260px;
-  margin-bottom: 50px;
-  animation: fadeUp 1.2s ease forwards;
-  opacity: 0;
-}
-
-.sf-col:nth-child(2) { animation-delay: .3s; }
-.sf-col:nth-child(3) { animation-delay: .6s; }
-.sf-col:nth-child(4) { animation-delay: .9s; }
-
-@keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(25px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.sf-col h3 {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 18px;
-  color: white;
-  text-shadow: 0 0 12px #4d92ff55;
-}
-
-.sf-col a {
-  display: block;
-  margin-bottom: 12px;
-  color: #c7d3ec;
-  font-size: 16px;
-  transition: .25s;
-}
-
-.sf-col a:hover {
-  color: #4d92ff;
-  text-shadow: 0 0 12px #4d92ff;
-}
-
-/* Buttons */
-.sf-btn {
-  padding: 10px 20px;
-  background: #102040;
-  border: 1px solid #233b60;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 15px;
-  display: inline-block;
-  margin-top: 12px;
-  transition: .3s;
-}
-
-.sf-btn:hover {
-  background: #1d4aff;
-  border-color: #4d92ff;
-  box-shadow: 0 0 18px #4d92ff88;
-}
-
-/* Bottom strip */
-.sf-copy {
-  text-align: center;
-  margin-top: 40px;
-  padding-top: 20px;
-  color: #b8c3da;
-  border-top: 1px solid #19283d;
-  position: relative;
-  z-index: 5;
-}
-
-</style>
-
+<!-- ================= FOOTER ================= -->
 <div class="super-footer" id="superFooter">
-
   <div class="sf-stars"></div>
   <div class="sf-blob one"></div>
   <div class="sf-blob two"></div>
   <div class="sf-blob three"></div>
 
   <div class="sf-grid">
-
-    <!-- COL 1 -->
     <div class="sf-col">
       <h3>ECS Score</h3>
-      <p style="color:#c7d3ec; line-height:1.6;">
-        C-2 42/A<br>Dwarka, West Delhi, India
-      </p>
-      <p style="margin-top:10px;">✉ contact@ecsscore.com</p>
+      <p>C-2 42/A<br>Dwarka, West Delhi, India</p>
+      <p>✉ contact@ecsscore.com</p>
     </div>
 
-    <!-- COL 2 -->
     <div class="sf-col">
       <h3>Explore</h3>
       <a href="about.html">About</a>
@@ -374,17 +447,14 @@
       <a href="vision.html">Vision</a>
     </div>
 
-    <!-- COL 3 -->
     <div class="sf-col">
       <h3>Legal</h3>
       <a href="privacy.html">Privacy Policy</a>
       <a href="dpdp.html">Data Protection Policy</a>
-
       <a class="sf-btn" href="External Privacy policy (1).pdf" download>⬇ Privacy PDF</a>
       <a class="sf-btn" href="ECS Data Protection Policy (1).pdf" download>⬇ DPDP PDF</a>
     </div>
 
-    <!-- COL 4 -->
     <div class="sf-col">
       <h3>Connect</h3>
       <a>Email: contact@ecsscore.com</a>
@@ -393,24 +463,21 @@
 
   </div>
 
-  <div class="sf-copy">
-    © 2025 ECS Score — India’s Employment Credibility Layer
-  </div>
-
+  <div class="sf-copy">© 2025 ECS Score — India’s Employment Credibility Layer</div>
 </div>
 
-<script>
-/* Mouse-reactive light effect */
-document.getElementById("superFooter").addEventListener("mousemove", (e) => {
-  const rect = e.target.getBoundingClientRect();
-  document.documentElement.style.setProperty('--mouseX', e.clientX - rect.left + "px");
-  document.documentElement.style.setProperty('--mouseY', e.clientY - rect.top + "px");
-});
-</script>
-<!-- ===================== FOOTER END ===================== -->
+
+<!-- ================= JS ================= -->
 
 <script>
-// Animated score meter: 0 → 90 + tick
+function toggleMenu(){
+  document.getElementById("navMenu").classList.toggle("active");
+  document.querySelector(".hamburger").classList.toggle("open");
+}
+</script>
+
+<script>
+/* Score meter animation */
 document.addEventListener('DOMContentLoaded', () => {
   const target = 90;
   let current = 0;
@@ -418,8 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const arc = document.getElementById('scoreArc');
   const tick = document.getElementById('verifiedTick');
   const circumference = 628;
-
-  if(!numEl || !arc || !tick) return;
 
   const interval = setInterval(() => {
     if (current >= target) {
@@ -433,6 +498,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const offset = circumference - (circumference * (current / 100));
     arc.style.strokeDashoffset = offset;
   }, 20);
+});
+</script>
+
+<script>
+/* Footer mouse glow */
+document.getElementById("superFooter").addEventListener("mousemove", (e) => {
+  const rect = e.target.getBoundingClientRect();
+  document.documentElement.style.setProperty('--mouseX', e.clientX - rect.left + "px");
+  document.documentElement.style.setProperty('--mouseY', e.clientY - rect.top + "px");
 });
 </script>
 
