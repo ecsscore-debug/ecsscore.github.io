@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-
 /* GLOBAL */
 body{
     margin:0;
@@ -32,6 +31,84 @@ body{
     to{transform:translateY(-10vh);opacity:1;}
 }
 
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,20,45,0.45);
+    backdrop-filter:blur(12px);
+    z-index:9999;
+    border-bottom:1px solid rgba(120,160,255,0.25);
+}
+.nav-logo{
+    font-size:26px;
+    font-weight:800;
+    background:linear-gradient(90deg,#7fcaff,#e0f3ff);
+    -webkit-background-clip:text;
+    color:transparent;
+    text-decoration:none;
+}
+.nav-links{
+    display:flex;
+    gap:28px;
+    align-items:center;
+}
+.nav-links a{
+    color:#d8e7ff;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:600;
+    transition:0.3s;
+}
+.nav-links a:hover{ color:#7bc6ff; }
+/* HAMBURGER */
+.hamburger{
+    width:30px;
+    height:20px;
+    display:none;
+    flex-direction:column;
+    justify-content:space-between;
+    cursor:pointer;
+}
+.hamburger span{
+    width:100%;
+    height:3px;
+    background:#d8e7ff;
+    border-radius:3px;
+    transition:.3s;
+}
+@media(max-width:850px){
+    .nav-links{
+        position:fixed;
+        top:70px;
+        right:-100%;
+        flex-direction:column;
+        gap:20px;
+        width:230px;
+        height:100vh;
+        padding:30px 20px;
+        background:rgba(10,20,45,0.92);
+        border-left:1px solid rgba(120,160,255,0.25);
+        transition:.4s ease;
+    }
+    .nav-links.active{ right:0; }
+    .hamburger{ display:flex; }
+    .hamburger.open span:nth-child(1){
+        transform:translateY(8px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2){
+        opacity:0;
+    }
+    .hamburger.open span:nth-child(3){
+        transform:translateY(-8px) rotate(-45deg);
+    }
+}
+
 /* HERO */
 .hero{
     padding:190px 20px 80px;
@@ -50,7 +127,7 @@ body{
     font-size:18px;
 }
 
-/******** LAALCH SECTION ********/
+/* LAALCH SECTION */
 .lalach-box{
     margin-top:40px;
     text-align:center;
@@ -78,14 +155,14 @@ body{
     color:transparent;
 }
 
-/******** CONTAINER ********/
+/* CONTAINER */
 .container{
     max-width:1100px;
     margin:50px auto;
     padding:0 20px;
 }
 
-/******** SEARCH BAR ********/
+/* SEARCH BAR */
 .search-bar{
     display:flex;
     justify-content:space-between;
@@ -102,7 +179,7 @@ body{
     color:#fff;
 }
 
-/******** FILTER BUTTONS ********/
+/* FILTER BUTTONS */
 .filters{
     margin-top:20px;
     display:flex;
@@ -122,7 +199,7 @@ body{
     box-shadow:0 0 20px rgba(80,120,255,0.5);
 }
 
-/******** JOB CARD ********/
+/* JOB CARD */
 .job-card{
     background:rgba(20,30,60,0.55);
     padding:24px;
@@ -137,7 +214,6 @@ body{
     transform:translateY(-7px);
     box-shadow:0 0 35px rgba(120,160,255,0.45);
 }
-
 .job-title{
     font-size:23px;
     font-weight:800;
@@ -145,12 +221,9 @@ body{
     -webkit-background-clip:text;
     color:transparent;
 }
-.company{
-    opacity:0.75;
-    margin-top:3px;
-}
+.company{ opacity:0.75; margin-top:3px; }
 
-/******** BADGES ********/
+/* BADGES */
 .badges span{
     display:inline-block;
     background:#4a6cf7;
@@ -162,7 +235,7 @@ body{
     box-shadow:0 0 12px rgba(90,140,255,0.35);
 }
 
-/******** NEW BADGE ********/
+/* NEW BADGE */
 .new-tag{
     position:absolute;
     right:12px;
@@ -179,14 +252,14 @@ body{
     100%{opacity:1;}
 }
 
-/******** DESCRIPTION ********/
+/* DESCRIPTION */
 .desc{
     margin-top:10px;
     opacity:0.85;
     line-height:1.6;
 }
 
-/******** MORE BUTTON ********/
+/* VIEW DETAILS BUTTON */
 .more-btn{
     margin-top:15px;
     display:inline-block;
@@ -198,7 +271,7 @@ body{
     color:white;
 }
 
-/******** PAGINATION ********/
+/* PAGINATION */
 .pagination{
     display:flex;
     justify-content:center;
@@ -211,101 +284,9 @@ body{
     border-radius:10px;
     cursor:pointer;
 }
-.page-btn.active{
-    background:#4a6cf7;
-}
+.page-btn.active{ background:#4a6cf7; }
 
-/* NAVBAR */
-.navbar{
-    position:fixed;
-    top:0; left:0;
-    width:100%;
-    padding:18px 40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:rgba(10,20,45,0.45);
-    backdrop-filter:blur(12px);
-    z-index:9999;
-    border-bottom:1px solid rgba(120,160,255,0.25);
-}
-
-.nav-logo{
-    font-size:26px;
-    font-weight:800;
-    background:linear-gradient(90deg,#7fcaff,#e0f3ff);
-    -webkit-background-clip:text;
-    color:transparent;
-    text-decoration:none;
-}
-
-.nav-links{
-    display:flex;
-    gap:28px;
-    align-items:center;
-}
-
-.nav-links a{
-    color:#d8e7ff;
-    text-decoration:none;
-    font-size:17px;
-    font-weight:600;
-    transition:0.3s;
-}
-.nav-links a:hover{
-    color:#7bc6ff;
-}
-
-/* HAMBURGER (MOBILE) */
-.hamburger{
-    width:30px;
-    height:20px;
-    display:none;
-    flex-direction:column;
-    justify-content:space-between;
-    cursor:pointer;
-}
-.hamburger span{
-    width:100%;
-    height:3px;
-    background:#d8e7ff;
-    border-radius:3px;
-    transition:.3s;
-}
-
-@media(max-width:850px){
-    .nav-links{
-        position:fixed;
-        top:70px;
-        right:-100%;
-        flex-direction:column;
-        gap:20px;
-        width:230px;
-        height:100vh;
-        padding:30px 20px;
-        background:rgba(10,20,45,0.92);
-        border-left:1px solid rgba(120,160,255,0.25);
-        transition:.4s ease;
-    }
-    .nav-links.active{
-        right:0;
-    }
-
-    .hamburger{
-        display:flex;
-    }
-    .hamburger.open span:nth-child(1){
-        transform:translateY(8px) rotate(45deg);
-    }
-    .hamburger.open span:nth-child(2){
-        opacity:0;
-    }
-    .hamburger.open span:nth-child(3){
-        transform:translateY(-8px) rotate(-45deg);
-    }
-}
-
-/******** MODAL ********/
+/* GENERIC MODAL BACKDROP */
 .modal-bg{
     display:none;
     position:fixed;
@@ -315,12 +296,14 @@ body{
     backdrop-filter:blur(8px);
     justify-content:center;
     align-items:center;
-    z-index:999;
+    z-index:9999;
 }
+
+/* MODAL BOX */
 .modal{
     width:90%;
     max-width:550px;
-    background:rgba(20,30,60,0.85);
+    background:rgba(20,30,60,0.93);
     border:1px solid rgba(100,140,255,0.3);
     border-radius:20px;
     padding:28px;
@@ -343,7 +326,7 @@ body{
     border-radius:10px;
     cursor:pointer;
 }
-.apply-modal{
+.apply-modal-btn{
     margin-top:18px;
     display:inline-block;
     padding:10px 16px;
@@ -354,31 +337,55 @@ body{
     font-weight:700;
 }
 
+/* APPLY FORM EXTRA STYLES */
+.apply-form input,
+.apply-form textarea{
+    width:100%;
+    padding:12px;
+    margin:8px 0 18px;
+    border-radius:12px;
+    border:1px solid rgba(120,160,255,0.35);
+    background:rgba(8,16,32,0.9);
+    color:#fff;
+    font-size:15px;
+}
+.apply-form textarea{
+    min-height:110px;
+    resize:vertical;
+}
+.apply-form button{
+    width:100%;
+    padding:14px;
+    font-size:17px;
+    background:linear-gradient(90deg,#4a6cf7,#59dbff);
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+}
 </style>
 </head>
-
 <body>
+
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="nav-left">
-        <a href="/" class="nav-logo">ECSS<span>Score</span></a>
+        <a href="index.html" class="nav-logo">ECSSScore</a>
     </div>
 
     <div class="nav-links" id="navMenu">
-    <a href="index.html">Home</a>
-    <a href="candidates.html">For Candidates</a>
-    <a href="employer-dashboard.html">For Employers</a>
-    <a href="postjobfree.html">Free Job Post</a>
-    <a href="about.html">About</a>
-    <a href="team.html">Team</a>
-    <a href="mission.html">Mission</a>
-    <a href="vision.html">Vision</a>
+        <a href="index.html">Home</a>
+        <a href="candidates.html">For Candidates</a>
+        <a href="employer-dashboard.html">For Employers</a>
+        <a href="postjobfree.html">Free Job Post</a>
+        <a href="about.html">About</a>
+        <a href="team.html">Team</a>
+        <a href="mission.html">Mission</a>
+        <a href="vision.html">Vision</a>
     </div>
 
     <div class="hamburger" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
 </nav>
 
@@ -427,22 +434,92 @@ for(let i=0;i<40;i++){
 
     <!-- PAGINATION -->
     <div class="pagination" id="pagination"></div>
-
 </div>
 
-<!-- MODAL POPUP -->
+<!-- JOB DETAILS MODAL -->
 <div class="modal-bg" id="modalBg">
     <div class="modal">
         <h2 id="modalTitle"></h2>
         <div id="modalCompany"></div>
         <div class="modal-desc" id="modalDesc"></div>
-        <a id="applyLink" class="apply-modal" target="_blank">Apply Now</a>
+        <div class="apply-modal-btn" onclick="openApplyModal()">Apply for this role</div>
         <div class="close-btn" onclick="closeModal()">Close</div>
     </div>
 </div>
+
+<!-- APPLY FORM MODAL (SUPER SIMPLE) -->
+<div id="applyModalBg" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(6px);
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+">
+  <div style="
+    width:90%;
+    max-width:420px;
+    background:#111a33;
+    border:1px solid rgba(120,160,255,0.3);
+    border-radius:16px;
+    padding:25px;
+    animation:fadeIn .25s ease-out;
+  ">
+
+    <h2 style="margin-top:0;font-size:22px;font-weight:800;">Apply for <span id="applyJobTitle"></span></h2>
+
+    <label>Name</label>
+    <input id="fName" style="width:100%;padding:12px;margin:8px 0 14px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <label>Mobile</label>
+    <input id="fMobile" style="width:100%;padding:12px;margin:8px 0 14px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <label>Email</label>
+    <input id="fEmail" type="email" style="width:100%;padding:12px;margin:8px 0 14px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <label>Resume Link (Google Drive / PDF)</label>
+    <input id="fResume" placeholder="Paste link here" style="width:100%;padding:12px;margin:8px 0 14px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <label>Experience (Years)</label>
+    <input id="fExp" style="width:100%;padding:12px;margin:8px 0 14px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <label>Current CTC</label>
+    <input id="fCTC" style="width:100%;padding:12px;margin:8px 0 20px;border-radius:10px;border:none;background:#0b1328;color:white;">
+
+    <button onclick="submitSimpleApplication()" style="
+      width:100%;
+      padding:12px;
+      background:#4a6cf7;
+      border:none;
+      border-radius:12px;
+      font-size:17px;
+      font-weight:700;
+      color:white;
+      cursor:pointer;
+    ">Submit</button>
+
+    <div onclick="closeApplyModal()" style="
+      margin-top:15px;
+      text-align:center;
+      cursor:pointer;
+      color:#ff6b6b;
+    ">Close</div>
+
+  </div>
+</div>
+
+<style>
+@keyframes fadeIn {
+    from {opacity:0; transform:scale(0.92);}
+    to {opacity:1; transform:scale(1);}
+}
+</style>
+
 <script>
 /********** LAALACH METER **********/
-let laTarget = 28; // average salary LPA shown as laalch
+let laTarget = 28;
 let laCurrent = 0;
 let laFill = document.getElementById("laFill");
 let laText = document.getElementById("laText");
@@ -456,16 +533,18 @@ let salaryInterval = setInterval(() => {
     laText.innerText = "Avg Salary: ₹" + laCurrent + " LPA";
 }, 50);
 
-
 /********** DYNAMIC JOB LOAD FROM GOOGLE SHEET **********/
 const API_URL = "https://script.google.com/macros/s/AKfycbx17Wghn4JjP5wbtJycvnD5F5QTHqJMwm-WeI7gd82V-jLRpY3iXA9ViOtpJWFzbbDM/exec";
+const APPLICATION_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx17Wghn4JjP5wbtJycvnD5F5QTHqJMwm-WeI7gd82V-jLRpY3iXA9ViOtpJWFzbbDM/exec";
+ // same web app for POST
 
 let jobs = [];
 let activeFilter = "all";
 let currentPage = 1;
-let perPage = 4; // jobs per page
+let perPage = 4;
+let selectedJob = null;
 
-// Fetch job
+// Fetch jobs
 fetch(API_URL)
     .then(res => res.json())
     .then(data => {
@@ -479,7 +558,6 @@ fetch(API_URL)
                 Error loading jobs. Please try again later.
             </div>`;
     });
-
 
 /********** MAIN JOB RENDER FUNCTION **********/
 function loadJobs() {
@@ -499,7 +577,6 @@ function loadJobs() {
         );
     }
 
-    // PAGINATION CALCULATION
     let total = filtered.length;
     let pages = Math.ceil(total / perPage);
     let start = (currentPage - 1) * perPage;
@@ -510,7 +587,6 @@ function loadJobs() {
     list.innerHTML = "";
 
     pageJobs.forEach(job => {
-        
         let isNew = isNewJob(job.posted_on);
 
         list.innerHTML += `
@@ -544,7 +620,6 @@ function loadJobs() {
     loadPagination(pages);
 }
 
-
 /********** PAGINATION **********/
 function loadPagination(pages) {
     let pag = document.getElementById("pagination");
@@ -556,26 +631,21 @@ function loadPagination(pages) {
         `;
     }
 }
-
 function goToPage(page) {
     currentPage = page;
     loadJobs();
 }
-
 
 /********** FILTER LOGIC **********/
 document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.onclick = () => {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-
         activeFilter = btn.dataset.filter;
         currentPage = 1;
-
         loadJobs();
     };
 });
-
 
 /********** SEARCH LOGIC **********/
 document.getElementById("searchInput").addEventListener("input", () => {
@@ -583,31 +653,77 @@ document.getElementById("searchInput").addEventListener("input", () => {
     loadJobs();
 });
 
-
 /********** NEW TAG LOGIC **********/
 function isNewJob(dateString) {
     if (!dateString) return false;
     let days = (new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24);
-    return days <= 7;  // show NEW for 7 days
+    return days <= 7;
 }
 
-
-/********** MODAL LOGIC **********/
+/********** MODALS **********/
 function openModal(job) {
+    selectedJob = job;
     document.getElementById("modalTitle").innerText = job.title;
     document.getElementById("modalCompany").innerText = job.company + " • " + job.location;
     document.getElementById("modalDesc").innerText = job.description;
-    document.getElementById("applyLink").href = job.apply_link || "#";
-
     document.getElementById("modalBg").style.display = "flex";
 }
-
 function closeModal() {
     document.getElementById("modalBg").style.display = "none";
 }
+function openApplyModal() {
+    document.getElementById("modalBg").style.display = "none"; // close details modal
 
-</script>
-<script>
+    document.getElementById("applyJobTitle").innerText = selectedJob.title;
+    document.getElementById("applyModalBg").style.display = "flex";
+}
+function closeApplyModal() {
+    document.getElementById("applyModalBg").style.display = "none";
+}function closeApplyModal() {
+    document.getElementById("applyModalBg").style.display = "none";
+}
+
+/********** APPLICATION SUBMIT **********/
+function submitSimpleApplication() {
+
+  const payload = {
+    type: "application",
+
+    jobTitle: selectedJob.title,
+    jobCompany: selectedJob.company,
+    jobLocation: selectedJob.location,
+
+    name: document.getElementById("fName").value,
+    mobile: document.getElementById("fMobile").value,
+    email: document.getElementById("fEmail").value,
+
+    exp: document.getElementById("fExp").value,
+    ctc: document.getElementById("fCTC").value,
+
+    expectedCTC: document.getElementById("fCTC").value,
+    notice: "",
+
+    resume: document.getElementById("fResume").value,
+    pitch: ""
+  };
+
+  fetch(APPLICATION_SCRIPT_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify(payload)
+  })
+  .then(r=>r.json())
+  .then(res=>{
+      alert("Application Submitted Successfully!");
+      closeApplyModal();
+  })
+  .catch(err=>{
+      console.log(err);
+      alert("Network error!");
+  });
+}
+
+/********** NAV MENU TOGGLE **********/
 function toggleMenu(){
     document.getElementById("navMenu").classList.toggle("active");
     document.querySelector(".hamburger").classList.toggle("open");
