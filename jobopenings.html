@@ -677,69 +677,72 @@ function openApplyModal() {
     document.getElementById("applyJobTitle").innerText = selectedJob.title;
     document.getElementById("applyModalBg").style.display = "flex";
 }
+</script>
+    <script>
+
+/********** MODALS **********/
+function openModal(job) {
+    selectedJob = job;
+    document.getElementById("modalTitle").innerText = job.title;
+    document.getElementById("modalCompany").innerText = job.company + " • " + job.location;
+    document.getElementById("modalDesc").innerText = job.description;
+    document.getElementById("modalBg").style.display = "flex";
+}
+function closeModal() {
+    document.getElementById("modalBg").style.display = "none";
+}
+function openApplyModal() {
+    document.getElementById("modalBg").style.display = "none";
+    document.getElementById("applyJobTitle").innerText = selectedJob.title;
+    document.getElementById("applyModalBg").style.display = "flex";
+}
 function closeApplyModal() {
-    document.getElementById("applyModalBg").style.display = "none";
-}function closeApplyModal() {
     document.getElementById("applyModalBg").style.display = "none";
 }
 
-<script>
-/********** APPLICATION SUBMIT (FINAL) **********/
+
+/********** APPLICATION SUBMIT **********/
 function submitSimpleApplication() {
 
-  if (!selectedJob) {
-    alert("Please select a job first.");
-    return;
-  }
-
-  // ---- payload keys EXACTLY match Apps Script ----
   const payload = {
     type: "application",
-
-    jobTitle:    selectedJob.title,
-    jobCompany:  selectedJob.company,
+    jobTitle: selectedJob.title,
+    jobCompany: selectedJob.company,
     jobLocation: selectedJob.location,
 
-    name:   document.getElementById("fName").value,
-    email:  document.getElementById("fEmail").value,
+    name: document.getElementById("fName").value,
+    email: document.getElementById("fEmail").value,
     mobile: document.getElementById("fMobile").value,
 
-    exp:  document.getElementById("fExp").value,
-    ctc:  document.getElementById("fCTC").value,
-    // abhi expected = current hi rakh rahe hain
+    exp: document.getElementById("fExp").value,
+    ctc: document.getElementById("fCTC").value,
     expectedCTC: document.getElementById("fCTC").value,
-
     notice: "",
     resume: document.getElementById("fResume").value,
-    pitch:  ""
+    pitch: ""
   };
 
-  // ---- IMPORTANT: use no-cors so browser network error na de ----
   fetch(APPLICATION_SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type":"application/json" },
     body: JSON.stringify(payload)
-  })
-  .then(() => {
-      // no-cors me response read nahi kar sakte, 
-      // lekin request Google Apps Script tak chali jaati hai.
-      alert("Application submitted! Our team will review it.");
+  }).then(() => {
+      alert("Application submitted!");
       closeApplyModal();
-
-      // Optional: form clear karna ho to
-      document.getElementById("fName").value   = "";
-      document.getElementById("fMobile").value = "";
-      document.getElementById("fEmail").value  = "";
-      document.getElementById("fResume").value = "";
-      document.getElementById("fExp").value    = "";
-      document.getElementById("fCTC").value    = "";
-  })
-  .catch(err => {
-      alert("Request send karne me issue aaya: " + err.message);
+  }).catch(err => {
+      alert("Network error: " + err);
   });
 }
+
+/********** NAV MENU **********/
+function toggleMenu(){
+    document.getElementById("navMenu").classList.toggle("active");
+    document.querySelector(".hamburger").classList.toggle("open");
+}
+
 </script>
+
 
 /********** NAV MENU TOGGLE **********/
 function toggleMenu(){
