@@ -1,94 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8" />
-<title>ECS Score — About Us</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
-<style>
-  body { margin:0; font-family:'Inter',sans-serif; background:#0B0F1F; color:#d9d9d9; }
-  a { text-decoration:none; color:#d9d9d9; }
-
-  nav {
-    width:100%; background:#0B0F1F; padding:18px 50px;
-    display:flex; justify-content:space-between; align-items:center;
-    border-bottom:1px solid #2a3350; position:sticky; top:0; z-index:20;
-  }
-  nav .right a { margin-left:40px; font-size:18px; font-weight:600; position:relative; }
-  nav .right a:hover { color:#003BFF; }
-  nav .right a::after {
-    content:""; position:absolute; bottom:-4px; left:0; height:3px; width:0%; background:#003BFF;
-    transition:.3s;
-  }
-  nav .right a:hover::after { width:100%; }
-
-  .section { padding:80px 50px; max-width:1100px; margin:auto; }
-  h1 { font-size:48px; font-weight:800; color:#fff; margin-bottom:20px; }
-  p { font-size:20px; opacity:.85; line-height:1.6; }
-
-  .highlight-box {
-    background:#11182b; border:1px solid #2a3350; padding:30px; border-radius:14px;
-    margin-top:40px; font-size:18px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — ECS Score</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { navy: { 900: '#0a1224', 800: '#0d162c', 700: '#111a33' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0a1224; }
+    .glass {
+      background: rgba(17, 26, 51, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(77, 146, 255, 0.12);
+    }
+    .nav-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(10, 18, 36, 0.85);
+    }
+  </style>
 </head>
-<body>
+<body class="font-sans text-white antialiased">
 
-<nav>
-  <div style="font-size:28px; font-weight:800; color:#fff;">ECS Score</div>
-  <div class="right">
-    <a href="index.html">Home</a>
-    <a href="candidates.html">For Candidates</a>
-    <a href="employer-dashboard.html">For Employers</a>
-    <a href="atsresume.html">ATS-Resume at 99</a>
-    <a href="postjobfree.html">Free Job Post</a>
-    <a href="team.html">Team</a>
-    <a href="mission.html">Mission</a>
-    <a href="vision.html">Vision</a>
-  </div>
-</nav>
+  <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-lg">E</div>
+        <div>
+          <div class="font-bold text-lg leading-none">ECS Score</div>
+          <div class="text-[10px] text-blue-300/70 tracking-wider">EMPLOYMENT CREDIBILITY</div>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="candidates.html" class="hover:text-white transition">For Candidates</a>
+        <a href="employers.html" class="hover:text-white transition">For Employers</a>
+        <a href="about.html" class="text-white">About</a>
+        <a href="vision.html" class="hover:text-white transition">Vision</a>
+        <a href="mission.html" class="hover:text-white transition">Mission</a>
+      </div>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-sm font-semibold transition">
+        Get My Score →
+      </a>
+    </div>
+  </nav>
 
-<section class="section">
-  <h1>About ECS Score</h1>
-  <p>
-    ECS Score is building India's first <strong>Employment Credibility Layer</strong> — a verified, portable
-    and tamper-proof identity for every professional. Just like CIBIL transformed how lenders evaluate financial
-    trustworthiness, ECS is redefining how employers assess <em>employment trustworthiness</em>.
-  </p>
+  <section class="pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-sm text-blue-400 font-medium mb-3">About ECS Score</div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+        Building India's first<br>
+        <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Employment Credibility Layer</span>
+      </h1>
+      
+      <div class="prose prose-invert max-w-none space-y-6 text-slate-300 leading-relaxed">
+        <p class="text-lg">
+          ECS Score is building a verified, portable and tamper-proof identity for every professional — just like CIBIL transformed how lenders evaluate financial trustworthiness.
+        </p>
+        
+        <p>
+          For decades, hiring has relied on resumes, claims, and trust-based assumptions. But with rising fake experience, unverifiable roles, inflated claims, and inconsistent references — India needs a <strong class="text-white">standardized trust protocol</strong>.
+        </p>
 
-  <p>
-    For decades, hiring has relied on resumes, claims, and trust-based assumptions. But with rising fake experience,
-    unverifiable roles, inflated claims, and inconsistent references — India needs a <strong>standardized trust protocol</strong>.
-    ECS solves this by combining employer validation, peer endorsements, and document authentication into one unified
-    <strong>ECS Score (0–100)</strong>.
-  </p>
+        <p>
+          ECS solves this by combining employer validation, peer endorsements, and document authentication into one unified <strong class="text-white">ECS Score (0–100)</strong>.
+        </p>
 
-  <div class="highlight-box">
-    <strong>We are not a background verification company.</strong><br><br>
-    We are building a <strong>career passport</strong> — a verified, portable identity layer for professionals,
-    freelancers, employers, platforms, and ecosystems.
-  </div>
+        <div class="glass rounded-2xl p-8 my-10">
+          <h2 class="text-xl font-semibold text-white mb-3">We are not a background verification company.</h2>
+          <p class="text-slate-300">
+            We are building a <strong class="text-white">career passport</strong> — a verified, portable identity layer for professionals, freelancers, employers, platforms, and ecosystems.
+          </p>
+        </div>
 
-  <h2 style="margin-top:60px; font-size:36px; font-weight:800; color:#fff;">Why We Exist</h2>
-  <p>
-    Because trust is broken. Resumes are unreliable. References are inconsistent. Screenshots are misused. And companies
-    lose millions every year due to poor hiring accuracy.
-  </p>
+        <h2 class="text-2xl font-bold text-white mt-12 mb-4">Why We Exist</h2>
+        <p>
+          Because trust is broken. Resumes are unreliable. References are inconsistent. Screenshots are misused. And companies lose millions every year due to poor hiring accuracy.
+        </p>
+        <p>
+          ECS is here to fix that — not with opinions, but with <strong class="text-white">proof</strong>.
+        </p>
 
-  <p>
-    ECS is here to fix that — not with opinions, but with proof.
-  </p>
+        <h2 class="text-2xl font-bold text-white mt-12 mb-4">Our Philosophy</h2>
+        <p>
+          Every professional deserves a <strong class="text-white">fair chance</strong>.<br>
+          Every employer deserves <strong class="text-white">truth</strong>.
+        </p>
+        <p>
+          That is the foundation of the credibility infrastructure we’re building.
+        </p>
+      </div>
 
-  <h2 style="margin-top:60px; font-size:36px; font-weight:800; color:#fff;">Our Philosophy</h2>
-  <p>
-    Every professional deserves a <strong>fair chance</strong>. Every employer deserves <strong>truth</strong>.
-    That is the foundation of the credibility infrastructure we’re building.
-  </p>
-</section>
+      <div class="mt-14 flex flex-wrap gap-4">
+        <a href="vision.html" class="px-6 py-3 rounded-xl glass hover:bg-white/5 font-medium transition">Our Vision →</a>
+        <a href="mission.html" class="px-6 py-3 rounded-xl glass hover:bg-white/5 font-medium transition">Our Mission →</a>
+        <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-400 font-medium transition">Get Your Score →</a>
+      </div>
+    </div>
+  </section>
 
-<footer style="margin-top:80px; background:#0B0F1F; padding:50px; text-align:center; color:#777; border-top:1px solid #2a3350;">
-  © 2025 ECS Score — India’s Employment Credibility Layer
-</footer>
-
+  <footer class="border-t border-white/5 py-10 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+      <div>© 2025–2026 ECS Score</div>
+      <div class="flex gap-6">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="candidates.html" class="hover:text-white">Candidates</a>
+        <a href="employers.html" class="hover:text-white">Employers</a>
+        <a href="mailto:contact@ecsscore.com" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
