@@ -1,515 +1,379 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<title>ECS Score — Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --bg:#0a1224;
-    --card:#111a33;
-    --border:#263455;
-    --blue:#4d92ff;
-    --light:#c7d3ec;
-  }
-  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;}
-  a{text-decoration:none;color:white;}
-
-  /* ================= NAVBAR ================= */
-  .navbar{
-    width:100%;
-    padding:18px 35px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#0d162c;
-    border-bottom:0px solid var(--border);
-    position:sticky;
-    top:0;
-    z-index:9999;
-  }
-  .nav-logo{
-    font-size:28px;
-    font-weight:800;
-    background:linear-gradient(90deg,#4d92ff,#9bb8ff);
-    -webkit-background-clip:text;
-    color:transparent;
-  }
-  .nav-links{
-    display:flex;
-    gap:25px;
-    align-items:center;
-  }
-  .nav-links a{
-    font-size:16px;
-    font-weight:600;
-    color:var(--light);
-  }
-  .nav-links a:hover{
-    color:var(--blue);
-  }
-
-  /* DROPDOWN */
-  .dropdown{position:relative;}
-  .dropbtn{
-    background:none;border:none;color:var(--light);
-    font-size:16px;font-weight:600;cursor:pointer;
-  }
-  .dropbtn:hover{color:var(--blue);}
-  .dropdown-content{
-    display:none;position:absolute;top:25px;
-    background:#0d162cef;border:1px solid var(--border);
-    border-radius:10px;backdrop-filter:blur(10px);
-    min-width:180px;padding:8px 0;
-  }
-  .dropdown-content a{
-    display:block;padding:8px 14px;color:var(--light);
-  }
-  .dropdown-content a:hover{
-    background:#1b233a;color:var(--blue);
-  }
-  .dropdown:hover .dropdown-content{display:block;}
-
-  /* HAMBURGER */
-  .hamburger{
-    width:30px;height:22px;display:none;
-    flex-direction:column;justify-content:space-between;
-    cursor:pointer;
-  }
-  .hamburger span{
-    width:100%;height:3px;background:white;border-radius:3px;
-    transition:.3s;
-  }
-
-  @media(max-width:900px){
-    .hamburger{display:flex;}
-
-    .nav-links{
-      position:fixed;right:-100%;top:70px;
-      width:260px;height:100vh;
-      background:#0d162ef0;border-left:1px solid var(--border);
-      display:flex;flex-direction:column;
-      gap:22px;padding:35px 20px;transition:.4s ease;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECS Score — Employment Credibility Score</title>
+  <meta name="description" content="India's Employment Credibility Layer. Get your verified career score — like CIBIL for jobs." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dark: {
+              950: '#050505',
+              900: '#0a0a0a',
+              800: '#111111',
+              700: '#1a1a1a',
+            },
+            accent: {
+              DEFAULT: '#f97316',
+              soft: '#fb923c',
+              muted: '#ea580c',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 5s ease-in-out infinite',
+            'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            glowPulse: {
+              '0%, 100%': { boxShadow: '0 0 40px 8px rgba(249, 115, 22, 0.15)' },
+              '50%': { boxShadow: '0 0 60px 15px rgba(249, 115, 22, 0.25)' },
+            }
+          }
+        }
+      }
     }
-    .nav-links.active{right:0;}
-
-    .dropdown-content{
-      position:relative;top:0;background:none;border:none;
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #050505; }
+    .glass {
+      background: rgba(17, 17, 17, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(249, 115, 22, 0.12);
     }
-  }
-
-  /* BLINKING Current Openings */
-  .blink-box{
-    text-align:center;background:#111a33;
-    padding:4px 0;border-bottom:1px solid var(--border);
-  }
-  .blink-link{
-    font-size:18px;font-weight:700;color:#4d92ff;
-    animation:blink 1.5s infinite;
-  }
-  @keyframes blink{
-    0%{opacity:1;} 50%{opacity:.4;} 100%{opacity:1;}
-  }
-
-  /* ================= HERO ================= */
-  .hero{
-    padding:90px 50px 80px;
-    background:linear-gradient(135deg,#0f1c3d,#0a1224,#0f1c3d);
-    display:flex;justify-content:space-between;
-    align-items:center;gap:40px;position:relative;overflow:hidden;
-  }
-  @media(max-width:900px){
-    .hero{flex-direction:column;text-align:center;padding:150px 25px 80px;}
-  }
-  .hero h1{
-    font-size:64px;font-weight:900;line-height:1.15;margin:0;
-    background:linear-gradient(90deg,#4d92ff,#9bb8ff);
-    -webkit-background-clip:text;color:transparent;
-  }
-  @media(max-width:900px){.hero h1{font-size:44px;}}
-  .hero p{
-    font-size:22px;color:var(--light);
-    max-width:560px;line-height:1.6;margin-top:18px;
-  }
-  .cta-btn{
-    margin-top:30px;padding:16px 38px;
-    background:var(--blue);border:none;border-radius:12px;
-    font-size:20px;font-weight:700;color:white;
-    cursor:pointer;box-shadow:0 0 18px rgba(77,146,255,0.45);
-  }
-
-  /* Score meter */
-  .meter-box{
-    width:240px;height:240px;border-radius:50%;
-    border:6px solid #1a2642;box-shadow:0 0 28px rgba(77,146,255,0.55);
-    position:relative;overflow:hidden;
-  }
-
-  /* ================= SECTIONS ================= */
-  .section{
-    padding:60px 50px;max-width:1200px;margin:auto;text-align:center;
-  }
-  .section h2{
-    font-size:42px;font-weight:800;margin-bottom:20px;
-  }
-  .section p{
-    font-size:20px;color:var(--light);
-  }
-  .card-row{
-    display:flex;gap:25px;margin-top:40px;flex-wrap:wrap;
-  }
-  .card{
-    flex:1;min-width:260px;background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;padding:35px;
-    font-size:17px;color:var(--light);
-  }
-  .card:hover{border-color:var(--blue);}
-
-  /* ================= FOOTER ================= */
-  .super-footer{
-    width:100%;padding:90px 60px;
-    background:radial-gradient(circle at 20% 30%,#0d1a33,#060b16 60%);
-    border-top:1px solid #1c2940;
-    position:relative;overflow:hidden;
-  }
-  .sf-stars{
-    position:absolute;inset:0;
-    background:url('https://i.ibb.co/GF4CvJ8/stars.png');
-    opacity:.12;animation:stars 45s linear infinite;
-  }
-  @keyframes stars{
-    0%{transform:translateY(0);}100%{transform:translateY(-900px);}
-  }
-  .sf-blob{
-    position:absolute;width:300px;height:300px;
-    background:#4d92ff33;filter:blur(90px);
-    border-radius:50%;animation:blob 12s ease-in-out infinite alternate;
-  }
-  .sf-blob.two{background:#00eaff33;top:40%;right:10%;animation-delay:2s;}
-  .sf-blob.three{background:#8a2bff33;top:12%;right:40%;animation-delay:4s;}
-  @keyframes blob{
-    0%{transform:translateY(0) scale(1);}
-    100%{transform:translateY(-60px) scale(1.2);}
-  }
-
-  .sf-grid{
-    display:flex;justify-content:space-between;flex-wrap:wrap;position:relative;z-index:5;
-  }
-  .sf-col{width:260px;margin-bottom:50px;color:var(--light);}
-  .sf-col h3{font-size:22px;font-weight:800;margin-bottom:15px;color:white;}
-  .sf-col a{display:block;margin:8px 0;color:var(--light);}
-  .sf-col a:hover{color:var(--blue);}
-
-  .sf-btn{
-    padding:10px 20px;background:#102040;
-    border:1px solid #233b60;border-radius:10px;color:white;
-    display:inline-block;margin-top:10px;
-  }
-
-  .sf-copy{
-    text-align:center;margin-top:40px;padding-top:20px;
-    border-top:1px solid #1c2940;color:#b6c4e0;
-  }
-</style>
-
+    .passport-card {
+      background: rgba(17, 17, 17, 0.85);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      animation: float 5s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
+    }
+    .nav-blur {
+      backdrop-filter: blur(24px);
+      background: rgba(5, 5, 5, 0.9);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .score-ring {
+      background: conic-gradient(from -90deg, #f97316 0deg, #fb923c 280deg, #1a1a1a 280deg 360deg);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fb923c, #f97316);
+    }
+  </style>
 </head>
-<body>
+<body class="font-sans text-white antialiased">
 
-<!-- ================= NAV ================= -->
-<nav class="navbar">
-  <a class="nav-logo" href="/">ECS Score</a>
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-lg shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold text-lg tracking-tight">ECS Score</span>
+      </a>
 
-  <div class="nav-links" id="navMenu">
-    <a href="candidates.html">For Candidates</a>
-    <a href="employer-dashboard.html">For Employers</a>
-    <a href="atsresume.html">Resume Rescue</a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+        <a href="candidates.html" class="hover:text-white transition">For Candidates</a>
+        <a href="employers.html" class="hover:text-white transition">For Employers</a>
+        <a href="about.html" class="hover:text-white transition">About</a>
+        <a href="vision.html" class="hover:text-white transition">Vision</a>
+        <a href="mission.html" class="hover:text-white transition">Mission</a>
+      </div>
 
-    <div class="dropdown">
-      <button class="dropbtn">Free Job Post ▾</button>
-      <div class="dropdown-content">
-        <a href="postjobfree.html">Post a Job</a>
-        <a href="jobopenings.html">Current Openings</a>
+      <div class="flex items-center gap-3">
+        <a href="https://tally.so/r/rjyj2p" target="_blank" class="hidden sm:inline-flex px-5 py-2.5 rounded-xl btn-primary text-sm font-semibold transition shadow-lg shadow-orange-500/20">
+          Get Your Score →
+        </a>
+        <button id="mobileMenuBtn" class="md:hidden p-2 text-zinc-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
       </div>
     </div>
 
-    <a href="about.html">About</a>
-    <a href="team.html">Team</a>
-    <a href="mission.html">Mission</a>
-    <a href="vision.html">Vision</a>
-  </div>
-
-  <div class="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
-</nav>
-
-<!-- BLINKING CTA -->
-<div class="blink-box">
-  <a href="jobopenings.html" class="blink-link">🔥 View Current Openings →</a>
-  <a href= class = "Blink-link"> Website Under Maintenance : Our website is currently undergoing maintenance. We apologize for any inconvenience and appreciate your patience. We’ll be back online shortly. Thank you for your understanding! →</a>
-</div>
-
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="hero-text">
-    <h1 id="heroHeadline" class="hero-rotate"></h1>
-
-<style>
-.hero-rotate{
-  font-size:64px;
-  font-weight:900;
-  line-height:1.15;
-  margin:0;
-  background:linear-gradient(90deg,#4d92ff,#9bb8ff);
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:fadeIn 0.6s ease forwards;
-}
-
-@keyframes fadeIn{
-  0%{opacity:0; transform:translateY(10px);}
-  100%{opacity:1; transform:translateY(0);}
-}
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const lines = [
-    "The Credibility Layer<br>For Modern Careers.",
-    "Easy path don’t exist<br>but 50LPA+ exist.",
-    "Luck Path doesn't<br>but ECS does.",
-    "Motivation don't last.<br>your Score does.",
-    "Weekends don't exist.<br>dream jobs do."
-  ];
-
-  let i = 0;
-  const el = document.getElementById("heroHeadline");
-
-  function updateText(){
-    el.style.opacity = 0;
-    setTimeout(() => {
-      el.innerHTML = lines[i];
-      el.style.opacity = 1;
-      i = (i + 1) % lines.length;
-    }, 300);
-  }
-
-  updateText();
-  setInterval(updateText, 3500);
-});
-</script>
-    <p>
-      ECS Score converts your experience into trusted proof — verified history, document checks,
-      peer credibility & one universal score.
-    </p>
-    <a href="https://tally.so/r/rjyj2p" target="_blank">
-      <button class="cta-btn">Get Your Score →</button>
-    </a>
-  </div>
-
-  <div class="meter-box">
-    <svg id="scoreMeter" width="240" height="240" viewBox="0 0 240 240" style="transform:rotate(-90deg);">
-      <circle cx="120" cy="120" r="100" stroke="#1a2642" stroke-width="20" fill="none" />
-      <circle id="scoreArc" cx="120" cy="120" r="100" stroke="#4d91ff" stroke-width="20" fill="none"
-        stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628" />
-    </svg>
-    <div id="scoreNumber"
-      style="position:absolute; inset:0; display:flex; justify-content:center; align-items:center; font-size:48px; font-weight:800; color:#ffffff;">
-      0
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 bg-dark-950 px-6 py-4 space-y-3">
+      <a href="candidates.html" class="block py-2 text-zinc-400">For Candidates</a>
+      <a href="employers.html" class="block py-2 text-zinc-400">For Employers</a>
+      <a href="about.html" class="block py-2 text-zinc-400">About</a>
+      <a href="vision.html" class="block py-2 text-zinc-400">Vision</a>
+      <a href="mission.html" class="block py-2 text-zinc-400">Mission</a>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="block py-2 text-orange-400 font-medium">Get Your Score →</a>
     </div>
-    <div id="verifiedTick"
-      style="position:absolute; bottom:20px; right:20px; font-size:42px; color:#4dff88; opacity:0; transition:0.6s;">
-      ✔
-    </div>
-  </div>
-</section>
+  </nav>
 
-<!-- ================= USER REVIEWS SECTION ================= -->
-<section class="section">
-  <h2>What Professionals Say</h2>
-  <p>Thousands trust ECS Score to verify their careers.</p>
-
-  <div class="card-row">
-
-    <div class="card">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/80?img=11" 
-             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
-        <b>Priya S. — Marketing Manager</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
-        “ECS Score helped me secure a better offer because verification was pre-done.”
-      </div>
+  <!-- ==================== HERO ==================== -->
+  <section class="relative pt-28 pb-14 px-6 overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-16 left-1/4 w-[420px] h-[420px] bg-orange-600/10 rounded-full blur-[130px]"></div>
+      <div class="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-orange-500/8 rounded-full blur-[110px]"></div>
     </div>
 
-    <div class="card">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/80?img=22" 
-             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
-        <b>Rohit V. — Software Engineer</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
-        “My employer didn’t need to run separate checks — ECS made it smooth.”
-      </div>
-    </div>
+    <div class="max-w-6xl mx-auto relative">
+      <!-- Reduced gap here -->
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-6 items-center">
 
-    <div class="card">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/80?img=47" 
-             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
-        <b>Neha R. — HR Professional</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
-        “Peer trust signals + verified experience = total credibility layer.”
-      </div>
-    </div>
+        <!-- LEFT CONTENT -->
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300 text-xs font-medium mb-5">
+            <span class="text-orange-400">✦</span>
+            YOUR CAREER. VERIFIED. ELEVATED.
+          </div>
 
-  </div>
-</section>
+          <h1 class="text-5xl sm:text-[3.4rem] font-extrabold leading-[1.1] mb-5 tracking-tight">
+            Stand Out.<br>
+            Get Hired.<br>
+            <span class="gradient-text">With Confidence.</span>
+          </h1>
 
-<!-- ================= EMPLOYER REVIEWS ================= -->
-<section class="section">
-  <h2>What Employers Say</h2>
-  <p>HR & Founders now rely on ECS to reduce hiring risk.</p>
+          <p class="text-base text-zinc-400 mb-7 max-w-md leading-relaxed">
+            ECS Score is your verified career passport. Showcase your strengths, earn trust, and unlock opportunities that match your potential.
+          </p>
 
-  <div class="card-row">
+          <div class="flex flex-wrap gap-3 mb-6">
+            <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-6 py-3 rounded-xl btn-primary font-semibold transition shadow-xl shadow-orange-500/20 flex items-center gap-2 text-sm">
+              Get Your ECS Score →
+            </a>
+            <a href="#features" class="px-6 py-3 rounded-xl glass hover:bg-white/5 font-semibold transition flex items-center gap-2 text-sm">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+              See How It Works
+            </a>
+          </div>
 
-    <div class="card">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/80?img=56" 
-             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
-        <b>Talent Head — FinTech Co.</b>
-      </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
-        “Verification time dropped by 70%. ECS Score is now part of hiring workflow.”
+          <div class="flex items-center gap-2 text-sm text-zinc-500">
+            <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Trusted by 50,000+ professionals and top companies.
+          </div>
+        </div>
+
+        <!-- RIGHT: CAREER PASSPORT CARD (with animation) -->
+        <div class="relative flex justify-center lg:justify-end">
+          <div class="passport-card rounded-2xl p-6 w-full max-w-[380px]">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-xs font-bold">E</div>
+                <span class="font-semibold text-sm">ECS Score</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full border border-green-500/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                Verified
+              </div>
+            </div>
+
+            <div class="text-sm text-zinc-400 mb-1">Career Passport</div>
+
+            <!-- Score + Checklist -->
+            <div class="flex gap-5 items-start mb-5">
+              <!-- Circular Score -->
+              <div class="relative w-24 h-24 shrink-0">
+                <div class="absolute inset-0 rounded-full score-ring"></div>
+                <div class="absolute inset-2 rounded-full bg-dark-900 flex flex-col items-center justify-center">
+                  <div class="text-2xl font-bold">91</div>
+                  <div class="text-[10px] text-zinc-500">/100</div>
+                </div>
+              </div>
+
+              <!-- Verified items -->
+              <div class="flex-1 space-y-2 pt-0.5">
+                <div class="flex items-center gap-2 text-sm">
+                  <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span class="text-zinc-300">Skills Verified</span>
+                  <span class="ml-auto text-xs text-green-400">Verified</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                  <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span class="text-zinc-300">Experience Confirmed</span>
+                  <span class="ml-auto text-xs text-green-400">Verified</span>
+                </div>
+                <div class="flex items-center gap-2 text-sm">
+                  <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <span class="text-zinc-300">Education Confirmed</span>
+                  <span class="ml-auto text-xs text-green-400">Verified</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Score label -->
+            <div class="mb-4">
+              <div class="text-sm font-medium">ECS Score</div>
+              <div class="text-xs text-zinc-500">Excellent · Top 7% of peers</div>
+            </div>
+
+            <!-- Peer Comparison -->
+            <div class="mb-5">
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="text-zinc-500">PEER COMPARISON</span>
+                <span class="text-zinc-400">You're ahead of 93% of peers</span>
+              </div>
+              <div class="h-1.5 bg-dark-700 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-orange-500 to-orange-400 rounded-full" style="width:93%"></div>
+              </div>
+              <div class="flex items-center gap-2 mt-2">
+                <div class="flex -space-x-2">
+                  <div class="w-5 h-5 rounded-full bg-orange-500 border-2 border-dark-900"></div>
+                  <div class="w-5 h-5 rounded-full bg-orange-400 border-2 border-dark-900"></div>
+                  <div class="w-5 h-5 rounded-full bg-orange-300 border-2 border-dark-900"></div>
+                </div>
+                <span class="text-xs text-zinc-500">+2K</span>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-2.5">
+              <button class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Download Passport
+              </button>
+              <button class="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="card">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://i.pravatar.cc/80?img=58" 
-             style="width:65px;height:65px;border-radius:50%;border:2px solid var(--blue);">
-        <b>HR Director — SaaS Startup</b>
+  <!-- ==================== TRUSTED LOGOS ==================== -->
+  <section class="py-9 px-6 border-y border-white/5">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center text-xs text-zinc-600 tracking-wider uppercase mb-5">Trusted by Innovative Companies</div>
+      <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-3 opacity-50">
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Google</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Microsoft</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Stripe</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Airbnb</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Notion</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">Shopify</span>
+        <span class="text-base font-semibold text-zinc-400 tracking-tight">NVIDIA</span>
       </div>
-      <div style="margin-top:10px;">⭐⭐⭐⭐⭐<br>
-        “Risk indicators save us from bad hires — ECS is a must-have.”
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES ==================== -->
+  <section id="features" class="py-18 px-6 py-16">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="text-sm text-orange-400/80 font-medium mb-2 tracking-wide">BUILT FOR YOUR CAREER JOURNEY</div>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-3">Everything you need to grow, prove, and win.</h2>
+        <p class="text-zinc-400 max-w-xl mx-auto text-sm">From scoring to sharing, ECS Score gives you the tools to take control of your career narrative.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+        <!-- Card 1 -->
+        <div class="glass rounded-2xl p-6 hover:border-orange-500/25 transition group">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="text-xs font-semibold text-orange-400 tracking-wider mb-1.5">SCORE</div>
+          <h3 class="text-lg font-semibold mb-2">Get Your ECS Score</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">Complete a verified assessment in minutes and receive your ECS Score. Data-backed. Bias-checked. Industry-aligned.</p>
+          <a href="https://tally.so/r/rjyj2p" target="_blank" class="text-sm text-orange-400 font-medium group-hover:underline">Learn More →</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass rounded-2xl p-6 hover:border-orange-500/25 transition group">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="text-xs font-semibold text-orange-400 tracking-wider mb-1.5">VERIFY</div>
+          <h3 class="text-lg font-semibold mb-2">Build Verified Credibility</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">Connect your experience, skills, and education. We verify what matters so employers can trust every detail.</p>
+          <a href="candidates.html" class="text-sm text-orange-400 font-medium group-hover:underline">Learn More →</a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass rounded-2xl p-6 hover:border-orange-500/25 transition group">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div class="text-xs font-semibold text-orange-400 tracking-wider mb-1.5">SHARE</div>
+          <h3 class="text-lg font-semibold mb-2">Share Your Passport</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed mb-4">Export or share your career passport anywhere. Stand out in applications, LinkedIn, interviews, and beyond.</p>
+          <a href="candidates.html" class="text-sm text-orange-400 font-medium group-hover:underline">Learn More →</a>
+        </div>
+      </div>
+
+      <div class="text-center mt-9 text-sm text-zinc-600">
+        Your data is secure, private, and never shared without your permission.
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
-<!-- ================= PARTNERS ================= -->
-<section class="section">
-  <h2>Our Clients & Partners</h2>
-  <p>Companies trusting our verification ecosystem.</p>
-
-  <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:30px;">
-    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company A</div>
-    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company B</div>
-    <div style="width:140px;height:60px;background:#1a2742;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#4d92ff;font-weight:700;">Company C</div>
-  </div>
-</section>
-
-<!-- ================= WHY ECS ================= -->
-<section class="section">
-  <h2>Why ECS?</h2>
-  <p>ECS Score converts your career into a verifiable credibility signal.</p>
-
-  <div class="card-row">
-    <div class="card"><b>Verified Roles</b><br>Your experience confirmed by employers.</div>
-    <div class="card"><b>Peer Signals</b><br>Colleagues validate credibility.</div>
-    <div class="card"><b>Document Strength</b><br>Stronger documents = higher score.</div>
-  </div>
-</section>
-
-
-<!-- ================= FOOTER ================= -->
-<div class="super-footer" id="superFooter">
-  <div class="sf-stars"></div>
-  <div class="sf-blob one"></div>
-  <div class="sf-blob two"></div>
-  <div class="sf-blob three"></div>
-
-  <div class="sf-grid">
-    <div class="sf-col">
-      <h3>ECS Score</h3>
-      <p>C-2 42/A<br>Dwarka, West Delhi, India</p>
-      <p>✉ contact@ecsscore.com</p>
+  <!-- ==================== FINAL CTA ==================== -->
+  <section class="py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-3">Ready to stand out with proof?</h2>
+      <p class="text-zinc-400 mb-7 text-sm">Get your verified ECS Score in under a minute.</p>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="inline-flex px-8 py-3.5 rounded-xl btn-primary font-semibold transition shadow-xl shadow-orange-500/20">
+        Get Your ECS Score →
+      </a>
     </div>
+  </section>
 
-    <div class="sf-col">
-      <h3>Explore</h3>
-      <a href="about.html">About</a>
-      <a href="team.html">Team</a>
-      <a href="mission.html">Mission</a>
-      <a href="vision.html">Vision</a>
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-white/5 py-11 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-4 gap-9 mb-9">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-bold text-sm">E</div>
+            <span class="font-bold">ECS Score</span>
+          </div>
+          <p class="text-sm text-zinc-500 leading-relaxed">India's Employment Credibility Layer. Building the career passport for every professional.</p>
+        </div>
+        <div>
+          <div class="font-semibold mb-3 text-sm">Product</div>
+          <div class="space-y-2 text-sm text-zinc-500">
+            <a href="candidates.html" class="block hover:text-white transition">For Candidates</a>
+            <a href="employers.html" class="block hover:text-white transition">For Employers</a>
+            <a href="https://tally.so/r/rjyj2p" target="_blank" class="block hover:text-white transition">Get Score</a>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold mb-3 text-sm">Company</div>
+          <div class="space-y-2 text-sm text-zinc-500">
+            <a href="about.html" class="block hover:text-white transition">About</a>
+            <a href="vision.html" class="block hover:text-white transition">Vision</a>
+            <a href="mission.html" class="block hover:text-white transition">Mission</a>
+          </div>
+        </div>
+        <div>
+          <div class="font-semibold mb-3 text-sm">Contact</div>
+          <div class="space-y-2 text-sm text-zinc-500">
+            <div>C-2 42/A, Dwarka</div>
+            <div>West Delhi, India</div>
+            <a href="mailto:contact@ecsscore.com" class="block hover:text-white transition">contact@ecsscore.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="pt-7 border-t border-white/5 text-center text-sm text-zinc-600">
+        © 2025–2026 ECS Score — India’s Employment Credibility Layer
+      </div>
     </div>
+  </footer>
 
-    <div class="sf-col">
-      <h3>Legal</h3>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="dpdp.html">Data Protection Policy</a>
-      <a class="sf-btn" href="External Privacy policy (1).pdf" download>⬇ Privacy PDF</a>
-      <a class="sf-btn" href="ECS Data Protection Policy (1).pdf" download>⬇ DPDP PDF</a>
-    </div>
-
-    <div class="sf-col">
-      <h3>Connect</h3>
-      <a>Email: contact@ecsscore.com</a>
-      <a>Support: support@ecsscore.com</a>
-    </div>
-
-  </div>
-
-  <div class="sf-copy">© 2025 ECS Score — India’s Employment Credibility Layer</div>
-</div>
-
-
-<!-- ================= JS ================= -->
-
-<script>
-function toggleMenu(){
-  document.getElementById("navMenu").classList.toggle("active");
-  document.querySelector(".hamburger").classList.toggle("open");
-}
-</script>
-
-<script>
-/* Score meter animation */
-document.addEventListener('DOMContentLoaded', () => {
-  const target = 90;
-  let current = 0;
-  const numEl = document.getElementById('scoreNumber');
-  const arc = document.getElementById('scoreArc');
-  const tick = document.getElementById('verifiedTick');
-  const circumference = 628;
-
-  const interval = setInterval(() => {
-    if (current >= target) {
-      clearInterval(interval);
-      tick.style.opacity = 1;
-      return;
-    }
-    current++;
-    numEl.textContent = current;
-
-    const offset = circumference - (circumference * (current / 100));
-    arc.style.strokeDashoffset = offset;
-  }, 20);
-});
-</script>
-
-<script>
-/* Footer mouse glow */
-document.getElementById("superFooter").addEventListener("mousemove", (e) => {
-  const rect = e.target.getBoundingClientRect();
-  document.documentElement.style.setProperty('--mouseX', e.clientX - rect.left + "px");
-  document.documentElement.style.setProperty('--mouseY', e.clientY - rect.top + "px");
-});
-</script>
-
+  <script>
+    document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+  </script>
 </body>
 </html>
