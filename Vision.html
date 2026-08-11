@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Vision — ECS Score</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { navy: { 900: '#0a1224', 800: '#0d162c', 700: '#111a33' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0a1224; }
+    .glass {
+      background: rgba(17, 26, 51, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(77, 146, 255, 0.12);
+    }
+    .nav-blur {
+      backdrop-filter: blur(20px);
+      background: rgba(10, 18, 36, 0.85);
+    }
+  </style>
+</head>
+<body class="font-sans text-white antialiased">
+
+  <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-lg">E</div>
+        <div>
+          <div class="font-bold text-lg leading-none">ECS Score</div>
+          <div class="text-[10px] text-blue-300/70 tracking-wider">EMPLOYMENT CREDIBILITY</div>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="candidates.html" class="hover:text-white transition">For Candidates</a>
+        <a href="employers.html" class="hover:text-white transition">For Employers</a>
+        <a href="about.html" class="hover:text-white transition">About</a>
+        <a href="vision.html" class="text-white">Vision</a>
+        <a href="mission.html" class="hover:text-white transition">Mission</a>
+      </div>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-sm font-semibold transition">
+        Get My Score →
+      </a>
+    </div>
+  </nav>
+
+  <section class="pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-sm text-blue-400 font-medium mb-3">Our Vision</div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+        The global standard for<br>
+        <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">employment trust</span>
+      </h1>
+
+      <div class="glass rounded-2xl p-8 mb-12">
+        <p class="text-xl text-slate-200 leading-relaxed italic">
+          “To become the global standard for employment trust — like CIBIL, but for careers.”
+        </p>
+      </div>
+
+      <div class="space-y-6 text-slate-300 leading-relaxed">
+        <p class="text-lg">
+          ECS aims to become the global <strong class="text-white">Employment Credibility Protocol</strong> — the universal standard of trust for companies, professionals, and platforms.
+        </p>
+
+        <p>
+          A future where every professional carries a verified, portable <strong class="text-white">career passport</strong> accepted globally.
+        </p>
+
+        <h2 class="text-2xl font-bold text-white mt-12 mb-4">The Future We Are Building</h2>
+        
+        <p>
+          Hiring will no longer rely on assumptions; it will rely on verified truth.
+        </p>
+
+        <p>
+          ECS is creating a trusted <strong class="text-white">Employment Identity Layer</strong> powering hiring, onboarding, compliance, mobility, and skill validation.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-10">
+          <div class="glass rounded-xl p-6">
+            <div class="text-blue-400 font-semibold mb-2">For Professionals</div>
+            <p class="text-sm text-slate-400">A portable, verified identity that travels with you across jobs, countries and platforms.</p>
+          </div>
+          <div class="glass rounded-xl p-6">
+            <div class="text-blue-400 font-semibold mb-2">For Employers</div>
+            <p class="text-sm text-slate-400">Instant, reliable credibility signals that reduce risk and speed up hiring decisions.</p>
+          </div>
+          <div class="glass rounded-xl p-6">
+            <div class="text-blue-400 font-semibold mb-2">For Platforms</div>
+            <p class="text-sm text-slate-400">An open credibility layer that can be embedded into job portals, HRMS and marketplaces.</p>
+          </div>
+          <div class="glass rounded-xl p-6">
+            <div class="text-blue-400 font-semibold mb-2">For Ecosystems</div>
+            <p class="text-sm text-slate-400">A shared trust protocol that makes the entire talent economy more efficient and fair.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-14">
+        <a href="mission.html" class="px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-400 font-medium transition">
+          Read Our Mission →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-white/5 py-10 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+      <div>© 2025–2026 ECS Score</div>
+      <div class="flex gap-6">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="about.html" class="hover:text-white">About</a>
+        <a href="mission.html" class="hover:text-white">Mission</a>
+        <a href="mailto:contact@ecsscore.com" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
