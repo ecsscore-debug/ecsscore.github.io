@@ -10,118 +10,79 @@
       darkMode: 'class',
       theme: {
         extend: {
-          colors: { navy: { 900: '#0a1224', 800: '#0d162c', 700: '#111a33' } },
+          colors: { dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' } },
           fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
         }
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body { background: #0a1224; }
-    .glass {
-      background: rgba(17, 26, 51, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(77, 146, 255, 0.12);
-    }
-    .nav-blur {
-      backdrop-filter: blur(20px);
-      background: rgba(10, 18, 36, 0.85);
-    }
+    body { background: #050505; }
+    .glass { background: rgba(17,17,17,0.8); backdrop-filter: blur(20px); border: 1px solid rgba(249,115,22,0.12); }
+    .nav-blur { backdrop-filter: blur(24px); background: rgba(5,5,5,0.92); }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .gradient-text { background: linear-gradient(135deg, #fb923c, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   </style>
 </head>
 <body class="font-sans text-white antialiased">
-
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-lg">E</div>
-        <div>
-          <div class="font-bold text-lg leading-none">ECS Score</div>
-          <div class="text-[10px] text-blue-300/70 tracking-wider">EMPLOYMENT CREDIBILITY</div>
-        </div>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-lg shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold text-lg tracking-tight">ECS Score</span>
       </a>
-      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
         <a href="candidates.html" class="hover:text-white transition">For Candidates</a>
         <a href="employers.html" class="hover:text-white transition">For Employers</a>
         <a href="about.html" class="hover:text-white transition">About</a>
         <a href="vision.html" class="hover:text-white transition">Vision</a>
-        <a href="mission.html" class="text-white">Mission</a>
+        <a href="mission.html" class="text-orange-400">Mission</a>
       </div>
-      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-sm font-semibold transition">
-        Get My Score →
-      </a>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl btn-primary text-sm font-semibold shadow-lg shadow-orange-500/20">Get My Score →</a>
     </div>
   </nav>
 
   <section class="pt-32 pb-20 px-6">
     <div class="max-w-4xl mx-auto">
-      <div class="text-sm text-blue-400 font-medium mb-3">Our Mission</div>
+      <div class="text-sm text-orange-400 font-medium mb-3">Our Mission</div>
       <h1 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
         Create a verified, portable & trusted<br>
-        <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">career identity</span>
+        <span class="gradient-text">career identity</span>
         for every professional
       </h1>
 
-      <div class="space-y-6 text-slate-300 leading-relaxed text-lg">
-        <p>
-          Our mission is to make employment credibility <strong class="text-white">universal, portable, and proof-driven</strong> — so that talent is judged by verified truth instead of claims, bias or incomplete information.
-        </p>
-
-        <p>
-          We are building a standardized, tamper-proof employment identity layer — the <strong class="text-white">ECS Score</strong> — to bring truth, transparency and trust into India’s hiring ecosystem.
-        </p>
+      <div class="space-y-6 text-zinc-300 leading-relaxed text-lg">
+        <p>Our mission is to make employment credibility <strong class="text-white">universal, portable, and proof-driven</strong> — so that talent is judged by verified truth instead of claims, bias or incomplete information.</p>
+        <p>We are building a standardized, tamper-proof employment identity layer — the <strong class="text-white">ECS Score</strong> — to bring truth, transparency and trust into India’s hiring ecosystem.</p>
       </div>
 
       <div class="glass rounded-2xl p-8 my-12">
         <h2 class="text-xl font-semibold text-white mb-4">The Problem We Solve</h2>
-        <ul class="space-y-3 text-slate-300">
-          <li class="flex gap-3">
-            <span class="text-red-400 mt-1">•</span>
-            <span>Fake experience and unverifiable roles are rising rapidly</span>
-          </li>
-          <li class="flex gap-3">
-            <span class="text-red-400 mt-1">•</span>
-            <span>References are inconsistent and often unreliable</span>
-          </li>
-          <li class="flex gap-3">
-            <span class="text-red-400 mt-1">•</span>
-            <span>Screenshots and self-claims are misused at scale</span>
-          </li>
-          <li class="flex gap-3">
-            <span class="text-red-400 mt-1">•</span>
-            <span>Companies lose time and money due to poor hiring accuracy</span>
-          </li>
-          <li class="flex gap-3">
-            <span class="text-red-400 mt-1">•</span>
-            <span>Deserving candidates get filtered out because of broken trust</span>
-          </li>
+        <ul class="space-y-3 text-zinc-300">
+          <li class="flex gap-3"><span class="text-orange-400 mt-1">•</span><span>Fake experience and unverifiable roles are rising rapidly</span></li>
+          <li class="flex gap-3"><span class="text-orange-400 mt-1">•</span><span>References are inconsistent and often unreliable</span></li>
+          <li class="flex gap-3"><span class="text-orange-400 mt-1">•</span><span>Screenshots and self-claims are misused at scale</span></li>
+          <li class="flex gap-3"><span class="text-orange-400 mt-1">•</span><span>Companies lose time and money due to poor hiring accuracy</span></li>
+          <li class="flex gap-3"><span class="text-orange-400 mt-1">•</span><span>Deserving candidates get filtered out because of broken trust</span></li>
         </ul>
       </div>
 
-      <div class="space-y-6 text-slate-300 leading-relaxed">
+      <div class="space-y-6 text-zinc-300 leading-relaxed">
         <h2 class="text-2xl font-bold text-white">How We Deliver</h2>
-        <p>
-          We take a verification-first approach. Every signal that contributes to the ECS Score is grounded in proof — employer confirmation, peer validation, and document authenticity.
-        </p>
-        <p>
-          The result is a fairer system where careers are built on accuracy, trust and credibility.
-        </p>
+        <p>We take a verification-first approach. Every signal that contributes to the ECS Score is grounded in proof — employer confirmation, peer validation, and document authenticity.</p>
+        <p>The result is a fairer system where careers are built on accuracy, trust and credibility.</p>
       </div>
 
       <div class="mt-14 flex flex-wrap gap-4">
-        <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-7 py-3.5 rounded-xl bg-blue-500 hover:bg-blue-400 font-semibold transition">
-          Start Building Your Score →
-        </a>
-        <a href="about.html" class="px-7 py-3.5 rounded-xl glass hover:bg-white/5 font-medium transition">
-          About ECS Score
-        </a>
+        <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-7 py-3.5 rounded-xl btn-primary font-semibold transition">Start Building Your Score →</a>
+        <a href="about.html" class="px-7 py-3.5 rounded-xl glass hover:bg-white/5 font-medium transition">About ECS Score</a>
       </div>
     </div>
   </section>
 
-  <footer class="border-t border-white/5 py-10 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+  <footer class="border-t border-white/5 py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-600">
       <div>© 2025–2026 ECS Score</div>
       <div class="flex gap-6">
         <a href="index.html" class="hover:text-white">Home</a>
