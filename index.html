@@ -30,6 +30,7 @@
           animation: {
             'float': 'float 5s ease-in-out infinite',
             'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+            'blink': 'blink 1.4s ease-in-out infinite',
           },
           keyframes: {
             float: {
@@ -39,6 +40,10 @@
             glowPulse: {
               '0%, 100%': { boxShadow: '0 0 40px 8px rgba(249, 115, 22, 0.15)' },
               '50%': { boxShadow: '0 0 60px 15px rgba(249, 115, 22, 0.25)' },
+            },
+            blink: {
+              '0%, 100%': { opacity: '1', boxShadow: '0 0 20px 4px rgba(249, 115, 22, 0.45)' },
+              '50%': { opacity: '0.65', boxShadow: '0 0 8px 2px rgba(249, 115, 22, 0.2)' },
             }
           }
         }
@@ -126,6 +131,14 @@
     </div>
 
     <div class="max-w-6xl mx-auto relative">
+
+      <!-- Job Openings Blinking Button (marked area) -->
+      <div class="hidden lg:flex absolute top-6 left-1/2 -translate-x-1/2 z-20">
+        <a href="jobopenings.html" class="animate-blink px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold shadow-lg shadow-orange-500/40 hover:bg-orange-400 transition">
+          🔥 Job Openings
+        </a>
+      </div>
+
       <!-- Reduced gap here -->
       <div class="grid lg:grid-cols-2 gap-8 lg:gap-6 items-center">
 
@@ -159,6 +172,13 @@
           <div class="flex items-center gap-2 text-sm text-zinc-500">
             <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
             Trusted by 50,000+ professionals and top companies.
+          </div>
+
+          <!-- Mobile Job Openings Button -->
+          <div class="mt-5 lg:hidden">
+            <a href="jobopenings.html" class="animate-blink inline-flex px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold shadow-lg shadow-orange-500/40">
+              🔥 Job Openings
+            </a>
           </div>
         </div>
 
