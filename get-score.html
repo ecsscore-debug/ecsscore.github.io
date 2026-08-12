@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generate Your ECS Score — ₹169</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' }
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #050505; }
+    .glass {
+      background: rgba(17,17,17,0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(249,115,22,0.12);
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(249,115,22,0.15);
+      background: #0a0a0a;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-field:focus {
+      border-color: rgba(249,115,22,0.45);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+    }
+    .input-field::placeholder { color: #52525b; }
+    label { display: block; font-size: 13px; font-weight: 500; color: #a1a1aa; margin-bottom: 6px; }
+    .btn-pay {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      box-shadow: 0 0 24px rgba(249,115,22,0.35);
+    }
+    .btn-pay:hover { filter: brightness(1.08); }
+    .btn-pay:disabled { opacity: 0.55; cursor: not-allowed; filter: none; }
+    .file-box {
+      border: 1.5px dashed rgba(249,115,22,0.25);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      background: rgba(249,115,22,0.03);
+    }
+    .file-box:hover { border-color: rgba(249,115,22,0.45); background: rgba(249,115,22,0.06); }
+    .file-box.has-file { border-color: #22c55e; background: rgba(34,197,94,0.06); }
+  </style>
+</head>
+<body class="font-sans text-white antialiased min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="border-b border-white/5 bg-dark-950/90 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-sm shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold tracking-tight">ECS Score</span>
+      </a>
+      <a href="index.html" class="text-sm text-zinc-400 hover:text-white transition">← Back</a>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-5 py-10">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300 text-xs font-medium mb-4">
+        🔒 Secure · One-time fee
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight">
+        Generate Your <span class="text-orange-400">ECS Score</span>
+      </h1>
+      <p class="text-zinc-400 text-sm max-w-md mx-auto">
+        Fill the form once. Pay ₹169. Get your verified Employment Credibility Score within 7 days.
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <form id="ecsForm" class="glass rounded-2xl p-6 sm:p-8 space-y-6" onsubmit="return false;">
+
+      <!-- Personal -->
+      <div>
+        <h2 class="text-sm font-semibold text-orange-400 tracking-wide mb-4">PERSONAL DETAILS</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label>Full Name *</label>
+            <input type="text" id="fullName" class="input-field" placeholder="Your full name" required>
+          </div>
+          <div>
+            <label>Email *</label>
+            <input type="email" id="email" class="input-field" placeholder="you@email.com" required>
+          </div>
+          <div>
+            <label>Phone Number *</label>
+            <input type="tel" id="phone" class="input-field" placeholder="10-digit mobile" required>
+          </div>
+          <div>
+            <label>Current City *</label>
+            <input type="text" id="city" class="input-field" placeholder="e.g. Delhi, Bangalore" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional -->
+      <div>
+        <h2 class="text-sm font-semibold text-orange-400 tracking-wide mb-4">PROFESSIONAL DETAILS</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label>Current Company *</label>
+            <input type="text" id="company" class="input-field" placeholder="Company name" required>
+          </div>
+          <div>
+            <label>Current Job Title *</label>
+            <input type="text" id="jobTitle" class="input-field" placeholder="e.g. Product Manager" required>
+          </div>
+          <div>
+            <label>Total Work Experience (in years) *</label>
+            <input type="text" id="experience" class="input-field" placeholder="e.g. 4.5" required>
+          </div>
+          <div>
+            <label>LinkedIn Profile URL</label>
+            <input type="url" id="linkedin" class="input-field" placeholder="https://linkedin.com/in/...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div>
+        <h2 class="text-sm font-semibold text-orange-400 tracking-wide mb-4">DOCUMENTS</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label>Upload Resume (PDF) *</label>
+            <div class="file-box" id="resumeBox" onclick="document.getElementById('resume').click()">
+              <input type="file" id="resume" accept=".pdf" class="hidden" onchange="handleFile(this,'resumeBox','resumeName')">
+              <div class="text-2xl mb-1">📄</div>
+              <div class="text-sm text-zinc-400" id="resumeName">Click to upload PDF (Max 10 MB)</div>
+            </div>
+          </div>
+          <div>
+            <label>Salary Slip / Offer / Experience Letter</label>
+            <div class="file-box" id="docsBox" onclick="document.getElementById('docs').click()">
+              <input type="file" id="docs" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFile(this,'docsBox','docsName')">
+              <div class="text-2xl mb-1">📎</div>
+              <div class="text-sm text-zinc-400" id="docsName">Optional · PDF / Image</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Availability -->
+      <div>
+        <h2 class="text-sm font-semibold text-orange-400 tracking-wide mb-4">VERIFICATION CALL</h2>
+        <label>Select your availability (Our executive will call you for 5 mins) *</label>
+        <select id="availability" class="input-field" required>
+          <option value="">Select a slot preference</option>
+          <option value="Weekday Morning (10 AM – 1 PM)">Weekday Morning (10 AM – 1 PM)</option>
+          <option value="Weekday Afternoon (2 PM – 5 PM)">Weekday Afternoon (2 PM – 5 PM)</option>
+          <option value="Weekday Evening (6 PM – 9 PM)">Weekday Evening (6 PM – 9 PM)</option>
+          <option value="Weekend (Flexible)">Weekend (Flexible)</option>
+        </select>
+      </div>
+
+      <!-- Consent -->
+      <div class="flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
+        <input type="checkbox" id="consent" class="mt-1 w-4 h-4 accent-orange-500" required>
+        <label for="consent" class="text-sm text-zinc-300 leading-relaxed cursor-pointer">
+          I consent to ECS Score verifying my employment details for generating my Employment Credibility Score. I understand this is a one-time process and my data will be handled securely.
+        </label>
+      </div>
+
+      <!-- Price + CTA -->
+      <div class="pt-2">
+        <div class="flex items-center justify-between mb-4 px-1">
+          <div class="text-sm text-zinc-400">One-time verification fee</div>
+          <div class="text-2xl font-bold text-orange-400">₹169</div>
+        </div>
+        <button type="button" id="payBtn" onclick="startPayment()" class="btn-pay w-full py-4 rounded-xl font-bold text-base text-white transition">
+          Pay ₹169 & Generate My Score →
+        </button>
+        <p class="text-center text-xs text-zinc-500 mt-3">
+          100% secure payment via Razorpay · Score delivered on email within 7 days
+        </p>
+      </div>
+    </form>
+
+    <!-- Trust strip -->
+    <div class="mt-8 flex flex-wrap justify-center gap-6 text-xs text-zinc-600">
+      <span>✓ Bank-level security</span>
+      <span>✓ Privacy first</span>
+      <span>✓ Verified process</span>
+    </div>
+  </main>
+
+  <script>
+    // ========== CONFIG (Replace these) ==========
+    const RAZORPAY_KEY = "rzp_live_TOvkvhBG1Q6wqZ";   // ← Apna Razorpay Key Id daalo
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKDdZqgBO94qhnuLw-xEUneO-uf7-5029_kqZpbCqUKZLS9dRflgUehA4AJoFbYcE/exec";  // ← Deploy ke baad URL
+    const AMOUNT_PAISE = 16900; // ₹169 in paise
+    // ===========================================
+
+    function handleFile(input, boxId, nameId) {
+      const box = document.getElementById(boxId);
+      const nameEl = document.getElementById(nameId);
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 10 * 1024 * 1024) {
+          alert("File size should be under 10 MB");
+          input.value = "";
+          return;
+        }
+        nameEl.textContent = file.name;
+        box.classList.add("has-file");
+      }
+    }
+
+    function getFormData() {
+      return {
+        fullName: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        company: document.getElementById("company").value.trim(),
+        jobTitle: document.getElementById("jobTitle").value.trim(),
+        experience: document.getElementById("experience").value.trim(),
+        linkedin: document.getElementById("linkedin").value.trim(),
+        availability: document.getElementById("availability").value,
+        consent: document.getElementById("consent").checked,
+        resumeFile: document.getElementById("resume").files[0] || null,
+        docsFile: document.getElementById("docs").files[0] || null,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    function validateForm() {
+      const d = getFormData();
+      if (!d.fullName || !d.email || !d.phone || !d.city || !d.company || !d.jobTitle || !d.experience || !d.availability) {
+        alert("Please fill all required fields (*)");
+        return false;
+      }
+      if (!d.consent) {
+        alert("Please accept the consent checkbox");
+        return false;
+      }
+      if (!d.resumeFile) {
+        alert("Please upload your Resume (PDF)");
+        return false;
+      }
+      if (!/^\d{10}$/.test(d.phone.replace(/\D/g, '').slice(-10))) {
+        alert("Please enter a valid 10-digit phone number");
+        return false;
+      }
+      return true;
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+          name: file.name,
+          type: file.type,
+          data: reader.result.split(',')[1]  // pure base64
+        });
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function startPayment() {
+      if (!validateForm()) return;
+
+      const btn = document.getElementById("payBtn");
+      btn.disabled = true;
+      btn.textContent = "Preparing payment…";
+
+      const formData = getFormData();
+
+      // Convert files to base64 for Apps Script
+      let resumeB64 = null, docsB64 = null;
+      try {
+        resumeB64 = await fileToBase64(formData.resumeFile);
+        docsB64 = await fileToBase64(formData.docsFile);
+      } catch (e) {
+        alert("Error reading files. Please try again.");
+        btn.disabled = false;
+        btn.textContent = "Pay ₹169 & Generate My Score →";
+        return;
+      }
+
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: AMOUNT_PAISE,
+        currency: "INR",
+        name: "ECS Score",
+        description: "Employment Credibility Score Verification",
+        image: "", // optional logo URL
+        handler: function (response) {
+          // Payment success
+          submitToSheet({
+            ...formData,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id || "",
+            razorpay_signature: response.razorpay_signature || "",
+            resume: resumeB64,
+            docs: docsB64,
+            payment_status: "paid",
+            amount: 169
+          });
+        },
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.phone
+        },
+        theme: { color: "#f97316" },
+        modal: {
+          ondismiss: function () {
+            btn.disabled = false;
+            btn.textContent = "Pay ₹169 & Generate My Score →";
+          }
+        }
+      };
+
+      try {
+        const rzp = new Razorpay(options);
+        rzp.on("payment.failed", function (resp) {
+          alert("Payment failed: " + (resp.error?.description || "Please try again"));
+          btn.disabled = false;
+          btn.textContent = "Pay ₹169 & Generate My Score →";
+        });
+        rzp.open();
+        btn.disabled = false;
+        btn.textContent = "Pay ₹169 & Generate My Score →";
+      } catch (err) {
+        alert("Razorpay error. Please check your Key Id.\n" + err);
+        btn.disabled = false;
+        btn.textContent = "Pay ₹169 & Generate My Score →";
+      }
+    }
+
+    async function submitToSheet(payload) {
+      const btn = document.getElementById("payBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting your details…";
+
+      // Remove File objects before sending
+      const clean = { ...payload };
+      delete clean.resumeFile;
+      delete clean.docsFile;
+
+      try {
+        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+          await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(clean)
+          });
+        }
+        // Success UI
+        document.querySelector("main").innerHTML = `
+          <div class="text-center py-20">
+            <div class="text-5xl mb-4">✅</div>
+            <h1 class="text-3xl font-bold mb-3">Payment Successful!</h1>
+            <p class="text-zinc-400 max-w-md mx-auto mb-2">
+              Thank you, <strong class="text-white">${payload.fullName}</strong>.
+            </p>
+            <p class="text-zinc-400 max-w-md mx-auto mb-8">
+              Your details have been received. Our team will verify and email your ECS Score within <strong class="text-orange-400">7 days</strong>.
+            </p>
+            <p class="text-sm text-zinc-500 mb-8">Payment ID: ${payload.razorpay_payment_id || "—"}</p>
+            <a href="index.html" class="inline-flex px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-400 font-semibold transition">
+              Back to Home
+            </a>
+          </div>`;
+      } catch (e) {
+        alert("Payment received but data sync failed. Please contact us with Payment ID: " + (payload.razorpay_payment_id || ""));
+        btn.disabled = false;
+        btn.textContent = "Pay ₹169 & Generate My Score →";
+      }
+    }
+  </script>
+</body>
+</html>
