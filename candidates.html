@@ -10,225 +10,152 @@
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            navy: { 900: '#0a1224', 800: '#0d162c', 700: '#111a33', 600: '#1a2744' },
-            accent: { DEFAULT: '#4d92ff' }
-          },
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+          colors: { dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a', 600: '#222' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          animation: { 'pulse-slow': 'pulse 3s ease-in-out infinite' }
         }
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body { background: #0a1224; }
-    .glass {
-      background: rgba(17, 26, 51, 0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(77, 146, 255, 0.12);
-    }
-    .score-ring {
-      background: conic-gradient(from 0deg, #4d92ff 0deg 313deg, #1a2744 313deg 360deg);
-    }
-    .nav-blur {
-      backdrop-filter: blur(20px);
-      background: rgba(10, 18, 36, 0.85);
-    }
+    body { background: #050505; }
+    .glass { background: rgba(17,17,17,0.8); backdrop-filter: blur(20px); border: 1px solid rgba(249,115,22,0.12); }
+    .nav-blur { backdrop-filter: blur(24px); background: rgba(5,5,5,0.92); }
+    .score-ring { background: conic-gradient(from -90deg, #f97316 0deg, #fb923c 310deg, #1a1a1a 310deg 360deg); }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .btn-primary:hover { background: linear-gradient(135deg, #fb923c, #f97316); }
   </style>
 </head>
 <body class="font-sans text-white antialiased">
 
-  <!-- Navbar -->
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-lg">E</div>
-        <div>
-          <div class="font-bold text-lg leading-none">ECS Score</div>
-          <div class="text-[10px] text-blue-300/70 tracking-wider">EMPLOYMENT CREDIBILITY</div>
-        </div>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-lg shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold text-lg tracking-tight">ECS Score</span>
       </a>
-      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="candidates.html" class="text-white">For Candidates</a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+        <a href="candidates.html" class="text-orange-400">For Candidates</a>
         <a href="employers.html" class="hover:text-white transition">For Employers</a>
         <a href="about.html" class="hover:text-white transition">About</a>
         <a href="vision.html" class="hover:text-white transition">Vision</a>
         <a href="mission.html" class="hover:text-white transition">Mission</a>
       </div>
-      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-sm font-semibold transition">
-        Get My Score →
-      </a>
+      <a href="https://tally.so/r/rjyj2p" target="_blank" class="px-5 py-2.5 rounded-xl btn-primary text-sm font-semibold shadow-lg shadow-orange-500/20">Get My Score →</a>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="pt-28 pb-12 px-6">
+  <section class="pt-28 pb-8 px-6">
     <div class="max-w-7xl mx-auto">
-      <div class="mb-2 text-sm text-blue-400 font-medium">Candidate Portal</div>
-      <h1 class="text-4xl font-bold mb-3">Your Career Passport</h1>
-      <p class="text-slate-400 max-w-2xl">Track your verified score, peer network, documents and risk signals in one place.</p>
+      <div class="text-sm text-orange-400 font-medium mb-1">Candidate Portal</div>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-2">Your Career Passport</h1>
+      <p class="text-zinc-400 text-sm max-w-xl">Live score, peer network, document strength and AI risk signals — all in one place.</p>
     </div>
   </section>
 
-  <!-- Dashboard -->
   <section class="px-6 pb-20">
     <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-12 gap-6">
+      <div class="grid lg:grid-cols-12 gap-5">
 
-        <!-- Score Card -->
-        <div class="lg:col-span-4 glass rounded-2xl p-6">
-          <div class="text-sm text-slate-400 mb-4">Your ECS Score</div>
-          <div class="relative w-44 h-44 mx-auto mb-4">
-            <div class="absolute inset-0 rounded-full score-ring"></div>
-            <div class="absolute inset-3 rounded-full bg-navy-900 flex flex-col items-center justify-center">
-              <div class="text-4xl font-bold">87</div>
-              <div class="text-xs text-slate-400">/100</div>
-              <div class="text-xs text-blue-400 font-medium mt-1">Excellent</div>
+        <div class="lg:col-span-4 space-y-5">
+          <div class="glass rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
+            <div class="text-xs text-zinc-500 mb-4 tracking-wider">YOUR ECS SCORE</div>
+            <div class="relative w-40 h-40 mx-auto mb-4">
+              <div class="absolute inset-0 rounded-full score-ring animate-pulse-slow"></div>
+              <div class="absolute inset-3 rounded-full bg-dark-900 flex flex-col items-center justify-center">
+                <div class="text-4xl font-black">87</div>
+                <div class="text-xs text-zinc-500">/100</div>
+                <div class="text-[10px] text-orange-400 font-semibold mt-1">EXCELLENT</div>
+              </div>
+            </div>
+            <div class="text-center text-xs text-zinc-500 mb-5">Top 12% of candidates nationwide</div>
+            <div class="space-y-3 text-sm">
+              <div class="flex justify-between"><span class="text-zinc-400">Verified Roles</span><span class="text-green-400 font-medium">5 Active</span></div>
+              <div class="flex justify-between"><span class="text-zinc-400">Peer Trust</span><span class="text-orange-400 font-medium">Strong</span></div>
+              <div class="flex justify-between"><span class="text-zinc-400">Document Strength</span><span class="text-green-400 font-medium">82/100</span></div>
+              <div class="flex justify-between"><span class="text-zinc-400">Risk Level</span><span class="text-green-400 font-medium">Low</span></div>
+            </div>
+            <a href="https://tally.so/r/rjyj2p" target="_blank" class="mt-6 block w-full text-center py-3 rounded-xl btn-primary font-semibold text-sm shadow-lg shadow-orange-500/20">Boost My Score →</a>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl font-bold text-orange-400">128</div>
+              <div class="text-[11px] text-zinc-500 mt-0.5">Peer Network</div>
+            </div>
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl font-bold text-green-400">9/9</div>
+              <div class="text-[11px] text-zinc-500 mt-0.5">Docs Verified</div>
             </div>
           </div>
-          <div class="text-center text-sm text-slate-400 mb-5">Top 12% of candidates</div>
-          
-          <div class="space-y-3">
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-400">Verified Roles</span>
-              <span class="text-green-400 font-medium">5 Active</span>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-400">Peer Trust</span>
-              <span class="text-blue-400 font-medium">Strong</span>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-400">Document Strength</span>
-              <span class="text-green-400 font-medium">82/100</span>
-            </div>
-          </div>
-
-          <a href="https://tally.so/r/rjyj2p" target="_blank" class="mt-6 block w-full text-center py-3 rounded-xl bg-blue-500 hover:bg-blue-400 font-semibold text-sm transition">
-            Boost My Score →
-          </a>
         </div>
 
-        <!-- Right Content -->
-        <div class="lg:col-span-8 space-y-6">
-
-          <!-- Stats Row -->
+        <div class="lg:col-span-8 space-y-5">
           <div class="grid sm:grid-cols-3 gap-4">
             <div class="glass rounded-xl p-5">
-              <div class="text-xs text-slate-400 mb-1">Peer Network</div>
-              <div class="text-2xl font-bold">128</div>
-              <div class="text-xs text-green-400">+12 this month</div>
+              <div class="text-xs text-zinc-500 mb-1">Score Trend</div>
+              <div class="text-2xl font-bold">+6 <span class="text-sm text-green-400 font-medium">pts</span></div>
+              <div class="text-[11px] text-zinc-500 mt-1">Last 30 days</div>
+              <div class="mt-3 h-1.5 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-orange-400 rounded-full" style="width:72%"></div></div>
             </div>
             <div class="glass rounded-xl p-5">
-              <div class="text-xs text-slate-400 mb-1">Documents</div>
-              <div class="text-2xl font-bold">9/9</div>
-              <div class="text-xs text-green-400">All verified</div>
+              <div class="text-xs text-zinc-500 mb-1">Endorsements</div>
+              <div class="text-2xl font-bold">24</div>
+              <div class="text-[11px] text-zinc-500 mt-1">+3 this week</div>
+              <div class="mt-3 h-1.5 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-orange-400 rounded-full" style="width:60%"></div></div>
             </div>
             <div class="glass rounded-xl p-5">
-              <div class="text-xs text-slate-400 mb-1">Risk Level</div>
-              <div class="text-2xl font-bold text-green-400">Low</div>
-              <div class="text-xs text-slate-400">No critical flags</div>
+              <div class="text-xs text-zinc-500 mb-1">Visibility</div>
+              <div class="text-2xl font-bold text-orange-400">High</div>
+              <div class="text-[11px] text-zinc-500 mt-1">Employer views ↑</div>
+              <div class="mt-3 h-1.5 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-orange-500 to-orange-400 rounded-full" style="width:85%"></div></div>
             </div>
           </div>
 
-          <!-- Document Strength -->
           <div class="glass rounded-2xl p-6">
             <div class="flex items-center justify-between mb-5">
               <h3 class="font-semibold">Document Strength</h3>
-              <span class="text-sm text-blue-400">Manage →</span>
+              <span class="text-xs text-orange-400">Manage →</span>
             </div>
             <div class="space-y-4">
               <div>
-                <div class="flex justify-between text-sm mb-1.5">
-                  <span class="text-slate-300">Identity & Profile</span>
-                  <span class="text-slate-400">92/100</span>
-                </div>
-                <div class="h-2 bg-navy-600 rounded-full overflow-hidden">
-                  <div class="h-full bg-blue-500 rounded-full" style="width:92%"></div>
-                </div>
+                <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-300">Identity & Profile</span><span class="text-zinc-500">92</span></div>
+                <div class="h-2 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-orange-500 rounded-full" style="width:92%"></div></div>
               </div>
               <div>
-                <div class="flex justify-between text-sm mb-1.5">
-                  <span class="text-slate-300">Professional Credentials</span>
-                  <span class="text-slate-400">85/100</span>
-                </div>
-                <div class="h-2 bg-navy-600 rounded-full overflow-hidden">
-                  <div class="h-full bg-blue-500 rounded-full" style="width:85%"></div>
-                </div>
+                <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-300">Professional Credentials</span><span class="text-zinc-500">85</span></div>
+                <div class="h-2 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-orange-500 rounded-full" style="width:85%"></div></div>
               </div>
               <div>
-                <div class="flex justify-between text-sm mb-1.5">
-                  <span class="text-slate-300">Skills & Certifications</span>
-                  <span class="text-slate-400">78/100</span>
-                </div>
-                <div class="h-2 bg-navy-600 rounded-full overflow-hidden">
-                  <div class="h-full bg-cyan-500 rounded-full" style="width:78%"></div>
-                </div>
+                <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-300">Skills & Certifications</span><span class="text-zinc-500">78</span></div>
+                <div class="h-2 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-orange-400 rounded-full" style="width:78%"></div></div>
               </div>
               <div>
-                <div class="flex justify-between text-sm mb-1.5">
-                  <span class="text-slate-300">Education</span>
-                  <span class="text-slate-400">72/100</span>
-                </div>
-                <div class="h-2 bg-navy-600 rounded-full overflow-hidden">
-                  <div class="h-full bg-indigo-500 rounded-full" style="width:72%"></div>
-                </div>
+                <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-300">Education</span><span class="text-zinc-500">72</span></div>
+                <div class="h-2 bg-dark-700 rounded-full overflow-hidden"><div class="h-full bg-orange-400/80 rounded-full" style="width:72%"></div></div>
               </div>
             </div>
           </div>
 
-          <!-- Recent Activity + Risk -->
-          <div class="grid md:grid-cols-2 gap-6">
+          <div class="grid md:grid-cols-2 gap-5">
             <div class="glass rounded-2xl p-6">
               <h3 class="font-semibold mb-4">Recent Activity</h3>
               <div class="space-y-4 text-sm">
-                <div class="flex gap-3">
-                  <div class="w-2 h-2 mt-1.5 rounded-full bg-green-400"></div>
-                  <div>
-                    <div class="text-slate-200">Role verified</div>
-                    <div class="text-xs text-slate-500">Senior Product Manager · 2 days ago</div>
-                  </div>
-                </div>
-                <div class="flex gap-3">
-                  <div class="w-2 h-2 mt-1.5 rounded-full bg-blue-400"></div>
-                  <div>
-                    <div class="text-slate-200">Endorsement received</div>
-                    <div class="text-xs text-slate-500">From Priya Sharma · 3 days ago</div>
-                  </div>
-                </div>
-                <div class="flex gap-3">
-                  <div class="w-2 h-2 mt-1.5 rounded-full bg-cyan-400"></div>
-                  <div>
-                    <div class="text-slate-200">Document updated</div>
-                    <div class="text-xs text-slate-500">AWS Certificate · 5 days ago</div>
-                  </div>
-                </div>
-                <div class="flex gap-3">
-                  <div class="w-2 h-2 mt-1.5 rounded-full bg-indigo-400"></div>
-                  <div>
-                    <div class="text-slate-200">Score improved +6 points</div>
-                    <div class="text-xs text-slate-500">1 week ago</div>
-                  </div>
-                </div>
+                <div class="flex gap-3"><div class="w-2 h-2 mt-1.5 rounded-full bg-green-400 shrink-0"></div><div><div class="text-zinc-200">Role verified</div><div class="text-xs text-zinc-500">Senior Product Manager · 2d ago</div></div></div>
+                <div class="flex gap-3"><div class="w-2 h-2 mt-1.5 rounded-full bg-orange-400 shrink-0"></div><div><div class="text-zinc-200">Endorsement received</div><div class="text-xs text-zinc-500">From Priya Sharma · 3d ago</div></div></div>
+                <div class="flex gap-3"><div class="w-2 h-2 mt-1.5 rounded-full bg-orange-300 shrink-0"></div><div><div class="text-zinc-200">Document updated</div><div class="text-xs text-zinc-500">AWS Certificate · 5d ago</div></div></div>
+                <div class="flex gap-3"><div class="w-2 h-2 mt-1.5 rounded-full bg-green-400 shrink-0"></div><div><div class="text-zinc-200">Score improved +6 pts</div><div class="text-xs text-zinc-500">1 week ago</div></div></div>
               </div>
             </div>
-
             <div class="glass rounded-2xl p-6">
-              <h3 class="font-semibold mb-4">Risk Signals</h3>
+              <h3 class="font-semibold mb-4">AI Risk Signals</h3>
               <div class="space-y-3">
-                <div class="flex items-center justify-between p-3 rounded-xl bg-navy-800/60">
-                  <div class="text-sm">Employment Overlap</div>
-                  <span class="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-400">High</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-navy-800/60">
-                  <div class="text-sm">Reference Pending</div>
-                  <span class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-400">Medium</span>
-                </div>
-                <div class="flex items-center justify-between p-3 rounded-xl bg-navy-800/60">
-                  <div class="text-sm">Skill Gap</div>
-                  <span class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-400">Low</span>
-                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-dark-800/80"><div class="text-sm">Employment Overlap</div><span class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-medium">High</span></div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-dark-800/80"><div class="text-sm">Reference Pending</div><span class="text-[11px] px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 font-medium">Medium</span></div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-dark-800/80"><div class="text-sm">Skill Gap</div><span class="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 font-medium">Low</span></div>
               </div>
-              <p class="text-xs text-slate-500 mt-4">AI continuously monitors for inconsistencies.</p>
+              <p class="text-[11px] text-zinc-500 mt-4">AI continuously monitors inconsistencies in real-time.</p>
             </div>
           </div>
         </div>
@@ -236,9 +163,8 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-white/5 py-10 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+  <footer class="border-t border-white/5 py-8 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-zinc-600">
       <div>© 2025–2026 ECS Score</div>
       <div class="flex gap-6">
         <a href="index.html" class="hover:text-white">Home</a>
