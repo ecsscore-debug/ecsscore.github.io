@@ -150,6 +150,34 @@ for(let i=0;i<30;i++){let p=document.createElement("div");p.classList.add("parti
       <input id="fExp" placeholder="e.g. 4.5">
       <label>Current CTC (LPA)</label>
       <input id="fCTC" placeholder="e.g. 18">
+
+      <!-- ECS Score Yes/No (optional) -->
+      <div style="margin:16px 0 18px;padding:14px 16px;border-radius:12px;background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.25);">
+        <div style="font-size:12px;font-weight:600;color:#fb923c;margin-bottom:8px;letter-spacing:0.02em;">⚡ BOOST YOUR APPLICATION</div>
+        <div style="font-size:13px;color:#e4e4e7;margin-bottom:10px;line-height:1.5;">
+          Have you applied for <strong style="color:#fb923c;">ECS Score</strong>?
+        </div>
+        <div style="display:flex;gap:18px;margin-bottom:12px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#fff;margin:0;">
+            <input type="radio" name="ecsScoreChoice" id="fEcsYes" value="yes" style="width:16px;height:16px;accent-color:#f97316;">
+            Yes
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#fff;margin:0;">
+            <input type="radio" name="ecsScoreChoice" id="fEcsNo" value="no" style="width:16px;height:16px;accent-color:#f97316;">
+            No
+          </label>
+        </div>
+        <div style="font-size:12px;color:#a1a1aa;line-height:1.55;padding:10px 12px;border-radius:8px;background:rgba(0,0,0,0.25);">
+          <strong style="color:#d4d4d8;">If Yes — you get:</strong><br>
+          ✓ Priority in shortlist<br>
+          ✓ Faster consideration for this role<br>
+          ✓ Your verified profile will pop up on partner employers' dashboard for more opportunities
+        </div>
+        <div style="margin-top:12px;font-size:12px;">
+          <a href="get-score.html" target="_blank" style="color:#f97316;text-decoration:underline;font-weight:500;">Don't have ECS Score? Generate for ₹169 →</a>
+        </div>
+      </div>
+
       <button id="submitBtn" onclick="submitSimpleApplication()">Submit Application</button>
     </div>
     <div onclick="closeApplyModal()" style="margin-top:14px;text-align:center;cursor:pointer;color:#ef4444;font-size:13px;">Cancel</div>
@@ -220,9 +248,18 @@ function submitSimpleApplication(){
   const resume=document.getElementById("fResume").value.trim();
   if(!name||!mobile||!email||!resume){alert("Please fill all required fields (*)");return;}
   const btn=document.getElementById("submitBtn");btn.disabled=true;btn.innerText="Submitting…";
-  const payload={type:"application",jobTitle:selectedJob.title,jobCompany:selectedJob.company,jobLocation:selectedJob.location,name,email,mobile,exp:document.getElementById("fExp").value.trim(),ctc:document.getElementById("fCTC").value.trim(),expectedCTC:document.getElementById("fCTC").value.trim(),notice:"",resume,pitch:""};
+  const ecsYes=document.getElementById("fEcsYes").checked;
+  const ecsNo=document.getElementById("fEcsNo").checked;
+  const ecsScoreApplied=ecsYes ? "Yes" : (ecsNo ? "No" : "");
+  const payload={type:"application",jobTitle:selectedJob.title,jobCompany:selectedJob.company,jobLocation:selectedJob.location,name,email,mobile,exp:document.getElementById("fExp").value.trim(),ctc:document.getElementById("fCTC").value.trim(),expectedCTC:document.getElementById("fCTC").value.trim(),notice:"",resume,pitch:"",ecsScoreApplied:ecsScoreApplied};
   fetch(APPLICATION_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
-  .then(()=>{alert("✅ Application submitted successfully!");closeApplyModal();["fName","fMobile","fEmail","fResume","fExp","fCTC"].forEach(id=>document.getElementById(id).value="");})
+  .then(()=>{
+    alert("✅ Application submitted successfully!" + (ecsYes ? "\n\nGreat! ECS Score gives you priority in shortlist." : (ecsNo ? "\n\nTip: Generate ECS Score for priority shortlisting & more opportunities." : "")));
+    closeApplyModal();
+    ["fName","fMobile","fEmail","fResume","fExp","fCTC"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("fEcsYes").checked=false;
+    document.getElementById("fEcsNo").checked=false;
+  })
   .catch(err=>alert("Network error. Please try again.\n"+err))
   .finally(()=>{btn.disabled=false;btn.innerText="Submit Application";});
 }
