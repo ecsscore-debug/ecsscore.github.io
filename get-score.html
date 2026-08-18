@@ -217,8 +217,8 @@
 
   <script>
     // ========== CONFIG (Replace these) ==========
-    const RAZORPAY_KEY = "rzp_live_TR8W29TGGkEGdE";   // ← Apna Razorpay Key Id daalo
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";  // ← Deploy ke baad URL
+    const RAZORPAY_KEY = "rzp_live_TR8W29TGGkEGdE";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";
     const AMOUNT_PAISE = 16900; // ₹169 in paise
     // ===========================================
 
@@ -373,7 +373,7 @@
       delete clean.docsFile;
 
       try {
-        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec") {
+        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
           await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
