@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generate Your ECS Score — ₹169</title>
+  <title>Generate Your ECS Score — ₹169 (was ₹359)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
@@ -80,13 +80,13 @@
     <!-- Header -->
     <div class="text-center mb-10">
       <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300 text-xs font-medium mb-4">
-        🔒 Secure · One-time fee
+        🔥 Limited Time Launch Offer
       </div>
       <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight">
         Generate Your <span class="text-orange-400">ECS Score</span>
       </h1>
       <p class="text-zinc-400 text-sm max-w-md mx-auto">
-        Fill the form once. Pay ₹169. Get your verified Employment Credibility Score within 7 days.
+        Fill once. Get verified. Stand out to employers with a credible career score — within 7 days.
       </p>
     </div>
 
@@ -185,15 +185,24 @@
 
       <!-- Price + CTA -->
       <div class="pt-2">
-        <div class="flex items-center justify-between mb-4 px-1">
-          <div class="text-sm text-zinc-400">One-time verification fee</div>
-          <div class="text-2xl font-bold text-orange-400">₹169</div>
+        <div class="rounded-xl bg-orange-500/5 border border-orange-500/20 p-4 mb-4">
+          <div class="flex items-center justify-between mb-1">
+            <div class="text-sm text-zinc-400">One-time verification fee</div>
+            <div class="flex items-center gap-2.5">
+              <span class="text-lg text-zinc-500 line-through decoration-zinc-500">₹359</span>
+              <span class="text-2xl font-bold text-orange-400">₹169</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-green-400 font-medium">You save ₹190 today</span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 font-medium">53% OFF</span>
+          </div>
         </div>
         <button type="button" id="payBtn" onclick="startPayment()" class="btn-pay w-full py-4 rounded-xl font-bold text-base text-white transition">
           Pay ₹169 & Generate My Score →
         </button>
         <p class="text-center text-xs text-zinc-500 mt-3">
-          100% secure payment via Razorpay · Score delivered on email within 7 days
+          100% secure payment via Razorpay · Score delivered within 7 days
         </p>
       </div>
     </form>
@@ -364,7 +373,7 @@
       delete clean.docsFile;
 
       try {
-        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec") {
           await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
