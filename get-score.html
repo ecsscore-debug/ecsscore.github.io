@@ -208,8 +208,8 @@
 
   <script>
     // ========== CONFIG (Replace these) ==========
-    const RAZORPAY_KEY = "rzp_live_TOvkvhBG1Q6wqZ";   // ← Apna Razorpay Key Id daalo
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKDdZqgBO94qhnuLw-xEUneO-uf7-5029_kqZpbCqUKZLS9dRflgUehA4AJoFbYcE/exec";  // ← Deploy ke baad URL
+    const RAZORPAY_KEY = "rzp_live_TR8W29TGGkEGdE";   // ← Apna Razorpay Key Id daalo
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";  // ← Deploy ke baad URL
     const AMOUNT_PAISE = 16900; // ₹169 in paise
     // ===========================================
 
@@ -359,7 +359,7 @@
       btn.textContent = "Submitting your details…";
 
       // Remove File objects before sending
-      const clean = { ...payload };
+      const clean = { ...payload, action: "submit" };
       delete clean.resumeFile;
       delete clean.docsFile;
 
@@ -368,25 +368,34 @@
           await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(clean)
           });
         }
         // Success UI
         document.querySelector("main").innerHTML = `
-          <div class="text-center py-20">
+          <div class="text-center py-16">
             <div class="text-5xl mb-4">✅</div>
             <h1 class="text-3xl font-bold mb-3">Payment Successful!</h1>
             <p class="text-zinc-400 max-w-md mx-auto mb-2">
               Thank you, <strong class="text-white">${payload.fullName}</strong>.
             </p>
-            <p class="text-zinc-400 max-w-md mx-auto mb-8">
-              Your details have been received. Our team will verify and email your ECS Score within <strong class="text-orange-400">7 days</strong>.
+            <p class="text-zinc-400 max-w-md mx-auto mb-6">
+              Your application has been received. <strong class="text-orange-400">Login ID & Password</strong> have been sent to your email.
             </p>
-            <p class="text-sm text-zinc-500 mb-8">Payment ID: ${payload.razorpay_payment_id || "—"}</p>
-            <a href="index.html" class="inline-flex px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-400 font-semibold transition">
-              Back to Home
-            </a>
+            <div class="glass rounded-xl p-5 max-w-sm mx-auto mb-8 text-left text-sm space-y-2">
+              <div class="flex justify-between"><span class="text-zinc-500">Next Step</span><span class="text-white">Check your email</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">Then</span><span class="text-white">Login to your dashboard</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">Score Ready In</span><span class="text-orange-400">5–7 days</span></div>
+            </div>
+            <p class="text-sm text-zinc-500 mb-6">Payment ID: ${payload.razorpay_payment_id || "—"}</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="login.html" class="inline-flex px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-400 font-semibold transition text-sm">
+                Go to Login →
+              </a>
+              <a href="index.html" class="inline-flex px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 font-medium transition text-sm text-zinc-300">
+                Back to Home
+              </a>
+            </div>
           </div>`;
       } catch (e) {
         alert("Payment received but data sync failed. Please contact us with Payment ID: " + (payload.razorpay_payment_id || ""));
