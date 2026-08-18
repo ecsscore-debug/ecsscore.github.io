@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — ECS Score</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' }
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #050505; }
+    .glass {
+      background: rgba(17,17,17,0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(249,115,22,0.12);
+    }
+    .input-field {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(249,115,22,0.15);
+      background: #0a0a0a;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-field:focus {
+      border-color: rgba(249,115,22,0.45);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+    }
+    .input-field::placeholder { color: #52525b; }
+    label { display: block; font-size: 13px; font-weight: 500; color: #a1a1aa; margin-bottom: 6px; }
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      box-shadow: 0 0 24px rgba(249,115,22,0.3);
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; filter: none; }
+  </style>
+</head>
+<body class="font-sans text-white antialiased min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="border-b border-white/5 bg-dark-950/90 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-sm shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold tracking-tight">ECS Score</span>
+      </a>
+      <a href="index.html" class="text-sm text-zinc-400 hover:text-white transition">← Home</a>
+    </div>
+  </nav>
+
+  <main class="max-w-md mx-auto px-5 py-16">
+
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300 text-xs font-medium mb-4">
+        Candidate Portal
+      </div>
+      <h1 class="text-3xl font-extrabold mb-2 tracking-tight">Welcome Back</h1>
+      <p class="text-zinc-400 text-sm">Login with the credentials sent to your email</p>
+    </div>
+
+    <div class="glass rounded-2xl p-6 sm:p-8 space-y-5">
+      <div>
+        <label>Login ID</label>
+        <input type="text" id="loginId" class="input-field" placeholder="ECS-XXXX123" autocomplete="username">
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="password" class="input-field" placeholder="Your password" autocomplete="current-password">
+      </div>
+
+      <div id="errorMsg" class="hidden text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2"></div>
+
+      <button id="loginBtn" onclick="doLogin()" class="btn-primary w-full py-3.5 rounded-xl font-bold text-sm text-white transition">
+        Login to Dashboard →
+      </button>
+
+      <p class="text-center text-xs text-zinc-500 pt-1">
+        Credentials not received? Check spam folder or contact support.
+      </p>
+    </div>
+
+    <div class="mt-8 text-center text-xs text-zinc-600">
+      <a href="get-score.html" class="text-orange-400 hover:underline">Don't have an account? Generate your ECS Score →</a>
+    </div>
+  </main>
+
+  <script>
+    // ========== CONFIG ==========
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";  // ← Deploy ke baad URL daalo
+    // ============================
+
+    // If already logged in, redirect
+    if (localStorage.getItem("ecs_loginId") && localStorage.getItem("ecs_password")) {
+      window.location.href = "dashboard.html";
+    }
+
+    async function doLogin() {
+      const loginId = document.getElementById("loginId").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorEl = document.getElementById("errorMsg");
+      const btn = document.getElementById("loginBtn");
+
+      errorEl.classList.add("hidden");
+
+      if (!loginId || !password) {
+        errorEl.textContent = "Please enter both Login ID and Password";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      if (APPS_SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+        errorEl.textContent = "System not configured. Please contact support.";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Logging in…";
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "login",
+            loginId: loginId,
+            password: password
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          // Save session
+          localStorage.setItem("ecs_loginId", loginId);
+          localStorage.setItem("ecs_password", password);
+          localStorage.setItem("ecs_candidate", JSON.stringify(data));
+
+          window.location.href = "dashboard.html";
+        } else {
+          errorEl.textContent = data.message || "Invalid Login ID or Password";
+          errorEl.classList.remove("hidden");
+          btn.disabled = false;
+          btn.textContent = "Login to Dashboard →";
+        }
+      } catch (err) {
+        errorEl.textContent = "Network error. Please try again.";
+        errorEl.classList.remove("hidden");
+        btn.disabled = false;
+        btn.textContent = "Login to Dashboard →";
+      }
+    }
+
+    // Enter key support
+    document.getElementById("password").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") doLogin();
+    });
+    document.getElementById("loginId").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") document.getElementById("password").focus();
+    });
+  </script>
+</body>
+</html>
