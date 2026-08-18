@@ -10,11 +10,8 @@
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' }
-          },
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-          animation: { 'pulse-slow': 'pulse 3s ease-in-out infinite' }
+          colors: { dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
         }
       }
     }
@@ -22,44 +19,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { background: #050505; }
-    .glass {
-      background: rgba(17,17,17,0.85);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(249,115,22,0.12);
-    }
+    .glass { background: rgba(17,17,17,0.85); backdrop-filter: blur(20px); border: 1px solid rgba(249,115,22,0.12); }
     .nav-blur { backdrop-filter: blur(24px); background: rgba(5,5,5,0.92); }
-    .score-ring {
-      background: conic-gradient(from -90deg, #f97316 0deg, #fb923c var(--score-deg, 0deg), #1a1a1a var(--score-deg, 0deg) 360deg);
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #f97316, #ea580c);
-    }
+    .score-ring { background: conic-gradient(from -90deg, #f97316 0deg, #fb923c var(--score-deg, 0deg), #1a1a1a var(--score-deg, 0deg) 360deg); }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ea580c); }
     .btn-primary:hover { filter: brightness(1.08); }
+    .progress-bar { height: 6px; border-radius: 99px; background: #1a1a1a; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #f97316, #fb923c); transition: width 0.6s ease; }
+    .badge-high { background: rgba(239,68,68,0.15); color: #f87171; }
+    .badge-medium { background: rgba(234,179,8,0.15); color: #facc15; }
+    .badge-low { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .badge-none { background: rgba(34,197,94,0.15); color: #4ade80; }
   </style>
 </head>
 <body class="font-sans text-white antialiased min-h-screen">
 
-  <!-- Navbar -->
   <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
-    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-sm shadow-lg shadow-orange-500/20">E</div>
         <span class="font-bold tracking-tight">ECS Score</span>
       </a>
       <div class="flex items-center gap-4">
         <span id="navName" class="text-sm text-zinc-400 hidden sm:inline"></span>
+        <button onclick="refreshData()" class="text-sm text-zinc-400 hover:text-white transition">Refresh</button>
         <button onclick="logout()" class="text-sm text-zinc-400 hover:text-white transition">Logout</button>
       </div>
     </div>
   </nav>
 
-  <!-- Loading State -->
   <div id="loading" class="pt-32 text-center">
     <div class="inline-block w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
     <p class="text-zinc-400 text-sm">Loading your dashboard…</p>
   </div>
 
-  <!-- Error / Not logged in -->
   <div id="notLogged" class="hidden pt-32 text-center px-5">
     <div class="text-4xl mb-4">🔒</div>
     <h2 class="text-xl font-bold mb-2">Please Login</h2>
@@ -67,24 +60,20 @@
     <a href="login.html" class="inline-flex px-6 py-3 rounded-xl btn-primary font-semibold text-sm">Go to Login →</a>
   </div>
 
-  <!-- Dashboard Content -->
-  <main id="dashboard" class="hidden max-w-6xl mx-auto px-5 pt-24 pb-16">
+  <main id="dashboard" class="hidden max-w-7xl mx-auto px-5 pt-24 pb-16">
 
-    <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-6">
       <div class="text-sm text-orange-400 font-medium mb-1">Candidate Portal</div>
       <h1 class="text-2xl sm:text-3xl font-bold mb-1">Hello, <span id="displayName">Candidate</span></h1>
-      <p class="text-zinc-400 text-sm">Login ID: <span id="displayLoginId" class="text-zinc-300"></span></p>
+      <p class="text-zinc-400 text-sm">Live score, peer network, document strength and AI risk signals — all in one place.</p>
     </div>
 
     <div class="grid lg:grid-cols-12 gap-5">
 
-      <!-- LEFT: Score Card -->
       <div class="lg:col-span-4 space-y-5">
         <div class="glass rounded-2xl p-6 relative overflow-hidden">
           <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
           <div class="text-xs text-zinc-500 mb-4 tracking-wider">YOUR ECS SCORE</div>
-
           <div class="relative w-40 h-40 mx-auto mb-4">
             <div id="scoreRing" class="absolute inset-0 rounded-full score-ring" style="--score-deg: 0deg"></div>
             <div class="absolute inset-3 rounded-full bg-dark-900 flex flex-col items-center justify-center">
@@ -93,136 +82,127 @@
               <div id="scoreLabel" class="text-[10px] text-orange-400 font-semibold mt-1">PENDING</div>
             </div>
           </div>
-
-          <div id="scoreSubtext" class="text-center text-xs text-zinc-500 mb-5">
-            Score will appear after verification
-          </div>
-
+          <div id="scoreSubtext" class="text-center text-xs text-zinc-500 mb-5">Score will appear after verification</div>
           <div class="space-y-3 text-sm">
-            <div class="flex justify-between">
-              <span class="text-zinc-400">Status</span>
-              <span id="statusBadge" class="font-medium text-orange-400">Under Verification</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-zinc-400">Last Updated</span>
-              <span id="lastUpdated" class="text-zinc-300 text-xs">—</span>
-            </div>
+            <div class="flex justify-between"><span class="text-zinc-400">Verified Roles</span><span id="verifiedRoles" class="text-green-400 font-medium">—</span></div>
+            <div class="flex justify-between"><span class="text-zinc-400">Peer Trust</span><span id="peerTrust" class="text-orange-400 font-medium">—</span></div>
+            <div class="flex justify-between"><span class="text-zinc-400">Document Strength</span><span id="documentStrength" class="text-green-400 font-medium">—</span></div>
+            <div class="flex justify-between"><span class="text-zinc-400">Risk Level</span><span id="riskLevel" class="text-green-400 font-medium">—</span></div>
           </div>
+          <a href="get-score.html" class="mt-6 block w-full text-center py-3 rounded-xl btn-primary font-semibold text-sm shadow-lg shadow-orange-500/20">Boost My Score →</a>
         </div>
-
-        <!-- Quick Actions -->
-        <div class="glass rounded-2xl p-5">
-          <div class="text-xs text-zinc-500 mb-3 tracking-wider">QUICK ACTIONS</div>
-          <div class="space-y-2">
-            <button onclick="refreshData()" class="w-full text-left px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition flex items-center gap-2">
-              <span>🔄</span> Refresh Status
-            </button>
-            <a href="mailto:contact@ecsscore.com" class="block w-full text-left px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition flex items-center gap-2">
-              <span>✉️</span> Contact Support
-            </a>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="glass rounded-xl p-4 text-center">
+            <div id="peerNetwork" class="text-2xl font-bold text-orange-400">—</div>
+            <div class="text-xs text-zinc-500 mt-1">Peer Network</div>
+          </div>
+          <div class="glass rounded-xl p-4 text-center">
+            <div id="docsVerified" class="text-2xl font-bold text-green-400">—</div>
+            <div class="text-xs text-zinc-500 mt-1">Docs Verified</div>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT: Details -->
       <div class="lg:col-span-8 space-y-5">
-
-        <!-- Profile Info -->
-        <div class="glass rounded-2xl p-6">
-          <div class="text-xs text-zinc-500 mb-4 tracking-wider">PROFILE DETAILS</div>
-          <div class="grid sm:grid-cols-2 gap-4 text-sm">
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Full Name</div>
-              <div id="infoName" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Email</div>
-              <div id="infoEmail" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Phone</div>
-              <div id="infoPhone" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">City</div>
-              <div id="infoCity" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Current Company</div>
-              <div id="infoCompany" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Job Title</div>
-              <div id="infoJobTitle" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">Experience</div>
-              <div id="infoExperience" class="font-medium">—</div>
-            </div>
-            <div>
-              <div class="text-zinc-500 text-xs mb-1">LinkedIn</div>
-              <div id="infoLinkedin" class="font-medium truncate">—</div>
-            </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-zinc-500 mb-1">Score Trend</div>
+            <div id="scoreTrend" class="text-xl font-bold text-green-400">—</div>
+            <div class="text-[10px] text-zinc-600 mt-1">Last 30 days</div>
+            <div class="mt-2 progress-bar"><div id="trendBar" class="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-zinc-500 mb-1">Endorsements</div>
+            <div id="endorsements" class="text-xl font-bold">—</div>
+            <div class="text-[10px] text-zinc-600 mt-1">Network growth</div>
+            <div class="mt-2 progress-bar"><div id="endorseBar" class="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-zinc-500 mb-1">Visibility</div>
+            <div id="visibility" class="text-xl font-bold text-orange-400">—</div>
+            <div class="text-[10px] text-zinc-600 mt-1">Employer views</div>
+            <div class="mt-2 progress-bar"><div id="visBar" class="progress-fill" style="width:0%"></div></div>
           </div>
         </div>
 
-        <!-- Verification Progress -->
         <div class="glass rounded-2xl p-6">
-          <div class="text-xs text-zinc-500 mb-4 tracking-wider">VERIFICATION PROGRESS</div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="text-sm font-semibold">Document Strength</div>
+            <span class="text-xs text-orange-400">From verification</span>
+          </div>
           <div class="space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold">✓</div>
-              <div class="flex-1">
-                <div class="text-sm font-medium">Application Received</div>
-                <div class="text-xs text-zinc-500">Payment confirmed & documents uploaded</div>
-              </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-400">Identity & Profile</span><span id="identityScore" class="font-medium">—</span></div>
+              <div class="progress-bar"><div id="identityBar" class="progress-fill" style="width:0%"></div></div>
             </div>
-            <div class="flex items-center gap-3">
-              <div id="step2Icon" class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">2</div>
-              <div class="flex-1">
-                <div class="text-sm font-medium">Under Verification</div>
-                <div class="text-xs text-zinc-500">Our team is reviewing your details (usually 5–7 days)</div>
-              </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-400">Professional Credentials</span><span id="credentialsScore" class="font-medium">—</span></div>
+              <div class="progress-bar"><div id="credentialsBar" class="progress-fill" style="width:0%"></div></div>
             </div>
-            <div class="flex items-center gap-3">
-              <div id="step3Icon" class="w-8 h-8 rounded-full bg-white/5 text-zinc-500 flex items-center justify-center text-sm font-bold">3</div>
-              <div class="flex-1">
-                <div class="text-sm font-medium text-zinc-400">Score Generated</div>
-                <div class="text-xs text-zinc-600">Your ECS Score will appear here once verified</div>
-              </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-400">Skills & Certifications</span><span id="skillsScore" class="font-medium">—</span></div>
+              <div class="progress-bar"><div id="skillsBar" class="progress-fill" style="width:0%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1.5"><span class="text-zinc-400">Education</span><span id="educationScore" class="font-medium">—</span></div>
+              <div class="progress-bar"><div id="educationBar" class="progress-fill" style="width:0%"></div></div>
             </div>
           </div>
         </div>
 
-        <!-- Remarks / Notes from team -->
-        <div class="glass rounded-2xl p-6">
-          <div class="text-xs text-zinc-500 mb-3 tracking-wider">TEAM REMARKS</div>
-          <p id="remarksText" class="text-sm text-zinc-400 leading-relaxed">No remarks yet. Our team will update this after review.</p>
-        </div>
-
-        <!-- Documents -->
-        <div class="glass rounded-2xl p-6">
-          <div class="text-xs text-zinc-500 mb-3 tracking-wider">UPLOADED DOCUMENTS</div>
-          <div class="flex flex-wrap gap-3">
-            <a id="resumeLink" href="#" target="_blank" class="hidden px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition border border-white/10">
-              📄 View Resume
-            </a>
-            <a id="docsLink" href="#" target="_blank" class="hidden px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition border border-white/10">
-              📎 View Additional Docs
-            </a>
-            <span id="noDocs" class="text-sm text-zinc-500">Documents are being processed</span>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="glass rounded-2xl p-5">
+            <div class="text-sm font-semibold mb-4">Recent Activity</div>
+            <div id="activityList" class="space-y-3 text-sm">
+              <div class="text-zinc-500 text-xs">No recent activity yet</div>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-5">
+            <div class="text-sm font-semibold mb-4">AI Risk Signals</div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-zinc-300">Employment Overlap</span>
+                <span id="riskOverlap" class="text-xs px-2.5 py-1 rounded-full badge-none">—</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-zinc-300">Reference Pending</span>
+                <span id="riskReference" class="text-xs px-2.5 py-1 rounded-full badge-none">—</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-zinc-300">Skill Gap</span>
+                <span id="riskSkillGap" class="text-xs px-2.5 py-1 rounded-full badge-none">—</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-zinc-600 mt-4">AI continuously monitors inconsistencies in real-time.</p>
           </div>
         </div>
 
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="glass rounded-2xl p-5">
+            <div class="text-xs text-zinc-500 mb-3 tracking-wider">PROFILE</div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between"><span class="text-zinc-500">Company</span><span id="infoCompany" class="font-medium">—</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">Job Title</span><span id="infoJobTitle" class="font-medium">—</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">Experience</span><span id="infoExperience" class="font-medium">—</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">City</span><span id="infoCity" class="font-medium">—</span></div>
+              <div class="flex justify-between"><span class="text-zinc-500">Status</span><span id="statusBadge" class="font-medium text-orange-400">—</span></div>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-5">
+            <div class="text-xs text-zinc-500 mb-3 tracking-wider">TEAM REMARKS</div>
+            <p id="remarksText" class="text-sm text-zinc-400 leading-relaxed">No remarks yet.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a id="resumeLink" href="#" target="_blank" class="hidden px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs border border-white/10">📄 Resume</a>
+              <a id="docsLink" href="#" target="_blank" class="hidden px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs border border-white/10">📎 Docs</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
   <script>
-    // ========== CONFIG ==========
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";  // ← Deploy ke baad URL daalo
-    // ============================
-
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";
     const loginId = localStorage.getItem("ecs_loginId");
     const password = localStorage.getItem("ecs_password");
 
@@ -230,44 +210,44 @@
       document.getElementById("loading").classList.add("hidden");
       document.getElementById("notLogged").classList.remove("hidden");
     } else {
-      // Try cached data first for speed
       const cached = localStorage.getItem("ecs_candidate");
-      if (cached) {
-        try {
-          renderDashboard(JSON.parse(cached));
-        } catch(e) {}
-      }
-      // Then refresh from server
+      if (cached) { try { renderDashboard(JSON.parse(cached)); } catch(e) {} }
       refreshData();
     }
 
     async function refreshData() {
       if (!loginId || !password) return;
-
       try {
         const res = await fetch(APPS_SCRIPT_URL, {
           method: "POST",
-          body: JSON.stringify({
-            action: "login",
-            loginId: loginId,
-            password: password
-          })
+          body: JSON.stringify({ action: "login", loginId, password })
         });
         const data = await res.json();
-
         if (data.status === "success") {
           localStorage.setItem("ecs_candidate", JSON.stringify(data));
           renderDashboard(data);
-        } else {
-          // Credentials invalid → logout
-          logout();
-        }
+        } else logout();
       } catch (err) {
-        // Keep showing cached data if network fails
-        console.log("Refresh failed, using cache");
         document.getElementById("loading").classList.add("hidden");
         document.getElementById("dashboard").classList.remove("hidden");
       }
+    }
+
+    function setBar(id, value) {
+      const num = parseInt(value) || 0;
+      const el = document.getElementById(id);
+      if (el) el.style.width = Math.min(100, num) + "%";
+    }
+
+    function riskBadge(el, value) {
+      if (!el) return;
+      const v = (value || "").toString().toLowerCase();
+      el.textContent = value || "—";
+      el.className = "text-xs px-2.5 py-1 rounded-full ";
+      if (v === "high") el.className += "badge-high";
+      else if (v === "medium") el.className += "badge-medium";
+      else if (v === "low") el.className += "badge-low";
+      else el.className += "badge-none";
     }
 
     function renderDashboard(c) {
@@ -275,92 +255,67 @@
       document.getElementById("notLogged").classList.add("hidden");
       document.getElementById("dashboard").classList.remove("hidden");
 
-      // Header
       document.getElementById("displayName").textContent = c.fullName || "Candidate";
-      document.getElementById("displayLoginId").textContent = c.loginId || loginId;
       document.getElementById("navName").textContent = c.fullName || "";
       document.getElementById("navName").classList.remove("hidden");
 
-      // Score
       const score = parseInt(c.ecsScore) || 0;
-      const hasScore = c.ecsScore && c.ecsScore !== "";
-
+      const hasScore = c.ecsScore !== "" && c.ecsScore != null;
       if (hasScore) {
         document.getElementById("scoreValue").textContent = score;
         document.getElementById("scoreRing").style.setProperty("--score-deg", (score / 100 * 360) + "deg");
-
-        let label = "PENDING";
-        let color = "text-orange-400";
-        if (score >= 80) { label = "EXCELLENT"; color = "text-green-400"; }
-        else if (score >= 65) { label = "GOOD"; color = "text-orange-400"; }
-        else if (score >= 50) { label = "AVERAGE"; color = "text-yellow-400"; }
-        else { label = "NEEDS WORK"; color = "text-red-400"; }
-
+        const label = c.scoreLabel || (score >= 80 ? "EXCELLENT" : score >= 65 ? "GOOD" : score >= 50 ? "AVERAGE" : "NEEDS WORK");
         document.getElementById("scoreLabel").textContent = label;
-        document.getElementById("scoreLabel").className = "text-[10px] font-semibold mt-1 " + color;
-        document.getElementById("scoreSubtext").textContent = "Your verified Employment Credibility Score";
-      } else {
-        document.getElementById("scoreValue").textContent = "—";
-        document.getElementById("scoreLabel").textContent = "PENDING";
-        document.getElementById("scoreSubtext").textContent = "Score will appear after verification (5–7 days)";
+        document.getElementById("scoreSubtext").textContent = "Verified Employment Credibility Score";
       }
 
-      // Status
-      const status = c.verificationStatus || "Under Verification";
-      document.getElementById("statusBadge").textContent = status;
+      document.getElementById("verifiedRoles").textContent = c.verifiedRoles || "—";
+      document.getElementById("peerTrust").textContent = c.peerTrust || "—";
+      document.getElementById("documentStrength").textContent = c.documentStrength || "—";
+      document.getElementById("riskLevel").textContent = c.riskLevel || "—";
+      document.getElementById("peerNetwork").textContent = c.peerNetwork || "—";
+      document.getElementById("docsVerified").textContent = c.docsVerified || "—";
 
-      if (status.toLowerCase().includes("verified") || status.toLowerCase().includes("completed") || hasScore) {
-        document.getElementById("statusBadge").className = "font-medium text-green-400";
-        document.getElementById("step2Icon").innerHTML = "✓";
-        document.getElementById("step2Icon").className = "w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold";
-        document.getElementById("step3Icon").innerHTML = "✓";
-        document.getElementById("step3Icon").className = "w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold";
+      const trend = c.scoreTrend || "";
+      document.getElementById("scoreTrend").textContent = trend ? trend + " pts" : "—";
+      document.getElementById("endorsements").textContent = c.endorsements || "—";
+      document.getElementById("visibility").textContent = c.visibility || "—";
+      setBar("trendBar", Math.min(100, Math.abs(parseInt(trend) || 0) * 10));
+      setBar("endorseBar", Math.min(100, (parseInt(c.endorsements) || 0) * 3));
+      setBar("visBar", { High: 90, Medium: 55, Low: 25 }[c.visibility] || 0);
+
+      document.getElementById("identityScore").textContent = c.identityScore || "—";
+      document.getElementById("credentialsScore").textContent = c.credentialsScore || "—";
+      document.getElementById("skillsScore").textContent = c.skillsScore || "—";
+      document.getElementById("educationScore").textContent = c.educationScore || "—";
+      setBar("identityBar", c.identityScore);
+      setBar("credentialsBar", c.credentialsScore);
+      setBar("skillsBar", c.skillsScore);
+      setBar("educationBar", c.educationScore);
+
+      riskBadge(document.getElementById("riskOverlap"), c.riskOverlap);
+      riskBadge(document.getElementById("riskReference"), c.riskReference);
+      riskBadge(document.getElementById("riskSkillGap"), c.riskSkillGap);
+
+      const actEl = document.getElementById("activityList");
+      if (c.recentActivity && c.recentActivity.trim()) {
+        actEl.innerHTML = '<div class="flex gap-2"><span class="text-green-400">●</span><div class="text-sm">' + c.recentActivity + '</div></div>';
+      } else if (hasScore) {
+        actEl.innerHTML = '<div class="flex gap-2"><span class="text-green-400">●</span><div><div class="text-sm">Score generated</div><div class="text-xs text-zinc-500">ECS Score: ' + score + '</div></div></div>';
       }
 
-      // Last updated
-      if (c.lastUpdated) {
-        try {
-          const d = new Date(c.lastUpdated);
-          document.getElementById("lastUpdated").textContent = d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
-        } catch(e) {
-          document.getElementById("lastUpdated").textContent = c.lastUpdated;
-        }
-      }
-
-      // Profile fields
-      document.getElementById("infoName").textContent = c.fullName || "—";
-      document.getElementById("infoEmail").textContent = c.email || "—";
-      document.getElementById("infoPhone").textContent = c.phone || "—";
-      document.getElementById("infoCity").textContent = c.city || "—";
       document.getElementById("infoCompany").textContent = c.company || "—";
       document.getElementById("infoJobTitle").textContent = c.jobTitle || "—";
-      document.getElementById("infoExperience").textContent = c.experience ? c.experience + " years" : "—";
+      document.getElementById("infoExperience").textContent = c.experience ? c.experience + " yrs" : "—";
+      document.getElementById("infoCity").textContent = c.city || "—";
+      document.getElementById("statusBadge").textContent = c.verificationStatus || "Under Verification";
 
-      if (c.linkedin) {
-        document.getElementById("infoLinkedin").innerHTML = `<a href="${c.linkedin}" target="_blank" class="text-orange-400 hover:underline truncate block">${c.linkedin}</a>`;
-      }
-
-      // Remarks
       if (c.remarks && c.remarks.trim()) {
         document.getElementById("remarksText").textContent = c.remarks;
         document.getElementById("remarksText").className = "text-sm text-zinc-300 leading-relaxed";
       }
-
-      // Documents
-      let hasDoc = false;
-      if (c.resumeUrl) {
-        document.getElementById("resumeLink").href = c.resumeUrl;
-        document.getElementById("resumeLink").classList.remove("hidden");
-        hasDoc = true;
-      }
-      if (c.docsUrl) {
-        document.getElementById("docsLink").href = c.docsUrl;
-        document.getElementById("docsLink").classList.remove("hidden");
-        hasDoc = true;
-      }
-      if (hasDoc) {
-        document.getElementById("noDocs").classList.add("hidden");
-      }
+      if (c.resumeUrl) { document.getElementById("resumeLink").href = c.resumeUrl; document.getElementById("resumeLink").classList.remove("hidden"); }
+      if (c.docsUrl) { document.getElementById("docsLink").href = c.docsUrl; document.getElementById("docsLink").classList.remove("hidden"); }
     }
 
     function logout() {
