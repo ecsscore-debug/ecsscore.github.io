@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — ECS Score</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dark: { 950: '#050505', 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' }
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          animation: { 'pulse-slow': 'pulse 3s ease-in-out infinite' }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { background: #050505; }
+    .glass {
+      background: rgba(17,17,17,0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(249,115,22,0.12);
+    }
+    .nav-blur { backdrop-filter: blur(24px); background: rgba(5,5,5,0.92); }
+    .score-ring {
+      background: conic-gradient(from -90deg, #f97316 0deg, #fb923c var(--score-deg, 0deg), #1a1a1a var(--score-deg, 0deg) 360deg);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+  </style>
+</head>
+<body class="font-sans text-white antialiased min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-sm shadow-lg shadow-orange-500/20">E</div>
+        <span class="font-bold tracking-tight">ECS Score</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <span id="navName" class="text-sm text-zinc-400 hidden sm:inline"></span>
+        <button onclick="logout()" class="text-sm text-zinc-400 hover:text-white transition">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div id="loading" class="pt-32 text-center">
+    <div class="inline-block w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+    <p class="text-zinc-400 text-sm">Loading your dashboard…</p>
+  </div>
+
+  <!-- Error / Not logged in -->
+  <div id="notLogged" class="hidden pt-32 text-center px-5">
+    <div class="text-4xl mb-4">🔒</div>
+    <h2 class="text-xl font-bold mb-2">Please Login</h2>
+    <p class="text-zinc-400 text-sm mb-6">You need to login to view your dashboard</p>
+    <a href="login.html" class="inline-flex px-6 py-3 rounded-xl btn-primary font-semibold text-sm">Go to Login →</a>
+  </div>
+
+  <!-- Dashboard Content -->
+  <main id="dashboard" class="hidden max-w-6xl mx-auto px-5 pt-24 pb-16">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="text-sm text-orange-400 font-medium mb-1">Candidate Portal</div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-1">Hello, <span id="displayName">Candidate</span></h1>
+      <p class="text-zinc-400 text-sm">Login ID: <span id="displayLoginId" class="text-zinc-300"></span></p>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-5">
+
+      <!-- LEFT: Score Card -->
+      <div class="lg:col-span-4 space-y-5">
+        <div class="glass rounded-2xl p-6 relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
+          <div class="text-xs text-zinc-500 mb-4 tracking-wider">YOUR ECS SCORE</div>
+
+          <div class="relative w-40 h-40 mx-auto mb-4">
+            <div id="scoreRing" class="absolute inset-0 rounded-full score-ring" style="--score-deg: 0deg"></div>
+            <div class="absolute inset-3 rounded-full bg-dark-900 flex flex-col items-center justify-center">
+              <div id="scoreValue" class="text-4xl font-black">—</div>
+              <div class="text-xs text-zinc-500">/100</div>
+              <div id="scoreLabel" class="text-[10px] text-orange-400 font-semibold mt-1">PENDING</div>
+            </div>
+          </div>
+
+          <div id="scoreSubtext" class="text-center text-xs text-zinc-500 mb-5">
+            Score will appear after verification
+          </div>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">Status</span>
+              <span id="statusBadge" class="font-medium text-orange-400">Under Verification</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">Last Updated</span>
+              <span id="lastUpdated" class="text-zinc-300 text-xs">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="glass rounded-2xl p-5">
+          <div class="text-xs text-zinc-500 mb-3 tracking-wider">QUICK ACTIONS</div>
+          <div class="space-y-2">
+            <button onclick="refreshData()" class="w-full text-left px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition flex items-center gap-2">
+              <span>🔄</span> Refresh Status
+            </button>
+            <a href="mailto:contact@ecsscore.com" class="block w-full text-left px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition flex items-center gap-2">
+              <span>✉️</span> Contact Support
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Details -->
+      <div class="lg:col-span-8 space-y-5">
+
+        <!-- Profile Info -->
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-zinc-500 mb-4 tracking-wider">PROFILE DETAILS</div>
+          <div class="grid sm:grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Full Name</div>
+              <div id="infoName" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Email</div>
+              <div id="infoEmail" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Phone</div>
+              <div id="infoPhone" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">City</div>
+              <div id="infoCity" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Current Company</div>
+              <div id="infoCompany" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Job Title</div>
+              <div id="infoJobTitle" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">Experience</div>
+              <div id="infoExperience" class="font-medium">—</div>
+            </div>
+            <div>
+              <div class="text-zinc-500 text-xs mb-1">LinkedIn</div>
+              <div id="infoLinkedin" class="font-medium truncate">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Progress -->
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-zinc-500 mb-4 tracking-wider">VERIFICATION PROGRESS</div>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold">✓</div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Application Received</div>
+                <div class="text-xs text-zinc-500">Payment confirmed & documents uploaded</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div id="step2Icon" class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm font-bold">2</div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Under Verification</div>
+                <div class="text-xs text-zinc-500">Our team is reviewing your details (usually 5–7 days)</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div id="step3Icon" class="w-8 h-8 rounded-full bg-white/5 text-zinc-500 flex items-center justify-center text-sm font-bold">3</div>
+              <div class="flex-1">
+                <div class="text-sm font-medium text-zinc-400">Score Generated</div>
+                <div class="text-xs text-zinc-600">Your ECS Score will appear here once verified</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remarks / Notes from team -->
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-zinc-500 mb-3 tracking-wider">TEAM REMARKS</div>
+          <p id="remarksText" class="text-sm text-zinc-400 leading-relaxed">No remarks yet. Our team will update this after review.</p>
+        </div>
+
+        <!-- Documents -->
+        <div class="glass rounded-2xl p-6">
+          <div class="text-xs text-zinc-500 mb-3 tracking-wider">UPLOADED DOCUMENTS</div>
+          <div class="flex flex-wrap gap-3">
+            <a id="resumeLink" href="#" target="_blank" class="hidden px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition border border-white/10">
+              📄 View Resume
+            </a>
+            <a id="docsLink" href="#" target="_blank" class="hidden px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm transition border border-white/10">
+              📎 View Additional Docs
+            </a>
+            <span id="noDocs" class="text-sm text-zinc-500">Documents are being processed</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ========== CONFIG ==========
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyocuCx3zyszZ2FX8E9-8omvZaY3Gvr57yKjbPD4C1OUu5JRr3EH74XwEuiAnpWlRA/exec";  // ← Deploy ke baad URL daalo
+    // ============================
+
+    const loginId = localStorage.getItem("ecs_loginId");
+    const password = localStorage.getItem("ecs_password");
+
+    if (!loginId || !password) {
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("notLogged").classList.remove("hidden");
+    } else {
+      // Try cached data first for speed
+      const cached = localStorage.getItem("ecs_candidate");
+      if (cached) {
+        try {
+          renderDashboard(JSON.parse(cached));
+        } catch(e) {}
+      }
+      // Then refresh from server
+      refreshData();
+    }
+
+    async function refreshData() {
+      if (!loginId || !password) return;
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "login",
+            loginId: loginId,
+            password: password
+          })
+        });
+        const data = await res.json();
+
+        if (data.status === "success") {
+          localStorage.setItem("ecs_candidate", JSON.stringify(data));
+          renderDashboard(data);
+        } else {
+          // Credentials invalid → logout
+          logout();
+        }
+      } catch (err) {
+        // Keep showing cached data if network fails
+        console.log("Refresh failed, using cache");
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+      }
+    }
+
+    function renderDashboard(c) {
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("notLogged").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+
+      // Header
+      document.getElementById("displayName").textContent = c.fullName || "Candidate";
+      document.getElementById("displayLoginId").textContent = c.loginId || loginId;
+      document.getElementById("navName").textContent = c.fullName || "";
+      document.getElementById("navName").classList.remove("hidden");
+
+      // Score
+      const score = parseInt(c.ecsScore) || 0;
+      const hasScore = c.ecsScore && c.ecsScore !== "";
+
+      if (hasScore) {
+        document.getElementById("scoreValue").textContent = score;
+        document.getElementById("scoreRing").style.setProperty("--score-deg", (score / 100 * 360) + "deg");
+
+        let label = "PENDING";
+        let color = "text-orange-400";
+        if (score >= 80) { label = "EXCELLENT"; color = "text-green-400"; }
+        else if (score >= 65) { label = "GOOD"; color = "text-orange-400"; }
+        else if (score >= 50) { label = "AVERAGE"; color = "text-yellow-400"; }
+        else { label = "NEEDS WORK"; color = "text-red-400"; }
+
+        document.getElementById("scoreLabel").textContent = label;
+        document.getElementById("scoreLabel").className = "text-[10px] font-semibold mt-1 " + color;
+        document.getElementById("scoreSubtext").textContent = "Your verified Employment Credibility Score";
+      } else {
+        document.getElementById("scoreValue").textContent = "—";
+        document.getElementById("scoreLabel").textContent = "PENDING";
+        document.getElementById("scoreSubtext").textContent = "Score will appear after verification (5–7 days)";
+      }
+
+      // Status
+      const status = c.verificationStatus || "Under Verification";
+      document.getElementById("statusBadge").textContent = status;
+
+      if (status.toLowerCase().includes("verified") || status.toLowerCase().includes("completed") || hasScore) {
+        document.getElementById("statusBadge").className = "font-medium text-green-400";
+        document.getElementById("step2Icon").innerHTML = "✓";
+        document.getElementById("step2Icon").className = "w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold";
+        document.getElementById("step3Icon").innerHTML = "✓";
+        document.getElementById("step3Icon").className = "w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-bold";
+      }
+
+      // Last updated
+      if (c.lastUpdated) {
+        try {
+          const d = new Date(c.lastUpdated);
+          document.getElementById("lastUpdated").textContent = d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+        } catch(e) {
+          document.getElementById("lastUpdated").textContent = c.lastUpdated;
+        }
+      }
+
+      // Profile fields
+      document.getElementById("infoName").textContent = c.fullName || "—";
+      document.getElementById("infoEmail").textContent = c.email || "—";
+      document.getElementById("infoPhone").textContent = c.phone || "—";
+      document.getElementById("infoCity").textContent = c.city || "—";
+      document.getElementById("infoCompany").textContent = c.company || "—";
+      document.getElementById("infoJobTitle").textContent = c.jobTitle || "—";
+      document.getElementById("infoExperience").textContent = c.experience ? c.experience + " years" : "—";
+
+      if (c.linkedin) {
+        document.getElementById("infoLinkedin").innerHTML = `<a href="${c.linkedin}" target="_blank" class="text-orange-400 hover:underline truncate block">${c.linkedin}</a>`;
+      }
+
+      // Remarks
+      if (c.remarks && c.remarks.trim()) {
+        document.getElementById("remarksText").textContent = c.remarks;
+        document.getElementById("remarksText").className = "text-sm text-zinc-300 leading-relaxed";
+      }
+
+      // Documents
+      let hasDoc = false;
+      if (c.resumeUrl) {
+        document.getElementById("resumeLink").href = c.resumeUrl;
+        document.getElementById("resumeLink").classList.remove("hidden");
+        hasDoc = true;
+      }
+      if (c.docsUrl) {
+        document.getElementById("docsLink").href = c.docsUrl;
+        document.getElementById("docsLink").classList.remove("hidden");
+        hasDoc = true;
+      }
+      if (hasDoc) {
+        document.getElementById("noDocs").classList.add("hidden");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("ecs_loginId");
+      localStorage.removeItem("ecs_password");
+      localStorage.removeItem("ecs_candidate");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
