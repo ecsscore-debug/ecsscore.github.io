@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generate Your ECS Score — ₹169 (was ₹359)</title>
+  <title>Generate Your ECS Score — Free</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -80,7 +79,7 @@
     <!-- Header -->
     <div class="text-center mb-10">
       <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300 text-xs font-medium mb-4">
-        🔥 Limited Time Launch Offer
+        ✨ Free for a limited time
       </div>
       <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight">
         Generate Your <span class="text-orange-400">ECS Score</span>
@@ -183,26 +182,20 @@
         </label>
       </div>
 
-      <!-- Price + CTA -->
+      <!-- CTA -->
       <div class="pt-2">
-        <div class="rounded-xl bg-orange-500/5 border border-orange-500/20 p-4 mb-4">
-          <div class="flex items-center justify-between mb-1">
-            <div class="text-sm text-zinc-400">One-time verification fee</div>
-            <div class="flex items-center gap-2.5">
-              <span class="text-lg text-zinc-500 line-through decoration-zinc-500">₹359</span>
-              <span class="text-2xl font-bold text-orange-400">₹169</span>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] text-green-400 font-medium">You save ₹190 today</span>
-            <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 font-medium">53% OFF</span>
+        <div class="rounded-xl bg-orange-500/5 border border-orange-500/20 p-4 mb-4 flex items-center justify-between">
+          <div class="text-sm text-zinc-400">Verification fee</div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-zinc-500 line-through">₹169</span>
+            <span class="text-xl font-bold text-green-400">FREE</span>
           </div>
         </div>
-        <button type="button" id="payBtn" onclick="startPayment()" class="btn-pay w-full py-4 rounded-xl font-bold text-base text-white transition">
-          Pay ₹169 & Generate My Score →
+        <button type="button" id="payBtn" onclick="submitFree()" class="btn-pay w-full py-4 rounded-xl font-bold text-base text-white transition">
+          Generate My Score — Free →
         </button>
         <p class="text-center text-xs text-zinc-500 mt-3">
-          100% secure payment via Razorpay · Score delivered within 7 days
+          No payment required · Score delivered within 7 days
         </p>
       </div>
     </form>
@@ -216,11 +209,9 @@
   </main>
 
   <script>
-    // ========== CONFIG (Replace these) ==========
-    const RAZORPAY_KEY = "rzp_live_TR8W29TGGkEGdE";
+    // ========== CONFIG ==========
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2iF_To3F3bpU1JuVt7VlHbrF6gCLiCLiuIC-fSI_zVooQ2zNHHmpFNBV0mdEjftY/exec";
-    const AMOUNT_PAISE = 16900; // ₹169 in paise
-    // ===========================================
+    // ============================
 
     function handleFile(input, boxId, nameId) {
       const box = document.getElementById(boxId);
@@ -290,16 +281,15 @@
       });
     }
 
-    async function startPayment() {
+    async function submitFree() {
       if (!validateForm()) return;
 
       const btn = document.getElementById("payBtn");
       btn.disabled = true;
-      btn.textContent = "Preparing payment…";
+      btn.textContent = "Submitting…";
 
       const formData = getFormData();
 
-      // Convert files to base64 for Apps Script
       let resumeB64 = null, docsB64 = null;
       try {
         resumeB64 = await fileToBase64(formData.resumeFile);
@@ -307,59 +297,18 @@
       } catch (e) {
         alert("Error reading files. Please try again.");
         btn.disabled = false;
-        btn.textContent = "Pay ₹169 & Generate My Score →";
+        btn.textContent = "Generate My Score — Free →";
         return;
       }
 
-      const options = {
-        key: RAZORPAY_KEY,
-        amount: AMOUNT_PAISE,
-        currency: "INR",
-        name: "ECS Score",
-        description: "Employment Credibility Score Verification",
-        image: "", // optional logo URL
-        handler: function (response) {
-          // Payment success
-          submitToSheet({
-            ...formData,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id || "",
-            razorpay_signature: response.razorpay_signature || "",
-            resume: resumeB64,
-            docs: docsB64,
-            payment_status: "paid",
-            amount: 169
-          });
-        },
-        prefill: {
-          name: formData.fullName,
-          email: formData.email,
-          contact: formData.phone
-        },
-        theme: { color: "#f97316" },
-        modal: {
-          ondismiss: function () {
-            btn.disabled = false;
-            btn.textContent = "Pay ₹169 & Generate My Score →";
-          }
-        }
-      };
-
-      try {
-        const rzp = new Razorpay(options);
-        rzp.on("payment.failed", function (resp) {
-          alert("Payment failed: " + (resp.error?.description || "Please try again"));
-          btn.disabled = false;
-          btn.textContent = "Pay ₹169 & Generate My Score →";
-        });
-        rzp.open();
-        btn.disabled = false;
-        btn.textContent = "Pay ₹169 & Generate My Score →";
-      } catch (err) {
-        alert("Razorpay error. Please check your Key Id.\n" + err);
-        btn.disabled = false;
-        btn.textContent = "Pay ₹169 & Generate My Score →";
-      }
+      submitToSheet({
+        ...formData,
+        razorpay_payment_id: "",
+        resume: resumeB64,
+        docs: docsB64,
+        payment_status: "free",
+        amount: 0
+      });
     }
 
     async function submitToSheet(payload) {
@@ -384,7 +333,7 @@
         document.querySelector("main").innerHTML = `
           <div class="text-center py-16">
             <div class="text-5xl mb-4">✅</div>
-            <h1 class="text-3xl font-bold mb-3">Payment Successful!</h1>
+            <h1 class="text-3xl font-bold mb-3">Application Submitted!</h1>
             <p class="text-zinc-400 max-w-md mx-auto mb-2">
               Thank you, <strong class="text-white">${payload.fullName}</strong>.
             </p>
@@ -396,7 +345,7 @@
               <div class="flex justify-between"><span class="text-zinc-500">Then</span><span class="text-white">Login to your dashboard</span></div>
               <div class="flex justify-between"><span class="text-zinc-500">Score Ready In</span><span class="text-orange-400">5–7 days</span></div>
             </div>
-            <p class="text-sm text-zinc-500 mb-6">Payment ID: ${payload.razorpay_payment_id || "—"}</p>
+
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="login.html" class="inline-flex px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-400 font-semibold transition text-sm">
                 Go to Login →
@@ -407,9 +356,9 @@
             </div>
           </div>`;
       } catch (e) {
-        alert("Payment received but data sync failed. Please contact us with Payment ID: " + (payload.razorpay_payment_id || ""));
+        alert("Could not submit details. Please try again or contact support.");
         btn.disabled = false;
-        btn.textContent = "Pay ₹169 & Generate My Score →";
+        btn.textContent = "Generate My Score — Free →";
       }
     }
   </script>
