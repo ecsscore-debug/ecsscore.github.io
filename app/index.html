@@ -1,1 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#050505" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>ECS Score App</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon.svg" />
+<link rel="apple-touch-icon" href="icon.svg" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{dark:{950:"#050505",900:"#0a0a0a"}},fontFamily:{sans:["Inter","system-ui","sans-serif"]}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--safe:env(safe-area-inset-bottom)}
+body{background:#050505}
+.glass{background:rgba(17,17,17,.92);border:1px solid rgba(249,115,22,.14)}
+.input-field{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(249,115,22,.16);background:#0a0a0a;color:#fff;font-size:15px;outline:none}
+.input-field:focus{border-color:rgba(249,115,22,.5)}
+label{display:block;font-size:12px;font-weight:500;color:#a1a1aa;margin-bottom:6px}
+.btn-main{background:linear-gradient(135deg,#f97316,#ea580c);box-shadow:0 0 22px rgba(249,115,22,.3)}
+.file-box{border:1.5px dashed rgba(249,115,22,.28);border-radius:12px;padding:16px;text-align:center}
+.file-box.has-file{border-color:#22c55e}
+.score-ring{background:conic-gradient(from -90deg,#f97316 0deg,#fb923c var(--d,0deg),#1a1a1a var(--d,0deg) 360deg)}
+.bar{height:6px;border-radius:99px;background:#1a1a1a;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f97316,#fb923c)}
+.screen{display:none;padding-bottom:calc(92px + var(--safe))}
+.screen.on{display:block}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(5,5,5,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06);padding:8px 4px calc(8px + var(--safe))}
+.tab{color:#71717a}.tab.on{color:#fb923c}
+.blink{animation:b 1.4s ease-in-out infinite}@keyframes b{50%{opacity:.4}}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);z-index:80;padding:16px;overflow:auto}
+.modal-bg.on{display:flex;align-items:flex-end;justify-content:center}
+.orb{position:absolute;border-radius:999px;filter:blur(80px);pointer-events:none}
+</style>
+</head>
+<body class="font-sans text-white antialiased min-h-screen">
+<header class="sticky top-0 z-40 border-b border-white/5 bg-dark-950/90 backdrop-blur-xl px-4 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-2.5">
+    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center font-black text-sm shadow-lg shadow-orange-500/30">E</div>
+    <div><div class="font-bold leading-none">ECS Score</div><div class="text-[10px] text-zinc-500">Jobs · Score · Dashboard</div></div>
+  </div>
+  <button id="installBtn" class="hidden text-[11px] px-3 py-1.5 rounded-full bg-orange-500/15 text-orange-300 font-medium">Install</button>
+</header>
 
+<section id="home" class="screen on relative overflow-hidden">
+  <div class="orb w-64 h-64 bg-orange-600/20 -top-8 -left-8"></div>
+  <div class="relative px-5 pt-8">
+    <div class="inline-flex px-3 py-1 rounded-full bg-orange-500/12 border border-orange-500/25 text-orange-300 text-[11px] font-semibold mb-4 blink">Live jobs + free ECS Score</div>
+    <h1 class="text-[32px] font-black leading-[1.12] mb-3">Hire-ready proof.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">One score. Real jobs.</span></h1>
+    <p class="text-zinc-400 text-sm mb-6">Like CIBIL for careers. Generate your score free, apply to live roles, track everything on dashboard.</p>
+    <button onclick="go('apply')" class="btn-main w-full py-4 rounded-2xl font-bold mb-3">Generate My Score — Free</button>
+    <button onclick="go('jobs')" class="w-full py-4 rounded-2xl font-semibold border border-orange-500/25 text-orange-300">Browse Job Openings</button>
+    <div class="grid grid-cols-3 gap-2.5 mt-7">
+      <div class="glass rounded-2xl p-3 text-center"><div class="text-lg font-black text-orange-400">Free</div><div class="text-[10px] text-zinc-500 mt-1">Score apply</div></div>
+      <div class="glass rounded-2xl p-3 text-center"><div class="text-lg font-black" id="jobCountHome">Live</div><div class="text-[10px] text-zinc-500 mt-1">Open roles</div></div>
+      <div class="glass rounded-2xl p-3 text-center"><div class="text-lg font-black">0–100</div><div class="text-[10px] text-zinc-500 mt-1">ECS Score</div></div>
+    </div>
+    <div class="mt-8"><div class="text-xs font-semibold text-zinc-500 mb-3">TEAM</div>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="glass rounded-2xl p-3 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-orange-500/20 flex items-center justify-center font-bold text-orange-300">M</div><div class="text-xs font-semibold">Mohit</div><div class="text-[10px] text-zinc-500">Founder</div></div>
+        <div class="glass rounded-2xl p-3 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-orange-500/20 flex items-center justify-center font-bold text-orange-300">A</div><div class="text-xs font-semibold">Akarshit</div><div class="text-[10px] text-zinc-500">Team</div></div>
+        <div class="glass rounded-2xl p-3 text-center"><div class="w-10 h-10 mx-auto mb-2 rounded-full bg-orange-500/20 flex items-center justify-center font-bold text-orange-300">A</div><div class="text-xs font-semibold">Abhishek</div><div class="text-[10px] text-zinc-500">Team</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="jobs" class="screen px-4 pt-5">
+  <div class="flex items-end justify-between mb-4">
+    <div><div class="text-[11px] text-orange-400 font-semibold blink">HIRING HUB</div><h2 class="text-2xl font-black">Open roles</h2></div>
+    <div class="text-xs text-zinc-500" id="jobsMeta">Loading…</div>
+  </div>
+  <input id="jobSearch" class="input-field mb-3" placeholder="Search title, company, city">
+  <div id="jobFilters" class="flex gap-2 overflow-x-auto pb-2 mb-3 text-xs"></div>
+  <div id="jobsList"></div>
+</section>
+
+<section id="apply" class="screen px-4 pt-5">
+  <h2 class="text-2xl font-black mb-1">Generate ECS Score</h2>
+  <p class="text-zinc-400 text-sm mb-5">Free. Same Google Sheet as the website.</p>
+  <form id="ecsForm" class="space-y-3" onsubmit="return false;">
+    <input id="fullName" class="input-field" placeholder="Full Name *">
+    <input id="email" type="email" class="input-field" placeholder="Email *">
+    <input id="phone" type="tel" class="input-field" placeholder="Phone *">
+    <input id="city" class="input-field" placeholder="City *">
+    <input id="company" class="input-field" placeholder="Current Company *">
+    <input id="jobTitle" class="input-field" placeholder="Job Title *">
+    <input id="experience" class="input-field" placeholder="Experience years *">
+    <input id="linkedin" class="input-field" placeholder="LinkedIn URL">
+    <div class="file-box" id="resumeBox" onclick="document.getElementById('resume').click()">
+      <input type="file" id="resume" accept=".pdf" class="hidden" onchange="handleFile(this,'resumeBox','resumeName')">
+      <div class="text-sm text-zinc-400" id="resumeName">Resume PDF * · tap to upload</div>
+    </div>
+    <div class="file-box" id="docsBox" onclick="document.getElementById('docs').click()">
+      <input type="file" id="docs" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handleFile(this,'docsBox','docsName')">
+      <div class="text-sm text-zinc-400" id="docsName">Extra docs (optional)</div>
+    </div>
+    <select id="availability" class="input-field">
+      <option value="">Verification call slot *</option>
+      <option>Weekday Morning (10 AM – 1 PM)</option>
+      <option>Weekday Afternoon (2 PM – 5 PM)</option>
+      <option>Weekday Evening (6 PM – 9 PM)</option>
+      <option>Weekend (Flexible)</option>
+    </select>
+    <label class="flex gap-3 text-sm text-zinc-300"><input type="checkbox" id="consent" class="mt-1 accent-orange-500"> I consent to verification</label>
+    <button id="submitBtn" onclick="submitScore()" class="btn-main w-full py-4 rounded-2xl font-bold">Submit Application</button>
+  </form>
+  <div id="applySuccess" class="hidden text-center py-12">
+    <div class="text-5xl mb-4">✅</div>
+    <h3 class="text-2xl font-black mb-2">Submitted</h3>
+    <p class="text-zinc-400 text-sm mb-6">Check email for Login ID, then open Dashboard.</p>
+    <button onclick="go('login')" class="btn-main w-full py-4 rounded-2xl font-bold">Go to Login</button>
+  </div>
+</section>
+
+<section id="login" class="screen px-4 pt-8">
+  <h2 class="text-2xl font-black mb-1">Login</h2>
+  <p class="text-zinc-400 text-sm mb-5">Credentials sent after score application.</p>
+  <div id="loginErr" class="hidden mb-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3"></div>
+  <input id="loginId" class="input-field mb-3" placeholder="Login ID">
+  <input id="password" type="password" class="input-field mb-4" placeholder="Password">
+  <button id="loginBtn" onclick="doLogin()" class="btn-main w-full py-4 rounded-2xl font-bold mb-8">Login to Dashboard</button>
+  <div class="glass rounded-2xl p-4 text-sm text-zinc-400">
+    <div class="text-white font-semibold mb-1">About ECS</div>
+    Employment Credibility Score — verified work history, documents, peer trust, risk signals. SRC Enterprises.<br>
+    <span class="text-xs text-zinc-500">Team: Mohit · Akarshit · Abhishek</span>
+  </div>
+</section>
+
+<section id="dash" class="screen px-4 pt-5">
+  <div class="flex justify-between items-start mb-4">
+    <div><div class="text-[11px] text-orange-400">DASHBOARD</div><h2 class="text-xl font-black">Hello, <span id="displayName">Candidate</span></h2></div>
+    <button onclick="logout()" class="text-xs text-zinc-400">Logout</button>
+  </div>
+  <div class="glass rounded-2xl p-5 mb-3 text-center">
+    <div class="text-[11px] text-zinc-500 mb-3">YOUR ECS SCORE</div>
+    <div class="relative w-36 h-36 mx-auto mb-3">
+      <div id="scoreRing" class="absolute inset-0 rounded-full score-ring"></div>
+      <div class="absolute inset-3 rounded-full bg-[#0a0a0a] flex flex-col items-center justify-center">
+        <div id="scoreValue" class="text-4xl font-black">—</div>
+        <div class="text-[10px] text-zinc-500">/100</div>
+        <div id="scoreLabel" class="text-[10px] text-orange-400 font-semibold">PENDING</div>
+      </div>
+    </div>
+    <div id="statusBadge" class="inline-block text-xs px-3 py-1 rounded-full bg-orange-500/15 text-orange-300">Under Verification</div>
+  </div>
+  <div class="grid grid-cols-2 gap-2.5 mb-3 text-sm">
+    <div class="glass rounded-2xl p-4"><div class="text-zinc-500 text-xs">Verified Roles</div><div id="verifiedRoles" class="font-semibold mt-1">—</div></div>
+    <div class="glass rounded-2xl p-4"><div class="text-zinc-500 text-xs">Peer Trust</div><div id="peerTrust" class="font-semibold mt-1">—</div></div>
+    <div class="glass rounded-2xl p-4"><div class="text-zinc-500 text-xs">Docs Strength</div><div id="documentStrength" class="font-semibold mt-1">—</div></div>
+    <div class="glass rounded-2xl p-4"><div class="text-zinc-500 text-xs">Risk Level</div><div id="riskLevel" class="font-semibold mt-1">—</div></div>
+  </div>
+  <div class="glass rounded-2xl p-4 mb-3 space-y-3 text-sm">
+    <div class="font-semibold">Document Strength</div>
+    <div><div class="flex justify-between mb-1 text-zinc-400"><span>Identity</span><span id="identityScore">—</span></div><div class="bar"><i id="identityBar"></i></div></div>
+    <div><div class="flex justify-between mb-1 text-zinc-400"><span>Credentials</span><span id="credentialsScore">—</span></div><div class="bar"><i id="credentialsBar"></i></div></div>
+    <div><div class="flex justify-between mb-1 text-zinc-400"><span>Skills</span><span id="skillsScore">—</span></div><div class="bar"><i id="skillsBar"></i></div></div>
+    <div><div class="flex justify-between mb-1 text-zinc-400"><span>Education</span><span id="educationScore">—</span></div><div class="bar"><i id="educationBar"></i></div></div>
+  </div>
+  <div class="glass rounded-2xl p-4 mb-3 text-sm space-y-2">
+    <div class="font-semibold">Profile</div>
+    <div class="flex justify-between"><span class="text-zinc-500">Company</span><span id="infoCompany">—</span></div>
+    <div class="flex justify-between"><span class="text-zinc-500">Role</span><span id="infoJobTitle">—</span></div>
+    <div class="flex justify-between"><span class="text-zinc-500">Experience</span><span id="infoExperience">—</span></div>
+    <div class="flex justify-between"><span class="text-zinc-500">City</span><span id="infoCity">—</span></div>
+  </div>
+  <button onclick="refreshData()" class="w-full py-3 rounded-2xl border border-white/10 text-sm">Refresh from Sheet</button>
+</section>
+
+<div class="modal-bg" id="jobModal">
+  <div class="glass rounded-t-3xl w-full max-w-md p-5">
+    <div class="flex justify-between items-start mb-2">
+      <div><h3 class="text-lg font-black" id="mTitle"></h3><div class="text-xs text-zinc-400" id="mCompany"></div></div>
+      <button onclick="closeJobModal()" class="text-zinc-500 text-sm">Close</button>
+    </div>
+    <pre id="mDesc" class="text-sm text-zinc-300 whitespace-pre-wrap max-h-36 overflow-auto bg-black/30 rounded-xl p-3 mb-4 font-sans"></pre>
+    <input id="fName" class="input-field mb-2" placeholder="Full Name *">
+    <input id="fMobile" class="input-field mb-2" placeholder="Mobile *">
+    <input id="fEmail" type="email" class="input-field mb-2" placeholder="Email *">
+    <input id="fResume" class="input-field mb-2" placeholder="Resume public link *">
+    <input id="fExp" class="input-field mb-2" placeholder="Experience (years)">
+    <input id="fCTC" class="input-field mb-3" placeholder="Current CTC (LPA)">
+    <div class="rounded-xl p-3 bg-orange-500/10 border border-orange-500/20 mb-3">
+      <div class="text-xs font-semibold text-orange-300 mb-2">Applied for ECS Score?</div>
+      <div class="flex gap-4 text-sm mb-2">
+        <label class="flex items-center gap-2"><input type="radio" name="ecsC" id="fEcsYes" class="accent-orange-500"> Yes</label>
+        <label class="flex items-center gap-2"><input type="radio" name="ecsC" id="fEcsNo" class="accent-orange-500"> No</label>
+      </div>
+      <div class="text-[11px] text-zinc-400">Yes = priority shortlist + shown to partner employers.</div>
+      <button type="button" onclick="go('apply');closeJobModal()" class="text-[11px] text-orange-400 underline mt-2">Generate ECS Score free →</button>
+    </div>
+    <button id="jobSubmitBtn" onclick="submitJobApp()" class="btn-main w-full py-3.5 rounded-xl font-bold">Submit Application</button>
+  </div>
+</div>
+
+<nav class="tabbar grid grid-cols-5 text-center text-[10px] font-medium">
+  <button class="tab on py-1" data-go="home" onclick="go('home')"><div class="text-base">⌂</div>Home</button>
+  <button class="tab py-1" data-go="jobs" onclick="go('jobs')"><div class="text-base">▣</div>Jobs</button>
+  <button class="tab py-1" data-go="apply" onclick="go('apply')"><div class="text-base">★</div>Score</button>
+  <button class="tab py-1" data-go="dash" onclick="go('dash')"><div class="text-base">◉</div>Dash</button>
+  <button class="tab py-1" data-go="login" onclick="go('login')"><div class="text-base">👤</div>Login</button>
+</nav>
+
+<script>
+const SCORE_URL="https://script.google.com/macros/s/AKfycbw2iF_To3F3bpU1JuVt7VlHbrF6gCLiCLiuIC-fSI_zVooQ2zNHHmpFNBV0mdEjftY/exec";
+const JOBS_URL="https://script.google.com/macros/s/AKfycbx17Wghn4JjP5wbtJycvnD5F5QTHqJMwm-WeI7gd82V-jLRpY3iXA9ViOtpJWFzbbDM/exec";
+let jobs=[], selectedJob=null, activeFilter="all";
+
+function go(name){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));
+  const id=name==="dashboard"?"dash":name;
+  document.getElementById(id).classList.add("on");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on", t.dataset.go===id));
+  window.scrollTo(0,0);
+  if(id==="dash") loadDash();
+  if(id==="jobs") renderJobs();
+}
+function handleFile(input,boxId,nameId){
+  if(!input.files?.[0]) return;
+  if(input.files[0].size>10*1024*1024){alert("Max 10 MB");input.value="";return;}
+  document.getElementById(nameId).textContent=input.files[0].name;
+  document.getElementById(boxId).classList.add("has-file");
+}
+function fileToBase64(file){return new Promise((resolve,reject)=>{if(!file)return resolve(null);const r=new FileReader();r.onload=()=>resolve({name:file.name,type:file.type,data:r.result.split(",")[1]});r.onerror=reject;r.readAsDataURL(file);});}
+
+async function submitScore(){
+  const d={fullName:fullName.value.trim(),email:email.value.trim(),phone:phone.value.trim(),city:city.value.trim(),company:company.value.trim(),jobTitle:jobTitle.value.trim(),experience:experience.value.trim(),linkedin:linkedin.value.trim(),availability:availability.value,consent:consent.checked,resumeFile:resume.files[0]||null,docsFile:docs.files[0]||null,timestamp:new Date().toISOString()};
+  if(!d.fullName||!d.email||!d.phone||!d.city||!d.company||!d.jobTitle||!d.experience||!d.availability){alert("Fill required fields");return;}
+  if(!d.consent){alert("Accept consent");return;}
+  if(!d.resumeFile){alert("Upload resume PDF");return;}
+  submitBtn.disabled=true;submitBtn.textContent="Submitting…";
+  try{
+    const clean={...d,action:"submit",resume:await fileToBase64(d.resumeFile),docs:await fileToBase64(d.docsFile),payment_status:"free",amount:0,razorpay_payment_id:""};
+    delete clean.resumeFile;delete clean.docsFile;
+    await fetch(SCORE_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(clean)});
+    ecsForm.classList.add("hidden");applySuccess.classList.remove("hidden");
+  }catch(e){alert("Could not submit");submitBtn.disabled=false;submitBtn.textContent="Submit Application";}
+}
+async function doLogin(){
+  const loginId=document.getElementById("loginId").value.trim();
+  const password=document.getElementById("password").value.trim();
+  loginErr.classList.add("hidden");
+  if(!loginId||!password){loginErr.textContent="Enter Login ID and Password";loginErr.classList.remove("hidden");return;}
+  loginBtn.disabled=true;loginBtn.textContent="Logging in…";
+  try{
+    const res=await fetch(SCORE_URL,{method:"POST",body:JSON.stringify({action:"login",loginId,password})});
+    const data=await res.json();
+    if(data.status==="success"){
+      localStorage.setItem("ecs_loginId",loginId);localStorage.setItem("ecs_password",password);localStorage.setItem("ecs_candidate",JSON.stringify(data));
+      go("dash");
+    }else{loginErr.textContent=data.message||"Invalid credentials";loginErr.classList.remove("hidden");}
+  }catch(e){loginErr.textContent="Network error";loginErr.classList.remove("hidden");}
+  loginBtn.disabled=false;loginBtn.textContent="Login to Dashboard";
+}
+function setBar(id,val){const el=document.getElementById(id);if(el)el.style.width=Math.max(0,Math.min(100,parseInt(val)||0))+"%";}
+function renderDash(c){
+  displayName.textContent=c.fullName||"Candidate";
+  const score=parseInt(c.ecsScore)||0,has=c.ecsScore!==""&&c.ecsScore!=null;
+  scoreValue.textContent=has?score:"—";
+  scoreRing.style.setProperty("--d",has?(score/100*360)+"deg":"0deg");
+  scoreLabel.textContent=c.scoreLabel||(has?(score>=80?"EXCELLENT":score>=65?"GOOD":"AVERAGE"):"PENDING");
+  statusBadge.textContent=c.verificationStatus||"Under Verification";
+  verifiedRoles.textContent=c.verifiedRoles||"—";peerTrust.textContent=c.peerTrust||"—";
+  documentStrength.textContent=c.documentStrength||"—";riskLevel.textContent=c.riskLevel||"—";
+  identityScore.textContent=c.identityScore||"—";credentialsScore.textContent=c.credentialsScore||"—";
+  skillsScore.textContent=c.skillsScore||"—";educationScore.textContent=c.educationScore||"—";
+  setBar("identityBar",c.identityScore);setBar("credentialsBar",c.credentialsScore);setBar("skillsBar",c.skillsScore);setBar("educationBar",c.educationScore);
+  infoCompany.textContent=c.company||"—";infoJobTitle.textContent=c.jobTitle||"—";
+  infoExperience.textContent=c.experience?c.experience+" yrs":"—";infoCity.textContent=c.city||"—";
+}
+async function loadDash(){
+  const id=localStorage.getItem("ecs_loginId"),pass=localStorage.getItem("ecs_password");
+  if(!id||!pass){go("login");return;}
+  const cached=localStorage.getItem("ecs_candidate");if(cached)try{renderDash(JSON.parse(cached));}catch(e){}
+  try{const res=await fetch(SCORE_URL,{method:"POST",body:JSON.stringify({action:"login",loginId:id,password:pass})});const data=await res.json();if(data.status==="success"){localStorage.setItem("ecs_candidate",JSON.stringify(data));renderDash(data);}}catch(e){}
+}
+function refreshData(){loadDash();}
+function logout(){localStorage.removeItem("ecs_loginId");localStorage.removeItem("ecs_password");localStorage.removeItem("ecs_candidate");go("login");}
+function isNewJob(d){if(!d)return false;return((new Date()-new Date(d))/(1000*60*60*24))<=7;}
+function filteredJobs(){
+  const q=(jobSearch.value||"").toLowerCase();
+  let list=jobs.filter(j=>activeFilter==="all"?true:j.category===activeFilter);
+  if(q) list=list.filter(j=>((j.title||"")+(j.company||"")+(j.location||"")).toLowerCase().includes(q));
+  return list;
+}
+function renderJobs(){
+  const list=filteredJobs();
+  jobsMeta.textContent=list.length+" roles";
+  jobCountHome.textContent=jobs.length||"Live";
+  if(!list.length){jobsList.innerHTML='<div class="text-center text-zinc-500 py-16 text-sm">No roles match right now.</div>';return;}
+  jobsList.innerHTML=list.map((job,i)=>`<div class="glass rounded-2xl p-4 mb-3 relative">
+    ${isNewJob(job.posted_on)?'<span class="absolute right-3 top-3 text-[10px] font-bold bg-red-500 px-2 py-0.5 rounded blink">NEW</span>':''}
+    <div class="font-bold pr-10">${job.title||"Role"}</div>
+    <div class="text-xs text-zinc-400 mt-0.5">${job.company||""} · ${job.location||""}</div>
+    <div class="flex flex-wrap gap-1.5 mt-2">
+      ${job.salary?`<span class="text-[11px] px-2 py-0.5 rounded-md bg-orange-500/15 text-orange-300">${job.salary}</span>`:""}
+      ${job.type?`<span class="text-[11px] px-2 py-0.5 rounded-md bg-white/5 text-zinc-300">${job.type}</span>`:""}
+    </div>
+    <p class="text-xs text-zinc-500 mt-2">${(job.description||"").slice(0,110)}</p>
+    <button onclick="openJob(${i})" class="btn-main mt-3 w-full py-2.5 rounded-xl text-sm font-semibold">View & Apply</button>
+  </div>`).join("");
+}
+function openJob(i){const job=filteredJobs()[i];selectedJob=job;mTitle.textContent=job.title||"Role";mCompany.textContent=(job.company||"")+" · "+(job.location||"");mDesc.textContent=job.description||"No description.";jobModal.classList.add("on");}
+function closeJobModal(){jobModal.classList.remove("on");}
+function submitJobApp(){
+  const name=fName.value.trim(),mobile=fMobile.value.trim(),email=fEmail.value.trim(),resume=fResume.value.trim();
+  if(!name||!mobile||!email||!resume||!selectedJob){alert("Fill required fields");return;}
+  const ecs=fEcsYes.checked?"Yes":(fEcsNo.checked?"No":"");
+  jobSubmitBtn.disabled=true;jobSubmitBtn.textContent="Submitting…";
+  fetch(JOBS_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({type:"application",jobTitle:selectedJob.title,jobCompany:selectedJob.company,jobLocation:selectedJob.location,name,email,mobile,exp:fExp.value.trim(),ctc:fCTC.value.trim(),expectedCTC:fCTC.value.trim(),notice:"",resume,pitch:"",ecsScoreApplied:ecs})})
+  .then(()=>{alert("✅ Application submitted");closeJobModal();["fName","fMobile","fEmail","fResume","fExp","fCTC"].forEach(id=>document.getElementById(id).value="");fEcsYes.checked=false;fEcsNo.checked=false;})
+  .catch(()=>alert("Network error")).finally(()=>{jobSubmitBtn.disabled=false;jobSubmitBtn.textContent="Submit Application";});
+}
+fetch(JOBS_URL).then(r=>r.json()).then(data=>{
+  jobs=data.jobs||[];
+  const cats=["all",...new Set(jobs.map(j=>j.category).filter(Boolean))];
+  jobFilters.innerHTML=cats.map(c=>`<button class="px-3 py-1.5 rounded-lg whitespace-nowrap ${c==="all"?"btn-main text-white":"bg-white/5 text-zinc-400"}" data-f="${c}">${c==="all"?"All":c}</button>`).join("");
+  jobFilters.querySelectorAll("button").forEach(b=>b.onclick=()=>{activeFilter=b.dataset.f;jobFilters.querySelectorAll("button").forEach(x=>{x.className="px-3 py-1.5 rounded-lg whitespace-nowrap "+(x.dataset.f===activeFilter?"btn-main text-white":"bg-white/5 text-zinc-400");});renderJobs();});
+  renderJobs();
+}).catch(()=>{jobsList.innerHTML='<div class="text-center text-zinc-500 py-16 text-sm">Could not load jobs.</div>';});
+jobSearch.addEventListener("input",renderJobs);
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.classList.remove("hidden");});
+installBtn.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.classList.add("hidden");};
+if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+if(localStorage.getItem("ecs_loginId")) go("dash");
+</script>
+</body>
+</html>
